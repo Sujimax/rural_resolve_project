@@ -20,19 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await res.json();
 
-      if (!res.ok) {
-        throw new Error(result.detail || "Login failed");
-      }
+      if (!res.ok) throw new Error(result.detail || "Login failed");
 
-      // Save token
       localStorage.setItem("access_token", result.access_token);
 
-      // Decode role
-      const tokenPayload = JSON.parse(atob(result.access_token.split(".")[1]));
-      const role = tokenPayload.role;
+      const payload = JSON.parse(atob(result.access_token.split(".")[1]));
 
-      // Redirect based on role
-      if (role === "admin") {
+      if (payload.role === "admin") {
         window.location.href = "admin.html";
       } else {
         window.location.href = "dashboard.html";
