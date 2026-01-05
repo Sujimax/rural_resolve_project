@@ -1,0 +1,186 @@
+/* ===== PAGE TITLE ===== */
+h2 {
+  text-align: center;
+  color: #2563eb;
+  margin: 30px 0;
+  font-size: 28px;
+}
+
+
+/* ===== SUMMARY BOXES ===== */
+.summary-box {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 40px auto;
+  width: 90%;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  background: #ffffff;
+  width: 250px;
+  padding: 25px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.summary-card:hover {
+  transform: translateY(-6px);
+}
+
+.summary-card h3 {
+  color: #2b3543;
+  font-size: 18px;
+}
+
+.summary-card p {
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.summary-card.total p {
+  color: #2563eb;
+}
+
+.summary-card.resolved p {
+  color: #16a34a;
+}
+
+.summary-card.pending p {
+  color: #ea580c;
+}
+
+/* ===== TABLE CONTAINER ===== */
+.table-container {
+  width: 92%;
+  margin: 30px auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;  
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Table header */
+thead {
+  background: #1c5cff;
+  color: white;
+}
+
+th {
+  padding: 14px 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Table body */
+td {
+  padding: 14px 12px;
+  font-size: 15px;
+  color: #232934;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+/* Row hover - only tbody rows */
+tbody tr:hover {
+  background-color: #f1f5ff;
+}
+
+/* Image in table */
+table img {
+  width: 60px;
+  height: 45px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* View button */
+.view-btn {
+  padding: 6px 14px;
+  background: #cc75ff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background: #a914ff;
+}
+
+/* ===== STATUS BADGES ===== */
+.status-badge {
+  padding: 7px 13px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.status-pending {
+  background-color: #ffd0d0;
+  color: #ea580c;
+}
+
+.status-in-progress {
+  background-color: #fff2ce;
+  color: #ba7f00;
+}
+
+.status-solved {
+  background-color: #d9ffe6;
+  color: #16a34a;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 24px;
+  }
+
+  .summary-card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .table-container {
+    padding: 10px;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  th,
+  td {
+    font-size: 14px;
+    padding: 12px 10px;
+  }
+
+  table img {
+    width: 45px;
+    height: 35px;
+  }
+
+  .view-btn {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .status-badge {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}

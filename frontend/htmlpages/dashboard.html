@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rural Resolve</title>
+  <link rel="icon" href="../images/bgi.png" alt="Village website">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/dash_page.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+
+      <!-- LEFT -->
+      <div class="nav-left">
+        <div class="logo">
+          <img src="../images/bgi.png" alt="Logo">
+          <h1 class="page-title">Rural Resolve</h1>
+        </div>
+
+        <!-- MENU BUTTON (JS BASED) -->
+        <button id="menuBtn" class="hamburger">☰</button>
+      </div>
+
+      <!-- CENTER LINKS -->
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="active">🏠 Home</a></li>
+        <li><a href="addcomplaint.html">➕ Add Complaint</a></li>
+        <li><a href="my_complaint.html">🙋‍♀️ My Complaint</a></li>
+        <li><a href="complaint_list.html">📋 Complaint List</a></li>
+      </ul>
+
+      <!-- RIGHT LINKS -->
+      <div class="nav-right">
+        <a href="#" class="language">
+          <img src="../images/translate.jpg" alt="Language">
+        </a>
+        <a href="logout.html" class="login-btn" >Logout</a>
+      </div>
+
+    </nav>
+  </header>
+
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-left">
+        <img src="../images/icon1.png" alt="Village illustration">
+      </div>
+      <div class="hero-right">
+        <h1>
+          <span class="normal-text">Welcome to </span>
+          <span class="gradient-text">Rural Resolve</span>
+        </h1>
+        <p>Empowering villages through digital complaint management and civic transparency.</p>
+        <div class="hero-buttons">
+          <a href="addcomplaint.html"><button>Add Complaint</button></a>
+          <a href="complaint_list.html"><button>View Complaints</button></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- info Section -->
+  <h2>Guidelines for how to use this Webiste</h2>
+  <section id="add-complaint" class="info-section">
+    <h3>📝 Add a Complaint</h3>
+    <ol>
+      <li><strong>Upload a Photo:</strong> Add a clear image related to your issue (optional but useful).</li>
+      <li><strong>Enter Problem Description:</strong> Explain your issue clearly and concisely.</li>
+      <li><strong>Provide Location:</strong> Mention the exact place where the issue occurs.</li>
+      <li><strong>Mention Year of Problem:</strong> State when the problem started, if it's old.</li>
+      <li><strong>Submit Complaint:</strong> Click <b>Submit</b> to send your complaint to authorities.</li>
+    </ol>
+  </section>
+
+  <section id="view-complaint" class="info-section">
+    <h3>📋 View Complaint List</h3>
+    <ol>
+      <li><strong>Access List:</strong> View all complaints submitted by users.</li>
+      <li><strong>Search Complaint:</strong> Find a complaint using name or ID.</li>
+      <li><strong>Check Details:</strong> Read updates and status from authorities.</li>
+    </ol>
+  </section>
+
+  <section id="check-complaint" class="info-section">
+    <h3>📊 Check Complaint Status</h3>
+    <ol>
+      <li><strong>Enter Complaint ID:</strong> Enter your complaint ID for updates.</li>
+      <li><strong>View Status:</strong> See if it’s <b>Pending</b>, <b>In Progress</b>, or <b>Resolved</b>.</li>
+    </ol>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Rural Resolve | Empowering Villages Digitally</p>
+  </footer>
+</body>
+
+<script src="../javascript/navbar.js"></script>
+</html>

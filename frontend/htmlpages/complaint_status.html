@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Status</title>
+
+  <link rel="stylesheet" href="../css/both_list.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/complaint_status.css">
+</head>
+
+<header>
+    <nav class="navbar">
+
+      <!-- LEFT -->
+      <div class="nav-left">
+        <div class="logo">
+          <img src="../images/bgi.png" alt="Logo">
+          <h1 class="page-title">Rural Resolve</h1>
+        </div>
+
+        <!-- MENU BUTTON (JS BASED) -->
+        <button id="menuBtn" class="hamburger">☰</button>
+      </div>
+
+      <!-- CENTER LINKS -->
+      <ul class="nav-links">
+        <li><a href="admin.html">Back To Admin</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+<body>
+
+  <h3>Complaint Status (Admin)</h3>
+
+  <div class="complaint-box">
+    <div class="complaint-content">
+
+      <!-- LEFT SIDE: USER & COMPLAINT DETAILS -->
+      <div class="details">
+
+        <!-- USER DETAILS -->
+        <h2 class="problem-title">User Details</h2>
+        <p><strong>User ID:</strong> <span id="userId"></span></p>
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Mobile:</strong> <span id="mobile"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+
+        <hr>
+
+        <!-- COMPLAINT DETAILS -->
+        <h2 class="problem-title">Complaint Details</h2>
+        <p><strong>Complaint ID:</strong> <span id="complaintId"></span></p>
+        <p><strong>Problem:</strong> <span id="problem"></span></p>
+        <p><strong>Description:</strong> <span id="description"></span></p>
+        <p><strong>District:</strong> <span id="district"></span></p>
+        <p><strong>Village:</strong> <span id="village"></span></p>
+        <p><strong>Door No:</strong> <span id="doorNo"></span></p>
+        <p><strong>Votes:</strong> <span id="votes"></span></p>
+        <p><strong>Date:</strong> <span id="date"></span></p>
+
+        <p>
+          <strong>Status:</strong>
+          <span id="currentStatus" class="status-badge status-pending">Pending</span>
+        </p>
+        <br>
+
+        <!-- ADMIN ACTION -->
+        <select id="statusSelect">
+          <!-- <option value="pending">Pending</option> -->
+          <option value="in progress">In Progress</option>
+          <option value="solved">Solved</option>
+        </select>
+
+        <button id="updateStatus">Update Status</button>
+        <button id="deleteComplaint" class="delete-btn">🗑️ Delete Complaint</button>
+
+      </div>
+
+      <!-- RIGHT SIDE: IMAGE -->
+      <div class="image">
+        <img id="complaintImage" alt="Complaint Image">
+      </div>
+
+    </div>
+  </div>
+
+</body>
+<script src="../javascript/complaint_status.js"></script>
+<script src="../javascript/navbar.js"></script>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+
+  <header>
+    <nav class="navbar">
+
+      <!-- LEFT -->
+      <div class="nav-left">
+        <div class="logo">
+          <img src="../images/bgi.png" alt="Logo">
+          <h1 class="page-title">Rural Resolve</h1>
+        </div>
+
+        <!-- MENU BUTTON (JS BASED) -->
+        <button id="menuBtn" class="hamburger">☰</button>
+      </div>
+
+      <!-- CENTER LINKS -->
+      <ul class="nav-links">
+        <li><a href="../../index.html">Back To Home</a></li>
+        <li><a href="logout.html">Logout</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+
+
+  <h2>Admin Overview</h2>
+
+  <!-- ✅ Summary Boxes -->
+  <div class="summary-box">
+    <div class="summary-card total">
+      <h3>Total Complaints</h3>
+      <p id="total-count">0</p>
+    </div>
+
+    <div class="summary-card resolved">
+      <h3>Solved Complaints</h3>
+      <p id="solved-count">0</p>
+    </div>
+
+    <div class="summary-card pending">
+      <h3>Pending Complaints</h3>
+      <p id="pending-count">0</p>
+    </div>
+  </div>
+
+  <h2>Recent Complaints</h2>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table id="complaints-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Problem Type</th>
+          <th>Name</th>
+          <th>District</th>
+          <th>Vote</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Image</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</body>
+
+<script src="../javascript/admin_page.js"></script>
+
+<script src="../javascript/navbar.js"></script>
+
+</html>

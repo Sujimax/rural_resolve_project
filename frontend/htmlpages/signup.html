@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Complaint Website</title>
+    <link rel="stylesheet" href="../css/addcomplaint.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+</head>
+
+<body>
+    <header>    
+        <nav class="navbar">
+            <!-- LEFT -->
+            <div class="nav-left">
+                <div class="logo">
+                    <img src="../images/bgi.png" alt="Logo">
+                    <h1 class="page-title">Rural Resolve</h1>
+                </div>
+
+                <!-- MENU BUTTON (JS BASED) -->
+                <button id="menuBtn" class="hamburger">☰</button>
+            </div>
+
+            <div class="nav-right">
+                <a href="../../index.html" class="login-btn">Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <h2>Signup</h2>
+
+    <div class="form-container">
+        <form id="signup-form">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="phone" placeholder="Phone" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+</body>
+
+<script src="../javascript/signup.js"></script>
+<script src="../javascript/navbar.js"></script>
+
+</html>

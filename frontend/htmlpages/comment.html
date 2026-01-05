@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/both_list.css" />
+  <link rel="stylesheet" href="../css/comment.css" />
+</head>
+
+<body>
+
+  <header>
+    <nav class="navbar">
+
+      <!-- LEFT -->
+      <div class="nav-left">
+        <div class="logo">
+          <img src="../images/bgi.png" alt="Logo">
+          <h1 class="page-title">Rural Resolve</h1>
+        </div>
+
+        <!-- MENU BUTTON (JS BASED) -->
+        <button id="menuBtn" class="hamburger">☰</button>
+      </div>
+
+      <!-- CENTER LINKS -->
+      <ul class="nav-links">
+        <li><a href="complaint_list.html">Back To Complaints</a></li>
+        <li><a href="logout.html" class="login-btn">Logout</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+
+
+<h3>Complaint Discussion</h3>
+
+<!-- REQUIRED WRAPPER -->
+<div class="complaint-box">
+
+  <div class="complaint-content">
+
+    <!-- DETAILS (JS IDs UNCHANGED) -->
+    <div class="details">
+      <h2 class="problem-title" id="problemType"></h2>
+
+      <p><strong>District</strong><span id="district"></span></p>
+      <p><strong>Village</strong><span id="village"></span></p>
+      <p><strong>Date</strong><span id="date"></span></p>
+      <p><strong>Description</strong><span id="description"></span></p>
+      <p><strong>Votes</strong><span id="vote"></span></p>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="image">
+      <img id="problemImage" alt="Problem Image">
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- COMMENTS -->
+  <h3>Comments</h3>
+  <div id="commentsContainer"></div>
+
+  <hr>
+
+  <!-- ADD COMMENT -->
+  <textarea id="commentText" rows="3" placeholder="Write your comment..."></textarea>
+  <button id="postComment">Post Comment</button>
+
+</div>
+
+</body>
+
+<script src="../javascript/navbar.js"></script>
+
+<script src="../javascript/comment.js"></script>
+
+</html>

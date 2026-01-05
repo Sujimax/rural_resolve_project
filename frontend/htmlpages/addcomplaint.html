@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rural Resolve</title>
+  <link rel="icon" href="../images/bgi.png" alt="Village website">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/addcomplaint.css">
+</head>
+
+<body>
+  <header>
+  <nav class="navbar">
+
+     <!-- LEFT -->
+    <div class="nav-left">
+      <div class="logo">
+        <img src="../images/bgi.png" alt="Logo">
+        <h1 class="page-title">Rural Resolve</h1>
+      </div>
+
+      <!-- MENU BUTTON (NO SPANS, NO CHECKBOX) -->
+      <button id="menuBtn" class="hamburger">☰</button>
+    </div>
+
+    <!-- CENTER LINKS -->
+    <ul class="nav-links">
+      <li><a href="dashboard.html" class="active">🏠 Home</a></li>
+      <li><a href="addcomplaint.html">➕ Add Complaint</a></li>
+      <li><a href="my_complaint.html">🙋‍♀️ My Complaint</a></li>
+      <li><a href="complaint_list.html">📋 Complaint List</a></li>
+    </ul>
+
+    <!-- RIGHT LINKS -->
+    <div class="nav-right">
+      <a href="logout.html" class="login-btn">Logout</a>
+    </div>
+
+  </nav>
+</header>
+
+
+  <h2>Add a Complaint</h2>
+
+  <div class="class-name" id="add-complaint">
+    <form>
+      <label for="problem-name">Problem Type:</label>
+      <select id="problem-name" name="problem-name" required>
+        <option value="">-- Select Problem Type --</option>
+        <option value="water">Water Issue</option>
+        <option value="road">Road Damage</option>
+        <option value="electricity">Electricity Issue</option>
+        <option value="waste">Waste Management</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label>Upload Image</label>
+      <input type="file" id="image" accept="image/*">
+
+
+      <label for="description">Problem Description:</label>
+      <textarea id="description" name="description" rows="4" placeholder="Describe your problem..." required></textarea>
+
+      <!--  Added location details here -->
+      <label for="district">District:</label>
+      <select id="district" name="district" required>
+        <option value="">-- Select District --</option>
+      </select>
+
+      <label for="village">Village:</label>
+      <select id="village" name="village" required>
+        <option value="">-- Select Village --</option>
+      </select>
+
+      <label for="doorno">Door Number:</label>
+      <input type="text" id="doorno" name="doorno" placeholder="Enter your door number" required>
+
+      <button type="submit">Submit Complaint</button>
+    </form>
+  </div>
+
+</body>
+
+<script src="../javascript/add_complaint.js"></script>
+
+<script src="../javascript/navbar.js"></script>
+
+</html>
