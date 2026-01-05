@@ -18,17 +18,25 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify(data)
       });
 
+      const result = await res.json();
+
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail || "Login failed");
+        throw new Error(result.detail || "Login failed");
       }
 
-      const result = await res.json();
+      // Save token
       localStorage.setItem("access_token", result.access_token);
 
-      const payload = JSON.parse(atob(result.access_token.split(".")[1]));
-      window.location.href =
-        payload.role === "admin" ? "admin.html" : "dashboard.html";
+      // Decode role
+      const tokenPayload = JSON.parse(atob(result.access_token.split(".")[1]));
+      const role = tokenPayload.role;
+
+      // Redirect based on role
+      if (role === "admin") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "dashboard.html";
+      }
 
     } catch (err) {
       alert(err.message);
