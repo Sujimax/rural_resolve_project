@@ -1,3 +1,5 @@
+import API_BASE_URL from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("login-form");
 
@@ -10,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -22,25 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const result = await res.json();
-
-      // Store JWT & user info
       localStorage.setItem("access_token", result.access_token);
-      localStorage.setItem("token_type", result.token_type);
-      localStorage.setItem("user", JSON.stringify(result.user || {}));
 
-      // Decode JWT payload
       const payload = JSON.parse(atob(result.access_token.split(".")[1]));
-
-      if (payload.role === "admin") {
-        alert("Admin login successful ✅");
-        window.location.href = "admin.html";
-      } else {
-        alert("User login successful ✅");
-        window.location.href = "dashboard.html";
-      }
+      window.location.href =
+        payload.role === "admin" ? "admin.html" : "dashboard.html";
 
     } catch (err) {
-      alert("❌ " + err.message);
+      alert(err.message);
     }
   });
 });

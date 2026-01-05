@@ -1,14 +1,13 @@
+import API_BASE_URL from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signup-form");
 
-  form?.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const password = form.password.value;
-    const confirmPassword = form.confirm_password.value;
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match ❌");
+    if (form.password.value !== form.confirm_password.value) {
+      alert("Passwords do not match");
       return;
     }
 
@@ -16,12 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
       name: form.name.value,
       phone: form.phone.value,
       email: form.email.value,
-      password: password,
-      // role: "user"
+      password: form.password.value
     };
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/auth/signup", {
+      const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -29,14 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.detail || "Signup failed ❌");
+        throw new Error(err.detail || "Signup failed");
       }
 
-      alert("Signup successful ✅");
+      alert("Signup successful");
       window.location.href = "login.html";
-
-    } catch (error) {
-      alert(error.message);
+    } catch (err) {
+      alert(err.message);
     }
   });
 });

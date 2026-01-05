@@ -8,11 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     navRight.classList.toggle("show");
   });
 
-  document.querySelectorAll(".nav-links a, .nav-right a")
-    .forEach(link => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("show");
-        navRight.classList.remove("show");
-      });
+  document.querySelectorAll(".nav-links a, .nav-right a").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("show");
+      navRight.classList.remove("show");
     });
+  });
 });
