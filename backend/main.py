@@ -12,12 +12,15 @@ Base.metadata.create_all(bind=engine)
 
 # Static files
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")  #uploads folder-la irukka files-ah browser-la direct-aa open panna allow pannradhu
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")  
 
-# CORS
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://rural-resolve-project.netlify.app",  # ✅ Netlify frontend
+        "http://localhost:5500",                      # optional (local frontend)
+        "http://127.0.0.1:5500"                       # optional
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
