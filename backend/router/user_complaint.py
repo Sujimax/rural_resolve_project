@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List
 import cloudinary.uploader
+
 from dependancy import get_db, get_current_user
 from models.complaint_model import Complaint
 from models.comment_model import Comment
@@ -36,6 +37,7 @@ def create_complaint(
             image_url = upload_result["secure_url"]
         except Exception as e:
             raise HTTPException(status_code=500, detail="Image upload failed")
+
 
     complaint = Complaint(
         user_id=current_user.id,
