@@ -34,8 +34,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           ? "status-in-progress"
           : "status-solved";
 
+      // ✅ IMAGE FIX (ONLY THIS PART CHANGED)
       const imageSrc = complaint.image_url
-        ? `${API_BASE_URL}/${complaint.image_url}`
+        ? complaint.image_url
         : "../images/icon1.png";
 
       complaintBox.innerHTML = `
