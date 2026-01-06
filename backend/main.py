@@ -15,12 +15,7 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")  #upload
 
 
 origins = [
-    "https://rural-resolve-project.netlify.app",
-    "http://rural-resolve-project.netlify.app",
-    "https://rural-resolve-project.onrender.com",
-    "http://rural-resolve-project.onrender.com",
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
+    "https://rural-resolve-project.netlify.app"
 ]
 
 app.add_middleware(
