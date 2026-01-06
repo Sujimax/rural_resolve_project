@@ -73,8 +73,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       doorNoEl.textContent = c.door_no || "N/A";
       votesEl.textContent = c.votes || 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
+
+      // ✅ IMAGE FIX (ONLY CHANGE)
       complaintImageEl.src = c.image_url
-        ? `${API_BASE_URL}/${c.image_url}`
+        ? c.image_url
         : "../images/icon1.png";
 
       statusSelect.value = (c.status || "pending").toLowerCase();
