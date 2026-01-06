@@ -39,7 +39,6 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-# ================= LOGIN =================
 @auth_router.post("/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
@@ -49,7 +48,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     access_token = create_access_token({
         "sub": db_user.email,
         "user_id": db_user.id,
-        "role": db_user.role   # MUST include role
+        "role": db_user.role
     })
 
     return {

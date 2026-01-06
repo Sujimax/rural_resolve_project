@@ -1,7 +1,6 @@
-import API_BASE_URL from "./config.js";
+import API_BASE_URL from "./config.js"; // e.g., "https://rural-resolve-project.onrender.com"
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const form = document.getElementById("login-form");
 
   form.addEventListener("submit", async (e) => {
@@ -13,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-
       const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,17 +27,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // Save token
       localStorage.setItem("access_token", result.access_token);
 
-      // Decode JWT safely
-      const tokenParts = result.access_token.split(".");
-      const payload = JSON.parse(atob(tokenParts[1]));
-
+      // Decode JWT to check role
+      const payload = JSON.parse(atob(result.access_token.split(".")[1]));
       const role = payload.role || "user";
 
-      // Redirect based on role
+      // ✅ Redirect based on role
       if (role === "admin") {
-        window.location.href = "admin.html";
+        window.location.href = "admin.html";      // Admin page
       } else {
-        window.location.href = "dashboard.html";
+        window.location.href = "dashboard.html";  // User page
       }
 
     } catch (err) {
