@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,35 +40,38 @@
 
     </nav>
   </header>
-<body>
 
-  <div class="class-name">
-    <h1>Edit Complaint</h1>
-    <form id="editComplaintForm">
+  <body>
 
-      <label for="problem_type">Problem Type</label>
-      <input type="text" id="problem_type" name="problem_type" required>
+    <h2>Add a Complaint</h2>
+    
+    <div class="class-name">
 
-      <label for="description">Description</label>
-      <textarea id="description" are name="description" rows="4" required></textarea>
+      <form id="editComplaintForm">
 
-      <label for="district">District</label>
-      <input type="text" id="district" name="district" required>
+        <label for="problem_type">Problem Type</label>
+        <input type="text" id="problem_type" name="problem_type" required>
 
-      <label for="village">Village</label>
-      <input type="text" id="village" name="village" required>
+        <label for="description">Description</label>
+        <textarea id="description" are name="description" rows="4" required></textarea>
 
-      <label for="door_no">Door No</label>
-      <input type="text" id="door_no" name="door_no" required>
+        <label for="district">District</label>
+        <input type="text" id="district" name="district" required>
 
-      <button type="submit">Update Complaint</button>
-    </form>
-    <p id="statusMessage" style="color:green; margin-top:10px;"></p>
-  </div>
+        <label for="village">Village</label>
+        <input type="text" id="village" name="village" required>
 
-</body>
+        <label for="door_no">Door No</label>
+        <input type="text" id="door_no" name="door_no" required>
 
-<script type="module" src="../javascript/edit_complaint.js"></script>
-<script src="../javascript/navbar.js"></script>
+        <button type="submit">Update Complaint</button>
+      </form>
+      <p id="statusMessage" style="color:green; margin-top:10px;"></p>
+    </div>
+
+  </body>
+
+  <script type="module" src="../javascript/edit_complaint.js"></script>
+  <script src="../javascript/navbar.js"></script>
 
 </html>
