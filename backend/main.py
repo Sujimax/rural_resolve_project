@@ -15,17 +15,17 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")  #upload
 
 
 origins = [
-    "https://rural-resolve-project.netlify.app"
+    "https://rural-resolve-project.netlify.app",  # your frontend
+    "http://localhost:5173",  # optional, for local testing
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins,  # must list domains explicitly if allow_credentials=True
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # Routers
 app.include_router(auth_router)
