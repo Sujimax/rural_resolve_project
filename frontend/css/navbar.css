@@ -79,25 +79,26 @@ body {
   height: 45px;
 }
 
-/* Simple Login Button */
+/* Login button inside navbar */
 .login-btn {
   padding: 6px 14px;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
 
-  color: #374151;           /* normal text color */
+  background-color: #2563eb; /* blue */
+  color: #ffffff;            /* white text */
+
   border-radius: 6px;
+  border: none;
 
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
-/* Hover effect */
+/* Hover */
 .login-btn:hover {
-  background-color: #e5e7eb; /* light gray */
-  color: #111827;           /* darker text */
+  background-color: #1e40af; /* darker blue */
 }
-
 
 /* ===== MENU BUTTON ===== */
 .hamburger {
