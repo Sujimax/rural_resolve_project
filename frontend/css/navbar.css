@@ -79,25 +79,25 @@ body {
   height: 45px;
 }
 
-/* Login button inside navbar */
 .login-btn {
-  padding: 6px 14px;
-  font-size: 14px;
+  padding: 8px 20px;          /* more padding for round shape */
+  font-size: 16px;            /* slightly bigger text */
   font-weight: 500;
   text-decoration: none;
 
-  background-color: #2563eb; /* blue */
-  color: #ffffff;            /* white text */
+  background-color: #2563eb;  /* blue */
+  color: #ffffff;             /* white text */
 
-  border-radius: 6px;
+  border-radius: 50px;        /* fully rounded/pill shape */
   border: none;
 
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 /* Hover */
 .login-btn:hover {
-  background-color: #1e40af; /* darker blue */
+  background-color: #1e40af;  /* darker blue */
+  transform: scale(1.05);     /* subtle hover effect */
 }
 
 /* ===== MENU BUTTON ===== */
