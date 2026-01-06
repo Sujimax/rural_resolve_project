@@ -1,12 +1,15 @@
+import API_BASE_URL from "./config.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
 
-  /* ================= AUTH CHECK ================= */
+  // ✅ Check login
   if (!token) {
     window.location.href = "login.html";
     return;
   }
 
+  // ✅ Decode JWT safely
   let payload;
   try {
     payload = JSON.parse(atob(token.split(".")[1]));
@@ -16,34 +19,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // ✅ Admin role check
   if (payload.role !== "admin") {
     alert("❌ You are not authorized to view this page");
     window.location.href = "dashboard.html";
     return;
   }
 
-  /* ================= DOM ELEMENTS ================= */
+  // DOM Elements
   const tableBody = document.querySelector("#complaints-table tbody");
   const totalCount = document.getElementById("total-count");
   const solvedCount = document.getElementById("solved-count");
   const pendingCount = document.getElementById("pending-count");
 
-  /* ================= FETCH COMPLAINTS ================= */
   try {
-    const res = await fetch("http://127.0.0.1:8000/complaints/", {
+    const res = await fetch(`${API_BASE_URL}/complaints/`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
 
-    if (res.status === 401) {
-      alert("Session expired. Please login again.");
-      localStorage.removeItem("access_token");
-      window.location.href = "login.html";
-      return;
-    }
-
     if (!res.ok) {
+      if (res.status === 401) {
+        alert("Session expired. Please login again.");
+        localStorage.removeItem("access_token");
+        window.location.href = "login.html";
+      }
       throw new Error("Failed to fetch complaints");
     }
 
@@ -54,59 +55,58 @@ document.addEventListener("DOMContentLoaded", async () => {
     let pending = 0;
 
     complaints.forEach(c => {
-      const status = (c.status || "Pending").toLowerCase();
+      const statusText = (c.status || "pending").toLowerCase();
       let statusClass = "status-pending";
 
-      if (status === "solved") {
+      if (statusText === "solved") {
         statusClass = "status-solved";
         solved++;
+      } else if (statusText === "in progress") {
+        statusClass = "status-in-progress";
+        pending++;
       } else {
         pending++;
       }
 
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${c.id}</td>
-        <td>${c.problem_type}</td>
-        <td>${c.user_name || "N/A"}</td>
-        <td>${c.district}</td>
-        <td>${c.votes || 0}</td>
-        <td>${c.description || "N/A"}</td>
-        <td>${new Date(c.created_at).toLocaleDateString()}</td>
-        <td>
-          <img 
-            src="${c.image_url ? `http://127.0.0.1:8000/${c.image_url}` : "../images/icon1.png"}"
-            width="50"
-            alt="Complaint Image"
-          />
-        </td>
-        <td>
-          <span class="status-badge ${statusClass}">
-            ${c.status || "Pending"}
-          </span>
-        </td>
-        <td>
-          <button class="view-btn"
-            onclick="window.location.href='complaint_status.html?id=${c.id}'">
-            View
-          </button>
-        </td>
-      `;
+      const imageSrc = c.image_url
+        ? `${API_BASE_URL}/${c.image_url}`
+        : "../images/icon1.png";
 
-      tableBody.appendChild(row);
+      tableBody.innerHTML += `
+        <tr>
+          <td>${c.id}</td>
+          <td>${c.problem_type}</td>
+          <td>${c.name || c.user_name || "N/A"}</td>
+          <td>${c.district}</td>
+          <td>${c.votes || 0}</td>
+          <td>${c.description || ""}</td>
+          <td>${new Date(c.created_at).toLocaleDateString()}</td>
+          <td>
+            <img src="${imageSrc}" width="50" />
+          </td>
+          <td>
+            <span class="status-badge ${statusClass}">
+              ${c.status || "Pending"}
+            </span>
+          </td>
+          <td>
+            <button class="view-btn"
+              onclick="window.location.href='complaint_status.html?id=${c.id}'">
+              View
+            </button>
+          </td>
+        </tr>
+      `;
     });
 
-    /* ================= SUMMARY COUNTS ================= */
+    // Summary cards
     totalCount.textContent = complaints.length;
     solvedCount.textContent = solved;
     pendingCount.textContent = pending;
 
   } catch (error) {
     console.error(error);
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="10">⚠️ Error loading complaints</td>
-      </tr>
-    `;
+    tableBody.innerHTML =
+      `<tr><td colspan="10">Error loading complaints</td></tr>`;
   }
 });
