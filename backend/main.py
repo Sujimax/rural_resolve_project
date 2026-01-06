@@ -16,14 +16,14 @@ Base.metadata.create_all(bind=engine)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # ✅ CORS setup for both dev and production frontend
-origins = [
-    "https://rural-resolve-project.netlify.app",  # production frontend
-    "http://localhost:5173",                      # local dev frontend
-]
+# origins = [
+#     "https://rural-resolve-project.netlify.app",  # production frontend
+#     "http://localhost:5173",                      # local dev frontend
+# ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
