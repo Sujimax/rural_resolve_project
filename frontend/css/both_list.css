@@ -41,13 +41,13 @@ h3 {
     display: grid;
     grid-template-columns: 160px 1fr;
     margin: 12px 0;
-    font-size: 16px;
-    color: #23262a;
+    font-size: 17px;
+    color: #1d2024;
     line-height: 1.6;
 }
 
 .details strong {
-    font-weight: 600;
+    font-weight: 700;
     color: #000000;
     white-space: nowrap;
 }
