@@ -1,8 +1,17 @@
+import API_BASE_URL from "./config.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
   if (!token) {
     alert("Please login as admin");
     window.location.href = "login.html";
+    return;
+  }
+
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  if (payload.role !== "admin") {
+    alert("❌ Unauthorized");
+    window.location.href = "dashboard.html";
     return;
   }
 
@@ -30,38 +39,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   const statusSelect = document.getElementById("statusSelect");
   const updateStatusBtn = document.getElementById("updateStatus");
   const complaintImageEl = document.getElementById("complaintImage");
-  const deleteBtn = document.getElementById("deleteComplaint"); // Add a delete button in HTML
+  const deleteBtn = document.getElementById("deleteComplaint");
 
-  // Function to update status badge color
   function updateStatusBadge(status) {
-    currentStatusEl.className = "status-badge"; // Reset classes
+    currentStatusEl.className = "status-badge";
     const s = (status || "pending").toLowerCase();
-    // if (s === "pending") currentStatusEl.classList.add("status-pending");
     if (s === "in progress") currentStatusEl.classList.add("status-in-progress");
     else if (s === "solved") currentStatusEl.classList.add("status-solved");
-    currentStatusEl.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    else currentStatusEl.classList.add("status-pending");
+    currentStatusEl.textContent = status;
   }
 
-  // Fetch complaint details
+  // 🔹 FETCH COMPLAINT
   async function fetchComplaint() {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/complaints/${complaintId}`, {
+      const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (!res.ok) {
-        if (res.status === 401) {
-          alert("Session expired. Login again.");
-          localStorage.removeItem("access_token");
-          window.location.href = "login.html";
-        }
-        throw new Error("Failed to fetch complaint");
-      }
+      if (!res.ok) throw new Error("Failed to fetch complaint");
 
       const c = await res.json();
 
       userIdEl.textContent = c.user_id || "N/A";
-      nameEl.textContent = c.user_name || c.name || "N/A";
+      nameEl.textContent = c.user_name || "N/A";
       mobileEl.textContent = c.phone || "N/A";
       emailEl.textContent = c.email || "N/A";
       complaintIdEl.textContent = c.id;
@@ -72,74 +73,62 @@ document.addEventListener("DOMContentLoaded", async () => {
       doorNoEl.textContent = c.door_no || "N/A";
       votesEl.textContent = c.votes || 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
-      complaintImageEl.src = c.image_url ? `http://127.0.0.1:8000/${c.image_url}` : "../images/icon1.png";
+      complaintImageEl.src = c.image_url
+        ? `${API_BASE_URL}/${c.image_url}`
+        : "../images/icon1.png";
 
-      // Set current status & badge color
       statusSelect.value = (c.status || "pending").toLowerCase();
       updateStatusBadge(c.status || "Pending");
 
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       alert("Error loading complaint");
+      console.error(err);
     }
   }
 
-  // Update complaint status
+  // 🔹 UPDATE STATUS
   updateStatusBtn.addEventListener("click", async () => {
-    const newStatus = statusSelect.value;
-
     try {
-      const res = await fetch(`http://127.0.0.1:8000/admin/complaints/${complaintId}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ status: statusSelect.value })
       });
 
-      if (!res.ok) {
-        if (res.status === 401) {
-          alert("Session expired. Login again.");
-          localStorage.removeItem("access_token");
-          window.location.href = "login.html";
-        }
-        throw new Error("Failed to update status");
-      }
+      if (!res.ok) throw new Error("Update failed");
 
-      updateStatusBadge(newStatus);
-      alert("Status updated successfully ✅");
+      updateStatusBadge(statusSelect.value);
+      alert("Status updated ✅");
 
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       alert("Error updating status");
+      console.error(err);
     }
   });
 
-  // ✅ Delete complaint (admin only)
+  // 🔹 DELETE
   deleteBtn.addEventListener("click", async () => {
-    if (!confirm("Are you sure you want to delete this complaint?")) return;
+    if (!confirm("Delete this complaint?")) return;
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/admin/complaints/${complaintId}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.detail || "Failed to delete complaint");
-      }
+      if (!res.ok) throw new Error("Delete failed");
 
-      alert("Complaint deleted successfully ✅");
-      window.location.href = "admin.html"; // redirect back to admin page
+      alert("Deleted successfully ✅");
+      window.location.href = "admin.html";
 
-    } catch (error) {
-      console.error(error);
-      alert("Error deleting complaint: " + error.message);
+    } catch (err) {
+      alert("Delete error");
+      console.error(err);
     }
   });
 
-  // Initial fetch
   fetchComplaint();
 });

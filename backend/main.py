@@ -15,11 +15,6 @@ Base.metadata.create_all(bind=engine)
 # Serve uploads
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-# ✅ CORS setup for both dev and production frontend
-# origins = [
-#     "https://rural-resolve-project.netlify.app",  # production frontend
-#     "http://localhost:5173",                      # local dev frontend
-# ]
 
 app.add_middleware(
     CORSMiddleware,
