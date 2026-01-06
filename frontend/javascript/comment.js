@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("access_token");
   let userId = null;
 
-  // Decode JWT to get user_id
   if (token) {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
@@ -59,9 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
       descriptionEl.textContent = c.description || "N/A";
       voteEl.textContent = c.votes || "0 votes";
 
-      problemImageEl.src = c.image_url
-        ? `${API_BASE_URL}/${c.image_url}`
-        : "../images/icon1.png";
+      /* ✅ FIXED IMAGE LOGIC */
+      if (c.image_url) {
+        problemImageEl.src = c.image_url.startsWith("http")
+          ? c.image_url
+          : `${API_BASE_URL}/${c.image_url}`;
+      } else {
+        problemImageEl.src = "../images/icon1.png";
+      }
 
     } catch (err) {
       console.error(err);
