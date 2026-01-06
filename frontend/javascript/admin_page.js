@@ -68,6 +68,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         pending++;
       }
 
+      // ✅ IMAGE FIX (ONLY CHANGE)
+      const imageSrc = c.image_url
+        ? c.image_url
+        : "../images/icon1.png";
+
       tableBody.innerHTML += `
         <tr>
           <td>${c.id}</td>
@@ -78,10 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <td>${c.description}</td>
           <td>${new Date(c.created_at).toLocaleDateString()}</td>
           <td>
-            <img 
-              src="${c.image_url ? `${API_BASE_URL}/${c.image_url}` : "../images/icon1.png"}" 
-              width="50"
-            >
+            <img src="${imageSrc}" width="50">
           </td>
           <td>
             <span class="status-badge ${statusClass}">
