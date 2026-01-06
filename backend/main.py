@@ -14,17 +14,23 @@ Base.metadata.create_all(bind=engine)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")  #uploads folder-la irukka files-ah browser-la direct-aa open panna allow pannradhu
 
 
+origins = [
+    "https://rural-resolve-project.netlify.app",
+    "http://rural-resolve-project.netlify.app",
+    "https://rural-resolve-project.onrender.com",
+    "http://rural-resolve-project.onrender.com",
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://rural-resolve-project.netlify.app",  # ✅ Netlify frontend
-        "http://localhost:5500",                      # optional (local frontend)
-        "http://127.0.0.1:5500"                       # optional
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Routers
 app.include_router(auth_router)
