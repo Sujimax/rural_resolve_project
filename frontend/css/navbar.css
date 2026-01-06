@@ -79,7 +79,7 @@ body {
   height: 45px;
 }
 
-.login-btn {
+/* .login-btn {
   padding: 6px 15px;
   border-radius: 50px;
   color: #012f92;
@@ -92,7 +92,7 @@ body {
 .login-btn:hover {
   background-color: rgb(47, 106, 234);
   color: white;
-}
+} */
 
 /* ===== MENU BUTTON ===== */
 .hamburger {
