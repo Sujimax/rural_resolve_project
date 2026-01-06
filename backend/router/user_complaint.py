@@ -2,14 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List
 import cloudinary.uploader
-
 from dependancy import get_db, get_current_user
 from models.complaint_model import Complaint
 from models.comment_model import Comment
 from models.user_model import User
 from schemas.complaint_create import ComplaintUpdate, ComplaintOut
-from schemas.comment_create import CommentCreate, CommentOut
-from utils.cloudinary_config import cloudinary  # 👈 IMPORTANT
+from schemas.comment_create import CommentCreate, CommentOut  # 👈 IMPORTANT
 
 user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
 
