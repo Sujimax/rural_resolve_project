@@ -11,23 +11,23 @@ app = FastAPI(title="Complaint Management API")
 Base.metadata.create_all(bind=engine)
 
 # Static files
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")  #uploads folder-la irukka files-ah browser-la direct-aa open panna allow pannradhu
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-
+# ✅ CORS setup
 origins = [
-    "https://rural-resolve-project.netlify.app",  # your frontend
-    "http://localhost:5173",  # optional, for local testing
+    "https://rural-resolve-project.netlify.app",  # production frontend
+    "http://localhost:5173",  # local dev frontend
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # must list domains explicitly if allow_credentials=True
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Routers
+# ✅ Include routers after middleware
 app.include_router(auth_router)
 app.include_router(user_complaint)
 app.include_router(admin_router)

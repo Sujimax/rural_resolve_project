@@ -1,29 +1,17 @@
-import API_BASE_URL from "./config.js";
-
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
 
-  // ✅ Check login
+  // ✅ Check login and role
   if (!token) {
     window.location.href = "login.html";
     return;
-  }
-
-  // ✅ Decode JWT safely
-  let payload;
-  try {
-    payload = JSON.parse(atob(token.split(".")[1]));
-  } catch (err) {
-    localStorage.removeItem("access_token");
-    window.location.href = "login.html";
-    return;
-  }
-
-  // ✅ Admin role check
-  if (payload.role !== "admin") {
-    alert("❌ You are not authorized to view this page");
-    window.location.href = "dashboard.html";
-    return;
+  } else {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    if (payload.role !== "admin") {
+      alert("❌ You are not authorized to view this page");
+      window.location.href = "dashboard.html";
+      return;
+    }
   }
 
   // DOM Elements
@@ -33,15 +21,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const pendingCount = document.getElementById("pending-count");
 
   try {
-    const res = await fetch(`${API_BASE_URL}/complaints/`, {
+    // ✅ Updated backend URL
+    const res = await fetch("https://rural-resolve-project.onrender.com/complaints/", {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       }
     });
 
     if (!res.ok) {
       if (res.status === 401) {
-        alert("Session expired. Please login again.");
+        alert("Session expired or unauthorized. Please login again.");
         localStorage.removeItem("access_token");
         window.location.href = "login.html";
       }
@@ -51,26 +41,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const complaints = await res.json();
     tableBody.innerHTML = "";
 
-    let solved = 0;
-    let pending = 0;
+    let solved = 0, pending = 0;
 
     complaints.forEach(c => {
-      const statusText = (c.status || "pending").toLowerCase();
+      const statusText = (c.status || "Pending").toLowerCase();
       let statusClass = "status-pending";
 
-      if (statusText === "solved") {
-        statusClass = "status-solved";
-        solved++;
-      } else if (statusText === "in progress") {
-        statusClass = "status-in-progress";
-        pending++;
-      } else {
-        pending++;
-      }
+      if (statusText === "solved") statusClass = "status-solved";
+      else if (statusText === "in progress") statusClass = "status-in-progress";
 
-      const imageSrc = c.image_url
-        ? `${API_BASE_URL}/${c.image_url}`
-        : "../images/icon1.png";
+      if (statusText === "solved") solved++;
+      else pending++;
 
       tableBody.innerHTML += `
         <tr>
@@ -79,34 +60,28 @@ document.addEventListener("DOMContentLoaded", async () => {
           <td>${c.name || c.user_name || "N/A"}</td>
           <td>${c.district}</td>
           <td>${c.votes || 0}</td>
-          <td>${c.description || ""}</td>
+          <td>${c.description}</td>
           <td>${new Date(c.created_at).toLocaleDateString()}</td>
           <td>
-            <img src="${imageSrc}" width="50" />
+            <img src="${c.image_url ? 'https://rural-resolve-project.onrender.com/' + c.image_url : '../images/icon1.png'}" width="50">
           </td>
           <td>
-            <span class="status-badge ${statusClass}">
-              ${c.status || "Pending"}
-            </span>
+            <span class="status-badge ${statusClass}">${c.status || "Pending"}</span>
           </td>
           <td>
-            <button class="view-btn"
-              onclick="window.location.href='complaint_status.html?id=${c.id}'">
-              View
-            </button>
+            <button class="view-btn" onclick="window.location.href='complaint_status.html?id=${c.id}'">View</button>
           </td>
         </tr>
       `;
     });
 
-    // Summary cards
+    // Update summary counts
     totalCount.textContent = complaints.length;
     solvedCount.textContent = solved;
     pendingCount.textContent = pending;
 
   } catch (error) {
     console.error(error);
-    tableBody.innerHTML =
-      `<tr><td colspan="10">Error loading complaints</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="10">Error loading complaints</td></tr>`;
   }
 });
