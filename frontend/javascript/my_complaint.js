@@ -42,6 +42,11 @@ document.addEventListener("DOMContentLoaded", async () => {
           ? "status-in-progress"
           : "status-solved";
 
+      // ✅ IMAGE URL FIX (THIS IS THE MAIN CHANGE)
+      const imageSrc = complaint.image_url
+        ? complaint.image_url
+        : "../images/icon1.png";
+
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
@@ -61,29 +66,23 @@ document.addEventListener("DOMContentLoaded", async () => {
               <button class="delete-btn" data-id="${complaint.id}">🗑️ Delete</button>
             </div>
           </div>
+
           <div class="image">
-            <img src="${
-              complaint.image_url
-                ? `${API_BASE_URL}/${complaint.image_url}`
-                : "../images/icon1.png"
-            }" alt="Complaint Image">
+            <img src="${imageSrc}" alt="Complaint Image">
           </div>
         </div>
       `;
 
-      // DELETE
+      // 🗑 DELETE
       complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
         if (!confirm("Do you want to delete this complaint?")) return;
 
-        const res = await fetch(
-          `${API_BASE_URL}/complaints/${complaint.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+        const res = await fetch(`${API_BASE_URL}/complaints/${complaint.id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        );
+        });
 
         if (res.ok) {
           complaintBox.remove();

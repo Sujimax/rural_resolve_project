@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.querySelector("form");
 
+  // 🔐 Check login
   const token = localStorage.getItem("access_token");
   if (!token) {
     alert("You must be logged in to submit a complaint!");
@@ -11,21 +12,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // --- District → Village mapping ---
+  // 🗺️ District → Village mapping
   const villagesByDistrict = {
-    Thiruvallur:["Uthukottai","Katchur","Nandhi Mangalam","Periyapalayam"],
-    Chennai:["Ananthapuram","Keelapatti","Madhavaram","Velachery","Tondiarpet","Tambaram","Adyar","Mylapore"],
-    Coimbatore:["Perur","Sulur","Annur","Kovai","Vellalore","Vadavalli","Palladam"],
-    Madurai:["Melur","Vadipatti","Usilampatti","Thirumangalam","Peraiyur","Kottampatti","Samayanallur"],
-    Salem:["Attur","Mettur","Yercaud","Edappadi","Omalur","Salem North","Salem South"],
-    Tiruchirappalli:["Srirangam","Lalgudi","Thuraiyur","Manapparai","Musiri","Thottiyam"],
-    Erode:["Gobichettipalayam","Perundurai","Chennimalai","Erode Town","Modakurichi"],
-    Nilgiris:["Ooty","Coonoor","Kotagiri","Gudalur","Udhagamandalam"],
-    Thanjavur:["Kumbakonam","Papanasam","Thiruvaiyaru","Orathanadu","Thanjavur Town"],
-    Tuticorin:["Thoothukudi","Sattankulam","Vilathikulam","Srivaikundam","Kovilpatti"],
-    Villupuram:["Villupuram","Thiruvennainallur","Tindivanam","Kandamangalam"],
-    Kanchipuram:["Kanchipuram","Sriperumbudur","Uthiramerur","Chengalpattu"],
-    Dharmapuri:["Dharmapuri","Harur","Palacode","Pappireddipatti"]
+    Thiruvallur: ["Uthukottai","Katchur","Nandhi Mangalam","Periyapalayam"],
+    Chennai: ["Ananthapuram","Keelapatti","Madhavaram","Velachery","Tondiarpet","Tambaram","Adyar","Mylapore"],
+    Coimbatore: ["Perur","Sulur","Annur","Kovai","Vellalore","Vadavalli","Palladam"],
+    Madurai: ["Melur","Vadipatti","Usilampatti","Thirumangalam","Peraiyur","Kottampatti","Samayanallur"],
+    Salem: ["Attur","Mettur","Yercaud","Edappadi","Omalur","Salem North","Salem South"],
+    Tiruchirappalli: ["Srirangam","Lalgudi","Thuraiyur","Manapparai","Musiri","Thottiyam"],
+    Erode: ["Gobichettipalayam","Perundurai","Chennimalai","Erode Town","Modakurichi"],
+    Nilgiris: ["Ooty","Coonoor","Kotagiri","Gudalur","Udhagamandalam"],
+    Thanjavur: ["Kumbakonam","Papanasam","Thiruvaiyaru","Orathanadu","Thanjavur Town"],
+    Tuticorin: ["Thoothukudi","Sattankulam","Vilathikulam","Srivaikundam","Kovilpatti"],
+    Villupuram: ["Villupuram","Thiruvennainallur","Tindivanam","Kandamangalam"],
+    Kanchipuram: ["Kanchipuram","Sriperumbudur","Uthiramerur","Chengalpattu"],
+    Dharmapuri: ["Dharmapuri","Harur","Palacode","Pappireddipatti"]
   };
 
   const districtSelect = document.getElementById("district");
@@ -33,25 +34,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load districts
   districtSelect.innerHTML = `<option value="">-- Select District --</option>`;
-  Object.keys(villagesByDistrict).forEach(d => {
-    const opt = document.createElement("option");
-    opt.value = d;
-    opt.textContent = d;
-    districtSelect.appendChild(opt);
+  Object.keys(villagesByDistrict).forEach(district => {
+    const option = document.createElement("option");
+    option.value = district;
+    option.textContent = district;
+    districtSelect.appendChild(option);
   });
 
   // Load villages when district changes
   districtSelect.addEventListener("change", () => {
     villageSelect.innerHTML = `<option value="">-- Select Village --</option>`;
-    (villagesByDistrict[districtSelect.value] || []).forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      villageSelect.appendChild(opt);
+    (villagesByDistrict[districtSelect.value] || []).forEach(village => {
+      const option = document.createElement("option");
+      option.value = village;
+      option.textContent = village;
+      villageSelect.appendChild(option);
     });
   });
 
-  // --- Submit Complaint ---
+  // 📝 Submit complaint
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -62,16 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("village", villageSelect.value);
     formData.append("door_no", document.getElementById("doorno").value);
 
-    const image = document.getElementById("image");
-    if (image.files.length > 0) formData.append("image", image.files[0]);
+    const imageInput = document.getElementById("image");
+    if (imageInput.files.length > 0) {
+      formData.append("image", imageInput.files[0]);
+    }
 
     try {
       const res = await fetch(`${API_BASE_URL}/complaints/`, {
         method: "POST",
-        body: formData,
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        body: formData
       });
 
       if (!res.ok) {
@@ -82,9 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Complaint submitted successfully ✅");
       form.reset();
 
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
     }
   });
 
