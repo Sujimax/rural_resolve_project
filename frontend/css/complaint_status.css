@@ -1,40 +1,46 @@
-/* ===== ADMIN ACTION ===== */
+/* ADMIN ACTION */
 #statusSelect,
 #updateStatus,
 #deleteComplaint {
   padding: 8px 14px;
   border-radius: 8px;
   font-size: 15px;
-  margin-right: 15px;
-  border: 1px solid #ccc; /* subtle border */
-  background: none;       /* no background */
-  color: inherit;         /* inherit text color */
+  margin-right: 15px; }
+
+/* Primary button */
+#updateStatus {
+  background: #22c55e;
+  color: white;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s;
 }
 
-/* Hover effect for buttons */
-#updateStatus:hover,
+#updateStatus:hover {
+  background: #007810;
+}
+
+/* Delete button */
+.delete-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  cursor: pointer;
+}
+
 .delete-btn:hover {
-  border-color: #2563eb; /* subtle hover effect */
-  color: #2563eb;
-}
-
-/* Optional: same height for select and buttons */
-#statusSelect,
-#updateStatus,
-#deleteComplaint {
-  height: 40px;
-  line-height: 40px;
+  background: #ef4444;
+  color: white;
 }
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 900px) {
+
+  /* Stack select + buttons */
   #statusSelect,
   #updateStatus,
   #deleteComplaint {
     display: block;
     width: 100%;
-    margin: 10px 0; /* stacked nicely with vertical spacing */
+    margin: 10px;
   }
 }
