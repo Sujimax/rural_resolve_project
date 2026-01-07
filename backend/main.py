@@ -11,7 +11,6 @@ from router.auth import auth_router
 
 app = FastAPI(title="Complaint Management API")
 
-
 cloudinary.config(
     cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME"),
     api_key = os.getenv("CLOUDINARY_API_KEY"),
@@ -19,12 +18,8 @@ cloudinary.config(
     secure=True
 )
 
-
 # Create tables
 Base.metadata.create_all(bind=engine)
-
-# Serve uploads
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
 app.add_middleware(
