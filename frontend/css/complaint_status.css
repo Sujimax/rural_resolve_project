@@ -1,46 +1,44 @@
-/* ADMIN ACTION */
+/* ===== ADMIN ACTION ===== */
+.admin-action {
+    display: flex;
+    flex-wrap: wrap; /* allows wrapping on small screens */
+    align-items: center;
+    gap: 10px; /* space between elements */
+    margin-top: 15px;
+}
+
+/* Select and buttons styling */
 #statusSelect,
 #updateStatus,
 #deleteComplaint {
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 15px;
-  margin-right: 15px; }
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
 
 /* Primary button */
 #updateStatus {
-  background: #22c55e;
-  color: white;
-  border: none;
-  cursor: pointer;
+    background: #22c55e;
+    color: white;
+    border: none;
+    transition: background 0.3s;
 }
 
 #updateStatus:hover {
-  background: #007810;
+    background: #007810;
 }
 
 /* Delete button */
 .delete-btn {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fca5a5;
-  cursor: pointer;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    transition: background 0.3s, color 0.3s;
 }
 
 .delete-btn:hover {
-  background: #ef4444;
-  color: white;
-}
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 900px) {
-
-  /* Stack select + buttons */
-  #statusSelect,
-  #updateStatus,
-  #deleteComplaint {
-    display: block;
-    width: 100%;
-    margin: 10px;
-  }
+    background: #ef4444;
+    color: white;
 }
