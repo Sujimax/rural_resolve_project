@@ -1,33 +1,50 @@
 /* ===== ADMIN ACTION ===== */
 .admin-action {
     display: flex;
-    flex-wrap: wrap;   
+    flex-wrap: wrap;   /* allows wrapping on mobile */
     align-items: center;
-    gap: 10px;        
+    gap: 10px;         /* space between select and buttons */
     margin-top: 15px;
 }
 
-/* Select and buttons styling */
+/* Select + Buttons: common styles */
 #statusSelect,
 #updateStatus,
 #deleteComplaint {
     padding: 8px 14px;
     border-radius: 8px;
     font-size: 15px;
-    border: 1px solid #ccc; 
-    background: none;       
-    color: inherit;        
+    margin-right: 15px; /* space between elements */
+    height: 40px;       /* same height for all */
     cursor: pointer;
-    transition: all 0.3s;
-    height: 40px;           
+    border: 1px solid #ccc; /* subtle border */
+    background: none;   /* select background plain */
+    color: inherit;
 }
 
-/* Hover effect */
-#statusSelect:hover,
-#updateStatus:hover,
-#deleteComplaint:hover {
-    border-color: #2563eb; /* subtle border color change */
-    color: #2563eb;        /* subtle text color change */
+/* Primary button (Update) */
+#updateStatus {
+    background: #22c55e; /* green */
+    color: white;
+    border: none;
+}
+
+#updateStatus:hover {
+    background: #007810; /* darker green on hover */
+}
+
+/* Delete button */
+#deleteComplaint,
+.delete-btn {
+    background: #fee2e2; /* light red */
+    color: #b91c1c;      /* dark red text */
+    border: 1px solid #fca5a5;
+}
+
+#deleteComplaint:hover,
+.delete-btn:hover {
+    background: #ef4444; /* bright red on hover */
+    color: white;
 }
 
 /* MOBILE RESPONSIVE */
@@ -40,6 +57,7 @@
     #statusSelect,
     #updateStatus,
     #deleteComplaint {
-        width: 100%; /* full width on mobile */
+        width: 100%;  /* full width on mobile */
+        margin-right: 0;
     }
 }
