@@ -8,7 +8,7 @@ from models.complaint_model import Complaint
 from models.comment_model import Comment
 from models.user_model import User
 from schemas.complaint_create import ComplaintUpdate, ComplaintOut
-from schemas.comment_create import CommentCreate, CommentOut  # 👈 IMPORTANT
+from schemas.comment_create import CommentCreate, CommentOut 
 
 user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
 
@@ -30,7 +30,7 @@ def create_complaint(
         try:
             upload_result = cloudinary.uploader.upload(
                 image.file,
-                folder="complaints",        # Cloudinary folder
+                folder="complaints",       
                 public_id=f"user_{current_user.id}_{image.filename}",
                 resource_type="image"
             )
@@ -46,7 +46,7 @@ def create_complaint(
         district=district,
         village=village,
         door_no=door_no,
-        image_url=image_url   # 👈 Cloudinary URL
+        image_url=image_url  
     )
 
     db.add(complaint)
@@ -57,12 +57,10 @@ def create_complaint(
 # ================= GET ALL COMPLAINTS =================
 @user_complaint.get("/", response_model=List[ComplaintOut])
 def get_all_complaints(db: Session = Depends(get_db)):
-    # Fetch complaints
     complaints = db.query(Complaint).order_by(Complaint.created_at.desc()).all()
 
     result = []
     for c in complaints:
-        # Fetch user details for each complaint
         user = db.query(User).filter(User.id == c.user_id).first()
 
         result.append(
@@ -112,7 +110,6 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
     return ComplaintOut(
         id=complaint.id,
         user_id=complaint.user_id,
-        # name=complaint.name,
         problem_type=complaint.problem_type,
         description=complaint.description,
         district=complaint.district,

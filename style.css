@@ -11,24 +11,37 @@
 }
 
 /* ===== MAIN HEADING ===== */
-.hero-title {
-    font-size: clamp(32px, 8vw, 64px);
-    margin-bottom: 24px;
-    line-height: 1.2;
-    white-space: nowrap;
+.hero-title{
+  font-size:clamp(32px,8vw,64px);
+  font-weight:700;
+  white-space:nowrap;
+  margin-left:40px;
 }
 
-.normal-text {
-    background: linear-gradient(90deg, #286cff, #06c0e1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.hero-title span{
+  margin-right:4px;
 }
 
-.gradient-text {
-    background: linear-gradient(90deg, #01c8ff, rgb(136, 0, 255), #ffd900);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+/* Freshworks logo palette */
+.hero-title span:nth-child(1){ color:#0400ff; } /* purple */
+.hero-title span:nth-child(2){ color:#4967fe; } /* light purple */
+
+.hero-title span:nth-child(3){ color:#e57600; } /* blue */
+.hero-title span:nth-child(4){ color:#ffa23e; } /* light blue */
+
+.hero-title span:nth-child(5){ color:#a300f4; } /* green */
+.hero-title span:nth-child(6){ color:#ab44ff; } /* light green */
+
+.hero-title span:nth-child(7){ color:#01d1e4; } /* aqua */
+.hero-title span:nth-child(8){ color:#52e5ff; } /* light aqua */
+
+.hero-title span:nth-child(9){ color:#00c41d; } /* yellow */
+.hero-title span:nth-child(10){ color:#38e444; } /* light yellow */
+
+.hero-title span:nth-child(11){ color:#ff0492; } /* orange */
+.hero-title span:nth-child(12){ color:#ff50a5; } /* light orange */
+
+
 
 /* ===== HERO TOPIC & CONTENT ===== */
 .hero-topic {
@@ -81,8 +94,8 @@
 
 /* ===== FEATURES SECTION ===== */
 .features {
-    padding: 50px 20px;
-    background: linear-gradient(to bottom, #f0f7ff, #ffffff);
+    padding: 70px 20px;
+    background: linear-gradient(to bottom, #feffff, #f0f3f6);
 }
 
 .features-title {
@@ -101,7 +114,7 @@
     max-width: 1200px;
     margin: auto;
     overflow-x: auto;  
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 .feature-box {
@@ -117,7 +130,7 @@
 
 .feature-box:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 25px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 20px 25px rgba(213, 225, 252, 0.2);
 }
 
 .feature-icon {

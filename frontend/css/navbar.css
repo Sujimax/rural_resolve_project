@@ -58,7 +58,7 @@ body {
   font-size: 20px;
   padding: 7px 15px;
   border-radius: 50px;
-  border: 2.5px solid transparent;
+  border: 2.8px solid transparent;
 }
 
 /* Freshworks hover */
@@ -77,27 +77,25 @@ body {
 .language img {
   width: 45px;
   height: 45px;
+  margin-right:20px;
 }
 /* Login button inside navbar */
 .login-btn {
-  padding: 8px 20px;          /* nice padding for pill shape */
-  font-size: 17px;            /* readable text */
+  padding: 10px 20px;        
+  font-size: 17px;            
   font-weight: 500;
   text-decoration: none;
-
-  background-color: #2563eb;  /* blue background */
-  color: #ffffff;             /* white text */
-
-  border-radius: 50px;        /* fully rounded */
+  margin-right:10px;
+  background-color: #2563eb;  
+  color: #ffffff;           
+  border-radius: 50px;        
   border: none;
-
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* Hover effect */
 .login-btn:hover {
-  background-color: #2155ff;  /* darker blue */
-  transform: scale(1.05);     /* subtle grow effect */
+  background-color: #2155ff; 
+  transform: scale(1.05);     
 }
 
 /* ===== MENU BUTTON ===== */
