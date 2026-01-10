@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.querySelector("form");
 
-  // 🔐 Check login
   const token = localStorage.getItem("access_token");
   if (!token) {
     alert("You must be logged in to submit a complaint!");
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     districtSelect.appendChild(option);
   });
 
-  // Load villages when district changes
   districtSelect.addEventListener("change", () => {
     villageSelect.innerHTML = `<option value="">-- Select Village --</option>`;
     (villagesByDistrict[districtSelect.value] || []).forEach(village => {
@@ -52,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 📝 Submit complaint
+  //  Submit complaint
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
