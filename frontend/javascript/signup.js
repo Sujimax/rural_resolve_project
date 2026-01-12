@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(err.detail || "Signup failed");
       }
 
-      alert("Signup successful");
+      alert("Signup successful ✅");
       window.location.href = "login.html";
     } catch (err) {
       alert(err.message);

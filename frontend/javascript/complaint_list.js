@@ -5,9 +5,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const token = localStorage.getItem("access_token");
 
+  if (!token) {
+    alert("Please login first");
+    window.location.href = "login.html";
+    return;
+  }
+
   try {
-    const response = await fetch(`${API_BASE_URL}/complaints/`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
+   const response = await fetch(`${API_BASE_URL}/complaints/`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
     if (!response.ok) {
@@ -27,14 +35,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       complaintBox.classList.add("complaint-box");
 
       const statusLower = (complaint.status || "Pending").toLowerCase();
-      let statusClass =
-        statusLower === "pending"
-          ? "status-pending"
-          : statusLower === "in progress"
-          ? "status-in-progress"
-          : "status-solved";
+      let statusClass;
 
-      // ✅ IMAGE FIX (ONLY THIS PART CHANGED)
+      if (statusLower === "pending") {
+        statusClass = "status-pending";
+      } else if (statusLower === "in progress") {
+        statusClass = "status-in-progress";
+      } else {
+        statusClass = "status-solved";
+      }
+
       const imageSrc = complaint.image_url
         ? complaint.image_url
         : "../images/icon1.png";
@@ -47,11 +57,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
 
-            <p><strong>Date:</strong> ${
-              complaint.created_at
-                ? new Date(complaint.created_at).toLocaleDateString()
-                : "N/A"
-            }</p>
+            <p><strong>Date:</strong> ${complaint.created_at
+          ? new Date(complaint.created_at).toLocaleDateString()
+          : "N/A"
+        }</p>
 
             <p><strong>Description:</strong>
               ${complaint.description || "No description provided"}

@@ -35,14 +35,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       complaintBox.classList.add("complaint-box");
 
       const statusLower = (complaint.status || "Pending").toLowerCase();
-      let statusClass =
-        statusLower === "pending"
-          ? "status-pending"
-          : statusLower === "in progress"
-          ? "status-in-progress"
-          : "status-solved";
+      let statusClass;
 
-      // ✅ IMAGE URL FIX (THIS IS THE MAIN CHANGE)
+      if (statusLower === "pending") {
+        statusClass = "status-pending";
+      } else if (statusLower === "in progress") {
+        statusClass = "status-in-progress";
+      } else {
+        statusClass = "status-solved";
+      }
+
       const imageSrc = complaint.image_url
         ? complaint.image_url
         : "../images/icon1.png";
@@ -73,7 +75,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      // 🗑 DELETE
+      // 🗑 DELETE  function
+      
       complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
         if (!confirm("Do you want to delete this complaint?")) return;
 

@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // DOM elements
   const userIdEl = document.getElementById("userId");
   const nameEl = document.getElementById("name");
   const mobileEl = document.getElementById("mobile");
@@ -43,12 +42,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function updateStatusBadge(status) {
     currentStatusEl.className = "status-badge";
-    const s = (status || "pending").toLowerCase();
-    if (s === "in progress") currentStatusEl.classList.add("status-in-progress");
-    else if (s === "solved") currentStatusEl.classList.add("status-solved");
-    else currentStatusEl.classList.add("status-pending");
-    currentStatusEl.textContent = status;
+
+    let statusText = status ? status.toLowerCase() : "pending";
+
+    if (statusText === "in progress") {
+      currentStatusEl.classList.add("status-in-progress");
+    }
+    else if (statusText === "solved") {
+      currentStatusEl.classList.add("status-solved");
+    }
+    else {
+      currentStatusEl.classList.add("status-pending");
+    }
+
+    currentStatusEl.textContent = status || "Pending";
   }
+
 
   // 🔹 FETCH COMPLAINT
   async function fetchComplaint() {
@@ -74,7 +83,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       votesEl.textContent = c.votes || 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
 
-      // ✅ IMAGE FIX (ONLY CHANGE)
       complaintImageEl.src = c.image_url
         ? c.image_url
         : "../images/icon1.png";

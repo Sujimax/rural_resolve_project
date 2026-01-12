@@ -11,9 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 🗺️ District → Village mapping
   const villagesByDistrict = {
-    Thiruvallur: ["Uthukottai","Katchur","Nandhi Mangalam","Periyapalayam"],
+    Thiruvallur: ["Uthukottai","Katchur","Nandhi Mangalam","Periyapalayam","Seethanjery","suloorpettai"],
     Chennai: ["Ananthapuram","Keelapatti","Madhavaram","Velachery","Tondiarpet","Tambaram","Adyar","Mylapore"],
     Coimbatore: ["Perur","Sulur","Annur","Kovai","Vellalore","Vadavalli","Palladam"],
     Madurai: ["Melur","Vadipatti","Usilampatti","Thirumangalam","Peraiyur","Kottampatti","Samayanallur"],

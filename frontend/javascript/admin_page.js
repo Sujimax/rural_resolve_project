@@ -3,7 +3,6 @@ import API_BASE_URL from "./config.js";
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
 
-  // ✅ Check login
   if (!token) {
     window.location.href = "login.html";
     return;
@@ -68,7 +67,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         pending++;
       }
 
-      // ✅ IMAGE FIX (ONLY CHANGE)
       const imageSrc = c.image_url
         ? c.image_url
         : "../images/icon1.png";
@@ -100,7 +98,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     });
 
-    // Summary counts
     totalCount.textContent = complaints.length;
     solvedCount.textContent = solved;
     pendingCount.textContent = pending;

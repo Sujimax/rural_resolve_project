@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  /* ---------------- ELEMENTS ---------------- */
   const problemTypeEl = document.getElementById("problemType");
   const districtEl = document.getElementById("district");
   const villageEl = document.getElementById("village");
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const commentText = document.getElementById("commentText");
   const postBtn = document.getElementById("postComment");
 
-  /* ---------------- AUTH ---------------- */
   const token = localStorage.getItem("access_token");
   let userId = null;
 
@@ -83,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const comments = await res.json();
       commentsContainer.innerHTML = "";
 
-      if (!comments.length) {
+      if (comments.length === 0) {
         commentsContainer.innerHTML = "<p>No comments yet</p>";
         return;
       }
@@ -96,10 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <h4><strong>User Name:</strong> ${c.user_name}</h4>
           <p><strong>Comment:</strong> ${c.content}</p>
           <small>${new Date(c.created_at).toLocaleString()}</small>
-          ${
-            userId === c.user_id
-              ? `<button class="delete-comment" data-id="${c.id}">Delete</button>`
-              : ""
+          ${userId === c.user_id
+            ? `<button class="delete-comment" data-id="${c.id}">Delete</button>`
+            : ""
           }
         `;
 
@@ -144,8 +141,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------------- DELETE COMMENT ---------------- */
   commentsContainer.addEventListener("click", async (e) => {
-    if (!e.target.classList.contains("delete-comment")) return;
+    const clickedElement = e.target;
 
+    const isDeleteButton = clickedElement.classList.contains("delete-comment");
+
+    if (isDeleteButton === false) {
+      return;
+    }
     const id = e.target.dataset.id;
     if (!confirm("Delete this comment?")) return;
 
@@ -168,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* ---------------- INIT ---------------- */
   loadComplaint();
   loadComments();
 });
