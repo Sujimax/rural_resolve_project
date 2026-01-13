@@ -1,25 +1,23 @@
 /* ===== ADMIN ACTION ===== */
 .admin-action {
-    display: flex;       /* all children in single row */
-    flex-wrap: wrap;     /* wrap if screen is small */
-    align-items: center; /* vertically aligned */
-    gap: 10px;           /* space between elements */
+    display: flex;     
+    flex-wrap: wrap;    
+    align-items: center; 
+    gap: 10px;          
     margin-top: 15px;
 }
 
-/* Select + Buttons common style */
 #statusSelect,
 #updateStatus,
 #deleteComplaint {
     padding: 8px 14px;
     border-radius: 8px;
     font-size: 15px;
-    height: 40px;       /* same height for all */
+    height: 40px;      
     cursor: pointer;
     border: 1px solid #ccc;
 }
 
-/* Update button (green) */
 #updateStatus {
     background: #22c55e;
     color: white;
@@ -30,24 +28,20 @@
     background: #007810;
 }
 
-/* Delete button (red) */
-#deleteComplaint,
-.delete-btn {
+#deleteComplaint{
     background: #fee2e2;
     color: #b91c1c;
     border: 1px solid #fca5a5;
 }
 
-#deleteComplaint:hover,
-.delete-btn:hover {
+#deleteComplaint:hover{
     background: #ef4444;
     color: white;
 }
 
-/* MOBILE RESPONSIVE */
 @media (max-width: 900px) {
     .admin-action {
-        flex-direction: column; /* stack vertically */
+        flex-direction: column; 
         gap: 10px;
     }
 

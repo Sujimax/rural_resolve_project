@@ -24,7 +24,6 @@ body {
   display: flex;
 }
 
-/* LOGO */
 .logo {
   display: flex;
   align-items: center;
@@ -61,7 +60,6 @@ body {
   border: 2.8px solid transparent;
 }
 
-/* Freshworks hover */
 .nav-links a:hover {
   background:
     linear-gradient(#fff, #fff) padding-box,

@@ -17,14 +17,12 @@ h3 {
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
 }
 
-/* ===== FLEX LAYOUT ===== */
 .complaint-content {
     display: flex;
     gap: 150px;
     align-items: flex-start;
 }
 
-/* ===== DETAILS ===== */
 .details {
     flex: 1;
 }
