@@ -3,9 +3,9 @@ from typing import Optional
 from jose import jwt
 
 # ----- JWT Configuration -----
-SECRET_KEY = "your-secret-key"  # Change in production
+SECRET_KEY = "9F@xL2!mQ7Z#kE4pR8WcY1D$A0nH" 
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60  # 1 hour
+ACCESS_TOKEN_EXPIRE_MINUTES = 60  
 
 # ----- Create Access Token -----
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
