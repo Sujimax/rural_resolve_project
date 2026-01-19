@@ -2,12 +2,12 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import jwt
 
-# ----- JWT Configuration -----
+# JWT Configuration 
 SECRET_KEY = "9F@xL2!mQ7Z#kE4pR8WcY1D$A0nH" 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60  
 
-# ----- Create Access Token -----
+# Create Access Token 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
@@ -18,7 +18,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-# ----- Decode Access Token -----
+# Decode Access Token
 def decode_access_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

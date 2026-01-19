@@ -1,4 +1,4 @@
-import API_BASE_URL from "./config.js"; // e.g., "https://rural-resolve-project.onrender.com"
+import API_BASE_URL from "./config.js"; 
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("login-form");
@@ -31,11 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const payload = JSON.parse(atob(result.access_token.split(".")[1]));
       const role = payload.role || "user";
 
-      // ✅ Redirect based on role
       if (role === "admin") {
-        window.location.href = "admin.html";      // Admin page
+        window.location.href = "admin.html";  
       } else {
-        window.location.href = "dashboard.html";  // User page
+        window.location.href = "dashboard.html";  
       }
 
     } catch (err) {

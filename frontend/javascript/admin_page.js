@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // DOM Elements
   const tableBody = document.querySelector("#complaints-table tbody");
   const totalCount = document.getElementById("total-count");
   const solvedCount = document.getElementById("solved-count");

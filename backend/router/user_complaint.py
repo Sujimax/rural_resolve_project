@@ -12,7 +12,7 @@ from schemas.comment_create import CommentCreate, CommentOut
 
 user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
 
-# ================= CREATE COMPLAINT (JWT REQUIRED) =================
+# ================= CREATE COMPLAINT =================
 @user_complaint.post("/", response_model=ComplaintOut)
 def create_complaint(
     problem_type: str = Form(...),

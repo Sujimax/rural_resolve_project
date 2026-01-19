@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         : "../images/icon1.png";
 
       statusSelect.value = (c.status || "pending").toLowerCase();
-      updateStatusBadge(c.status || "Pending");
+C
 
     } catch (err) {
       alert("Error loading complaint");

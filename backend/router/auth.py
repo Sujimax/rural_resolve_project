@@ -11,14 +11,13 @@ auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Hash & verify passwords
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
-# ================= SIGNUP =================
+# SIGNUP 
 @auth_router.post("/signup", 
                   response_model=UserOut, 
                   status_code=status.HTTP_201_CREATED)
@@ -31,13 +30,14 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
         phone=user.phone,
         email=user.email,
         password=hash_password(user.password),
-        role=user.role   # MUST include role
+        role=user.role  
     )
 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     return new_user
+
 
 @auth_router.post("/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):
