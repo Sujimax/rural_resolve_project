@@ -75,8 +75,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      // 🗑 DELETE  function
-      
+      // DELETE  function
+
       complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
         if (!confirm("Do you want to delete this complaint?")) return;
 
