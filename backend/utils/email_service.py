@@ -3,8 +3,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def send_status_email(to_email, user_name, complaint_id, status):
-    sender_email = "yourmail@gmail.com"
-    sender_password = "your_app_password"  # Gmail App Password
+    sender_email = "sujithra.govindhan@fssa.freshworks.com"
+    sender_password = "suji123"  # Gmail App Password
 
     subject = "Complaint Status Update"
 
