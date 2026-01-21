@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      /* ================= VOTE FUNCTION ================= */
+      /* VOTE FUNCTION */
       const voteBtn = complaintBox.querySelector(".vote-btn");
       const voteCount = complaintBox.querySelector(".vote-count");
 

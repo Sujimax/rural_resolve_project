@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(err.detail || "Failed to submit complaint");
       }
 
-      alert("Complaint submitted successfully ✅");
+      alert("Complaint submitted successfully");
       form.reset();
 
     } catch (error) {

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const payload = JSON.parse(atob(token.split(".")[1]));
   if (payload.role !== "admin") {
-    alert("❌ Unauthorized");
+    alert("Unauthorized");
     window.location.href = "dashboard.html";
     return;
   }
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // 🔹 FETCH COMPLAINT
+  // FETCH COMPLAINT
   async function fetchComplaint() {
     try {
       const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`, {
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // 🔹 UPDATE STATUS
+  // UPDATE STATUS
   updateStatusBtn.addEventListener("click", async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // 🔹 DELETE
+  // DELETE
   deleteBtn.addEventListener("click", async () => {
     if (!confirm("Delete this complaint?")) return;
 

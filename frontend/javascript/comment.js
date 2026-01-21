@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ---------------- ENABLE INPUT ---------------- */
+  /* ENABLE INPUT */
   if (token && userId) {
     commentText.disabled = false;
     postBtn.disabled = false;
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     commentsContainer.innerHTML = "<p>Please login to comment</p>";
   }
 
-  /* ---------------- LOAD COMPLAINT ---------------- */
+  /* LOAD COMPLAINT */
   async function loadComplaint() {
     try {
       const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`);
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       descriptionEl.textContent = c.description || "N/A";
       voteEl.textContent = c.votes || "0 votes";
 
-      /* ✅ FIXED IMAGE LOGIC */
+      /* FIXED IMAGE LOGIC */
       if (c.image_url) {
         problemImageEl.src = c.image_url.startsWith("http")
           ? c.image_url
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ---------------- POST COMMENT ---------------- */
+  /* POST COMMENT */
   postBtn.addEventListener("click", async () => {
     const content = commentText.value.trim();
     if (!content) return alert("Comment cannot be empty");
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* ---------------- DELETE COMMENT ---------------- */
+  /* DELETE COMMENT */
   commentsContainer.addEventListener("click", async (e) => {
     const clickedElement = e.target;
 

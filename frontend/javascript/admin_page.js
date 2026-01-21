@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // ✅ Decode JWT safely
+  // Decode JWT safely
   let payload;
   try {
     payload = JSON.parse(atob(token.split(".")[1]));
@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // ✅ Admin check
+  // Admin check
   if (payload.role !== "admin") {
-    alert("❌ You are not authorized to view this page");
+    alert("You are not authorized to view this page");
     window.location.href = "dashboard.html";
     return;
   }

@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  /* ================= FETCH EXISTING COMPLAINT ================= */
+  /* FETCH EXISTING COMPLAINT */
   try {
     const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`, {
       headers: {
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     alert("Error loading complaint");
   }
 
-  /* ================= UPDATE COMPLAINT ================= */
+  /* UPDATE COMPLAINT */
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         throw new Error(data.detail || "Failed to update complaint");
       }
 
-      alert("Complaint updated successfully ✅");
+      alert("Complaint updated successfully");
       window.location.href = "my_complaint.html";
 
     } catch (err) {
