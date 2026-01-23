@@ -1,20 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
-from utils.email_utils import send_status_update_email
-from models.user_model import User
 
 from dependancy import get_db, get_current_admin
 from models.complaint_model import Complaint
+from models.user_model import User
 from schemas.status_update import StatusUpdate
+from utils.email_utils import send_status_update_email
 
 admin_router = APIRouter(prefix="/admin", tags=["admin"])
+
 
 @admin_router.put("/complaints/{complaint_id}")
 def update_complaint_status(
     complaint_id: int,
     data: StatusUpdate,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-    admin = Depends(get_current_admin)
+    admin=Depends(get_current_admin)
 ):
     complaint = db.query(Complaint).filter(
         Complaint.id == complaint_id
@@ -23,26 +25,31 @@ def update_complaint_status(
     if not complaint:
         raise HTTPException(status_code=404, detail="Complaint not found")
 
-    # update status
+    # Update status
     complaint.status = data.status
     db.commit()
     db.refresh(complaint)
 
-    # get user email
+    # Get user
     user = db.query(User).filter(
         User.id == complaint.user_id
     ).first()
 
-    # send email
-    if user and user.email:
-        send_status_update_email(
-            to_email=user.email,
-            complaint_id=complaint.id,
-            status=complaint.status
-        )
+    if not user or not user.email:
+        raise HTTPException(status_code=404, detail="User email not found")
+
+    print("📧 Sending email to:", user.email)
+
+    # Send email in background
+    background_tasks.add_task(
+        send_status_update_email,
+        user.email,
+        complaint.id,
+        complaint.status
+    )
 
     return {
-        "message": "Status updated and email sent successfully"
+        "message": "Status updated successfully. Email will be sent."
     }
 
 
@@ -50,12 +57,16 @@ def update_complaint_status(
 def admin_delete_complaint(
     complaint_id: int,
     db: Session = Depends(get_db),
-    admin = Depends(get_current_admin)
+    admin=Depends(get_current_admin)
 ):
-    complaint = db.query(Complaint).filter(Complaint.id == complaint_id).first()
+    complaint = db.query(Complaint).filter(
+        Complaint.id == complaint_id
+    ).first()
+
     if not complaint:
         raise HTTPException(status_code=404, detail="Complaint not found")
 
     db.delete(complaint)
     db.commit()
+
     return {"message": "Complaint deleted successfully"}
