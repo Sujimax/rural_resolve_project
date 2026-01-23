@@ -56,9 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
       descriptionEl.textContent = c.description || "N/A";
       voteEl.textContent = c.votes || "0 votes";
 
-      /* FIXED IMAGE LOGIC */
       if (c.image_url) {
-        problemImageEl.src = c.image_url.startsWith("http")
+        problemImageEl.src = c.image_url.startsWith("https")
           ? c.image_url
           : `${API_BASE_URL}/${c.image_url}`;
       } else {
@@ -70,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ---------------- LOAD COMMENTS ---------------- */
+  /* LOAD COMMENTS */
   async function loadComments() {
     try {
       const res = await fetch(

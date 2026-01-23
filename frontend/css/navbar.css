@@ -66,7 +66,7 @@ body {
     linear-gradient(90deg, #ff8c00, #00A0E3, #7AC943, #FFCB00) border-box;
 }
 
-/* ===== RIGHT ===== */
+/* RIGHT */
 .nav-right {
   display: flex;
   gap: 10px;

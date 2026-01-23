@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // FETCH COMPLAINT
   async function fetchComplaint() {
     try {
-      const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`, {
+      const res = await fetch(` ${API_BASE_URL}/complaints/${complaintId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!res.ok) throw new Error("Update failed");
 
       updateStatusBadge(statusSelect.value);
-      alert("Status updated ✅");
+      alert("Status updated");
 
     } catch (err) {
       alert("Error updating status");
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!res.ok) throw new Error("Delete failed");
 
-      alert("Deleted successfully ✅");
+      alert("Deleted successfully");
       window.location.href = "admin.html";
 
     } catch (err) {
