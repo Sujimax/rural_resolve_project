@@ -30,6 +30,8 @@ def update_complaint_status(
     db.refresh(complaint)
 
     # 🔔 Send email to user
+
+
     try:
         if complaint.email:
             send_status_email(
