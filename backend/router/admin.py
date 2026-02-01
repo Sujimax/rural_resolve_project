@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from dependancy import get_db, get_current_admin
 from models.complaint_model import Complaint
 from schemas.status_update import StatusUpdate
-from utils.email import send_status_email   # 👈 email function
+from utils.email import send_status_email
 
 admin_router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -29,10 +29,10 @@ def update_complaint_status(
     db.commit()
     db.refresh(complaint)
 
-    # 🔔 Send email to user
-
-
+    # 🔔 Send email
     try:
+        print("DEBUG complaint email:", complaint.email)
+
         if complaint.email:
             send_status_email(
                 to_email=complaint.email,
@@ -40,10 +40,10 @@ def update_complaint_status(
                 status=complaint.status
             )
     except Exception as e:
-        print("Email error:", e)  # app will not crash
+        print("Email error:", e)
 
     return {
-        "message": "Status updated and user notified",
+        "message": "Status updated and email sent",
         "complaint_id": complaint.id,
         "status": complaint.status
     }
