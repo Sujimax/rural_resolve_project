@@ -18,43 +18,22 @@ def send_status_email(to_email: str, complaint_id: int, status: str):
         raise ValueError("Email credentials not loaded from .env")
 
     subject = "Complaint Status Updated"
-
-    status_color = {
-        "Pending": "#f59e0b",
-        "In Progress": "#2563eb",
-        "Resolved": "#16a34a"
-    }.get(status, "#000000")
-
     body = f"""
-    <html>
-      <body style="font-family: Arial, sans-serif;">
-        <p>Hello,</p>
+Hello,
 
-        <p>
-          Your complaint <b>(ID: {complaint_id})</b> status has been updated.
-        </p>
+Your complaint (ID: {complaint_id}) status has been updated.
 
-        <p>
-          <b>New Status:</b>
-          <span style="color:{status_color}; font-weight:bold;">
-            {status}
-          </span>
-        </p>
+New Status: {status}
 
-        <br>
-        <p>
-          Thank you,<br>
-          <b>Rural Resolve Team</b>
-        </p>
-      </body>
-    </html>
-    """
+Thank you,
+Rural Resolve Team
+"""
 
     msg = MIMEMultipart()
     msg["From"] = EMAIL_ADDRESS
     msg["To"] = to_email
     msg["Subject"] = subject
-    msg.attach(MIMEText(body, "html"))
+    msg.attach(MIMEText(body, "plain"))
 
     server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     server.starttls()
