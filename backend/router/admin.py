@@ -17,7 +17,6 @@ def update_complaint_status(
     admin=Depends(get_current_admin)
 ):
     complaint = db.query(Complaint).filter(Complaint.id == complaint_id).first()
-
     if not complaint:
         raise HTTPException(status_code=404, detail="Complaint not found")
 
@@ -25,24 +24,23 @@ def update_complaint_status(
     db.commit()
     db.refresh(complaint)
 
-    # ✅ send email only if valid email exists
-    if complaint.email:
+    # send email only if valid email exists
+    if complaint.email and "@" in complaint.email:
         try:
-            print("📧 Sending email to:", repr(complaint.email))
+            print(f"📧 Sending email to: {complaint.email}")
             send_status_email(
                 to_email=complaint.email,
                 complaint_id=complaint.id,
                 status=complaint.status
             )
         except Exception as e:
-            print("❌ Email error:", e)
+            print(f"❌ Could not send email: {e}")
 
     return {
         "message": "Status updated successfully",
         "complaint_id": complaint.id,
         "status": complaint.status
     }
-
 
 
 # DELETE COMPLAINT (ADMIN)

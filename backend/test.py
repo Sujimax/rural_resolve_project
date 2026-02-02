@@ -1,13 +1,11 @@
 from utils.email import send_status_email
+import os
 
-print("TEST SCRIPT STARTED")
+print("EMAIL_ADDRESS =", os.getenv("EMAIL_ADDRESS"))
+print("EMAIL_PASSWORD =", "SET" if os.getenv("EMAIL_PASSWORD") else "NOT SET")
 
-try:
-    send_status_email(
-        to_email="sujithra1050@gmail.com",  # 👈 put your email here
-        complaint_id=123,
-        status="TEST STATUS"
-    )
-    print("TEST EMAIL FUNCTION COMPLETED")
-except Exception as e:
-    print("TEST FAILED:", e)
+send_status_email(
+    to_email="sujithra1050@gmail.com",
+    complaint_id=123,
+    status="TEST STATUS"
+)
