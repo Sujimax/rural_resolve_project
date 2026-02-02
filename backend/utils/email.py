@@ -1,12 +1,13 @@
-# utils/email.py
 import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from pathlib import Path
 from dotenv import load_dotenv
 
 # Load .env
-load_dotenv()
+dotenv_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path)
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
