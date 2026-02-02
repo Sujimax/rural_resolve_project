@@ -1,13 +1,10 @@
-# utils/email.py
 import os
 import smtplib
-from datetime import datetime
-from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
 
-# Load .env file (ensure this is the correct path to your backend .env)
-load_dotenv(dotenv_path=os.path.join(os.getcwd(), ".env"))
+load_dotenv()
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
@@ -17,34 +14,28 @@ EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 def send_status_email(to_email: str, complaint_id: int, status: str):
     if not EMAIL_ADDRESS or not EMAIL_PASSWORD:
-        raise ValueError("Email credentials not loaded from .env")
+        raise RuntimeError("Email credentials missing")
 
-    subject = f"Complaint #{complaint_id} Status Update - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    msg = MIMEMultipart()
+    msg["From"] = EMAIL_ADDRESS
+    msg["To"] = to_email
+    msg["Subject"] = f"Complaint #{complaint_id} Status Updated"
+
     body = f"""
 Hello,
 
-Your complaint (ID: {complaint_id}) status has been updated.
+Your complaint ID {complaint_id} status has been updated.
 
 New Status: {status}
 
 Thank you,
 Rural Resolve Team
 """
-
-    msg = MIMEMultipart()
-    msg["From"] = EMAIL_ADDRESS
-    msg["To"] = to_email
-    msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain"))
 
-    try:
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls()
-            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            server.send_message(msg)
-            print(f"✅ Email sent to: {to_email}")
-    except smtplib.SMTPAuthenticationError:
-        print("❌ SMTP Authentication failed. Check your email/password or App Password settings.")
-    except Exception as e:
-        print(f"❌ Email sending failed: {e}")
-        raise e
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        server.starttls()
+        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        server.send_message(msg)
+
+    print(f"✅ Email sent to {to_email}")

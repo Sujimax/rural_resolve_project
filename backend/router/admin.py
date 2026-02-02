@@ -8,38 +8,32 @@ from utils.email import send_status_email
 
 admin_router = APIRouter(prefix="/admin", tags=["admin"])
 
-
 @admin_router.put("/complaints/{complaint_id}")
 def update_complaint_status(
     complaint_id: int,
     data: StatusUpdate,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     admin=Depends(get_current_admin)
 ):
-    # Get complaint
     complaint = db.query(Complaint).filter(Complaint.id == complaint_id).first()
     if not complaint:
         raise HTTPException(status_code=404, detail="Complaint not found")
 
-    # Update status
     complaint.status = data.status
     db.commit()
     db.refresh(complaint)
 
-    # Send email
     if complaint.email:
-        try:
-            print(f"DEBUG: Sending email to {complaint.email}")
-            send_status_email(
-                to_email=complaint.email,
-                complaint_id=complaint.id,
-                status=complaint.status
-            )
-        except Exception as e:
-            print(f"Email error: {e}")
+        background_tasks.add_task(
+            send_status_email,
+            complaint.email,
+            complaint.id,
+            complaint.status
+        )
 
     return {
-        "message": "Status updated and email sent",
+        "message": "Status updated. Email will be sent.",
         "complaint_id": complaint.id,
         "status": complaint.status
     }
