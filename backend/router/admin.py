@@ -9,9 +9,6 @@ from utils.email import send_status_email
 admin_router = APIRouter(prefix="/admin", tags=["admin"])
 
 
-# ===============================
-# UPDATE COMPLAINT STATUS (ADMIN)
-# ===============================
 @admin_router.put("/complaints/{complaint_id}")
 def update_complaint_status(
     complaint_id: int,
@@ -19,8 +16,8 @@ def update_complaint_status(
     db: Session = Depends(get_db),
     admin=Depends(get_current_admin)
 ):
+    # Get complaint
     complaint = db.query(Complaint).filter(Complaint.id == complaint_id).first()
-
     if not complaint:
         raise HTTPException(status_code=404, detail="Complaint not found")
 
@@ -29,18 +26,17 @@ def update_complaint_status(
     db.commit()
     db.refresh(complaint)
 
-    # 🔔 Send email
-    try:
-        print("DEBUG complaint email:", complaint.email)
-
-        if complaint.email:
+    # Send email
+    if complaint.email:
+        try:
+            print(f"DEBUG: Sending email to {complaint.email}")
             send_status_email(
                 to_email=complaint.email,
                 complaint_id=complaint.id,
                 status=complaint.status
             )
-    except Exception as e:
-        print("Email error:", e)
+        except Exception as e:
+            print(f"Email error: {e}")
 
     return {
         "message": "Status updated and email sent",
@@ -49,9 +45,8 @@ def update_complaint_status(
     }
 
 
-# ===============================
 # DELETE COMPLAINT (ADMIN)
-# ===============================
+
 @admin_router.delete("/complaints/{complaint_id}")
 def admin_delete_complaint(
     complaint_id: int,
