@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from dependancy import get_db, get_current_admin
@@ -13,6 +13,7 @@ admin_router = APIRouter(prefix="/admin", tags=["admin"])
 def update_complaint_status(
     complaint_id: int,
     data: StatusUpdate,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     admin=Depends(get_current_admin)
 ):
@@ -26,12 +27,13 @@ def update_complaint_status(
     db.commit()
     db.refresh(complaint)
 
-    # ✅ SEND EMAIL AFTER UPDATE
+    # ✅ SEND EMAIL IN BACKGROUND
     if complaint.email:
-        send_status_email(
-            to_email=complaint.email,
-            complaint_id=complaint.id,
-            status=complaint.status
+        background_tasks.add_task(
+            send_status_email,
+            complaint.email,
+            complaint.id,
+            complaint.status
         )
 
     return {
