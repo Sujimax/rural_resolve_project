@@ -8,7 +8,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  const payload = JSON.parse(atob(token.split(".")[1]));
+  let payload;
+  try {
+    payload = JSON.parse(atob(token.split(".")[1]));
+  } catch (err) {
+    alert("Invalid token, please login again");
+    localStorage.removeItem("access_token");
+    window.location.href = "login.html";
+    return;
+  }
+
   if (payload.role !== "admin") {
     alert("Unauthorized");
     window.location.href = "dashboard.html";
@@ -22,6 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // Elements
   const userIdEl = document.getElementById("userId");
   const nameEl = document.getElementById("name");
   const mobileEl = document.getElementById("mobile");
@@ -40,29 +50,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   const complaintImageEl = document.getElementById("complaintImage");
   const deleteBtn = document.getElementById("deleteComplaint");
 
+  // Status Badge
   function updateStatusBadge(status) {
     currentStatusEl.className = "status-badge";
 
-    let statusText = status ? status.toLowerCase() : "pending";
+    const statusText = (status || "pending").toLowerCase();
 
-    if (statusText === "in progress") {
-      currentStatusEl.classList.add("status-in-progress");
-    }
-    else if (statusText === "solved") {
-      currentStatusEl.classList.add("status-solved");
-    }
-    else {
-      currentStatusEl.classList.add("status-pending");
-    }
+    if (statusText === "in progress") currentStatusEl.classList.add("status-in-progress");
+    else if (statusText === "solved") currentStatusEl.classList.add("status-solved");
+    else currentStatusEl.classList.add("status-pending");
 
     currentStatusEl.textContent = status || "Pending";
   }
 
-
-  // FETCH COMPLAINT
+  // FETCH COMPLAINT DETAILS
   async function fetchComplaint() {
     try {
-      const res = await fetch(` ${API_BASE_URL}/complaints/${complaintId}`, {
+      const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -70,23 +74,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const c = await res.json();
 
+      // Populate elements
       userIdEl.textContent = c.user_id || "N/A";
       nameEl.textContent = c.user_name || "N/A";
       mobileEl.textContent = c.phone || "N/A";
       emailEl.textContent = c.email || "N/A";
       complaintIdEl.textContent = c.id;
-      problemEl.textContent = c.problem_type;
-      descriptionEl.textContent = c.description;
-      districtEl.textContent = c.district;
-      villageEl.textContent = c.village;
+      problemEl.textContent = c.problem_type || "N/A";
+      descriptionEl.textContent = c.description || "N/A";
+      districtEl.textContent = c.district || "N/A";
+      villageEl.textContent = c.village || "N/A";
       doorNoEl.textContent = c.door_no || "N/A";
       votesEl.textContent = c.votes || 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
 
-      complaintImageEl.src = c.image_url
-        ? c.image_url
-        : "../images/icon1.png";
+      complaintImageEl.src = c.image_url || "../images/icon1.png";
 
+      // Status
       statusSelect.value = (c.status || "pending").toLowerCase();
       updateStatusBadge(c.status || "Pending");
 
@@ -96,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // UPDATE STATUS
+  // UPDATE STATUS AND SEND EMAIL
   updateStatusBtn.addEventListener("click", async () => {
     try {
       // 1️⃣ Update status on backend
@@ -111,23 +115,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!res.ok) throw new Error("Update failed");
 
-      // Update status badge in UI
+      // 2️⃣ Update status badge in UI
       updateStatusBadge(statusSelect.value);
       alert("Status updated");
 
-      // 2️⃣ Send email to user using EmailJS
+      // 3️⃣ Send email to user using EmailJS
       const templateParams = {
         user_name: nameEl.textContent,
         complaint_id: complaintIdEl.textContent,
         status: statusSelect.value,
-        email_to: emailEl.textContent // make sure your template uses this variable
+        email_to: emailEl.textContent
       };
 
       emailjs.send('service_6i8hmql', 'template_yy03x4k', templateParams)
         .then(() => {
-          console.log("Email sent successfully to user:", emailEl.textContent);
+          console.log("Email sent successfully to:", emailEl.textContent);
         })
-        .catch((err) => {
+        .catch(err => {
           console.error("Email sending error:", err);
         });
 
@@ -135,5 +139,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Error updating status");
       console.error(err);
     }
-  })
+  });
+
+  // DELETE COMPLAINT
+  deleteBtn.addEventListener("click", async () => {
+    if (!confirm("Delete this complaint?")) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (!res.ok) throw new Error("Delete failed");
+
+      alert("Deleted successfully");
+      window.location.href = "admin.html";
+
+    } catch (err) {
+      alert("Delete error");
+      console.error(err);
+    }
+  });
+
+  // Fetch complaint on page load
+  fetchComplaint();
 });
