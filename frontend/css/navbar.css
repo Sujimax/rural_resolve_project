@@ -15,7 +15,7 @@ body {
   justify-content: space-between;
   padding: 0 20px;
   border-bottom: 1px solid #dadada;
-  min-height: 60px;
+  min-height: 70px;
   flex-wrap: wrap;
 }
 
@@ -40,7 +40,7 @@ body {
 .logo h1 {
   margin: 0;
   font-size: 28px;
-  color: #0051ff;
+  color:#416bc4;
   white-space: nowrap;
 }
 
