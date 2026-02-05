@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from dependancy import get_db, get_current_admin
 from models.complaint_model import Complaint
 from schemas.status_update import StatusUpdate
-from utils.email import send_status_email
+from utils.email import send_status_email  # ensure this function sends emails
 
 admin_router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -31,14 +31,12 @@ def update_complaint_status(
     if complaint.email:
         background_tasks.add_task(
             send_status_email,
-            complaint.email,
-            complaint.id,
-            complaint.status
+            complaint.email,       # user email
+            complaint.id,          # complaint id
+            complaint.status       # updated status
         )
 
-    return {
-        "message": "Status updated successfully"
-    }
+    return {"message": "Status updated successfully"}
 
 
 @admin_router.delete("/complaints/{complaint_id}")

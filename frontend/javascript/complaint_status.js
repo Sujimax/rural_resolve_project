@@ -1,4 +1,4 @@
-import API_BASE_URL from "./config.js";
+import { API_BASE_URL } from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
@@ -47,23 +47,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (statusText === "in progress") {
       currentStatusEl.classList.add("status-in-progress");
-    }
-    else if (statusText === "solved") {
+    } else if (statusText === "solved") {
       currentStatusEl.classList.add("status-solved");
-    }
-    else {
+    } else {
       currentStatusEl.classList.add("status-pending");
     }
 
     currentStatusEl.textContent = status || "Pending";
   }
 
-
-  // FETCH COMPLAINT
+  // ================= FETCH COMPLAINT =================
   async function fetchComplaint() {
     try {
-      const res = await fetch(` ${API_BASE_URL}/complaints/${complaintId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!res.ok) throw new Error("Failed to fetch complaint");
@@ -83,57 +80,55 @@ document.addEventListener("DOMContentLoaded", async () => {
       votesEl.textContent = c.votes || 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
 
-      complaintImageEl.src = c.image_url
-        ? c.image_url
-        : "../images/icon1.png";
+      complaintImageEl.src = c.image_url ? c.image_url : "../images/icon1.png";
 
       statusSelect.value = (c.status || "pending").toLowerCase();
       updateStatusBadge(c.status || "Pending");
-
     } catch (err) {
       alert("Error loading complaint");
       console.error(err);
     }
   }
 
-  // UPDATE STATUS
+  // ================= UPDATE STATUS =================
   updateStatusBtn.addEventListener("click", async () => {
+    const newStatus = statusSelect.value;
+
     try {
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status: statusSelect.value })
+        body: JSON.stringify({ status: newStatus }),
       });
 
       if (!res.ok) throw new Error("Update failed");
 
-      updateStatusBadge(statusSelect.value);
-      alert("Status updated");
-
+      // ✅ Backend will automatically send email using BackgroundTasks
+      updateStatusBadge(newStatus);
+      alert("Status updated and email sent to user");
     } catch (err) {
       alert("Error updating status");
       console.error(err);
     }
   });
 
-  // DELETE
+  // ================= DELETE COMPLAINT =================
   deleteBtn.addEventListener("click", async () => {
     if (!confirm("Delete this complaint?")) return;
 
     try {
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!res.ok) throw new Error("Delete failed");
 
       alert("Deleted successfully");
       window.location.href = "admin.html";
-
     } catch (err) {
       alert("Delete error");
       console.error(err);
