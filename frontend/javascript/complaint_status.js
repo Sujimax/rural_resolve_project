@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // UPDATE STATUS
   updateStatusBtn.addEventListener("click", async () => {
     try {
+      // 1️⃣ Update status on backend
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
@@ -110,35 +111,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!res.ok) throw new Error("Update failed");
 
+      // Update status badge in UI
       updateStatusBadge(statusSelect.value);
       alert("Status updated");
+
+      // 2️⃣ Send email to user using EmailJS
+      const templateParams = {
+        user_name: nameEl.textContent,
+        complaint_id: complaintIdEl.textContent,
+        status: statusSelect.value,
+        email_to: emailEl.textContent // make sure your template uses this variable
+      };
+
+      emailjs.send('service_6i8hmql', 'template_yy03x4k', templateParams)
+        .then(() => {
+          console.log("Email sent successfully to user:", emailEl.textContent);
+        })
+        .catch((err) => {
+          console.error("Email sending error:", err);
+        });
 
     } catch (err) {
       alert("Error updating status");
       console.error(err);
     }
-  });
-
-  // DELETE
-  deleteBtn.addEventListener("click", async () => {
-    if (!confirm("Delete this complaint?")) return;
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!res.ok) throw new Error("Delete failed");
-
-      alert("Deleted successfully");
-      window.location.href = "admin.html";
-
-    } catch (err) {
-      alert("Delete error");
-      console.error(err);
-    }
-  });
-
-  fetchComplaint();
+  })
 });
