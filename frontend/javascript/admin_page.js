@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const tableBody = document.querySelector("#complaints-table tbody");
   const totalCount = document.getElementById("total-count");
-  const solvedCount = document.getElementById("solved-count");
+  const resolvedCount = document.getElementById("solved-count"); // keep ID same if HTML not changed
   const pendingCount = document.getElementById("pending-count");
 
   try {
@@ -49,16 +49,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const complaints = await res.json();
     tableBody.innerHTML = "";
 
-    let solved = 0;
+    let resolved = 0;
     let pending = 0;
 
     complaints.forEach(c => {
-      const status = (c.status || "Pending").toLowerCase();
+      const status = (c.status || "pending").toLowerCase();
       let statusClass = "status-pending";
 
-      if (status === "solved") {
-        statusClass = "status-solved";
-        solved++;
+      if (status === "resolved") {
+        statusClass = "status-resolved";
+        resolved++;
       } else if (status === "in progress") {
         statusClass = "status-in-progress";
         pending++;
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     totalCount.textContent = complaints.length;
-    solvedCount.textContent = solved;
+    resolvedCount.textContent = resolved;
     pendingCount.textContent = pending;
 
   } catch (error) {

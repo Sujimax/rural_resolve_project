@@ -1,7 +1,7 @@
 /* ===== PAGE TITLE ===== */
 h3 {
     color: #2563eb;
-    margin:20px 0;
+    margin: 20px 0;
     text-align: center;
     font-size: 28px;
 }
@@ -53,7 +53,7 @@ h3 {
 /* STATUS BADGES */
 .status-pending,
 .status-in-progress,
-.status-solved {
+.status-resolved {
     display: inline-block;
     padding: 5px 14px;
     border-radius: 20px;
@@ -72,7 +72,7 @@ h3 {
     color: #c2410c;
 }
 
-.status-solved {
+.status-resolved {
     background-color: #ecfdf5;
     color: #047857;
 }
@@ -97,12 +97,12 @@ h3 {
 
     .complaint-content {
         flex-direction: column;
-        gap: 25px; 
+        gap: 25px;
     }
 
     .image img {
         height: 280px;
-        width:260px;
+        width: 260px;
     }
 
     .details p {

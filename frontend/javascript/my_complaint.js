@@ -34,15 +34,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      const statusLower = (complaint.status || "Pending").toLowerCase();
+      const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass;
 
       if (statusLower === "pending") {
         statusClass = "status-pending";
       } else if (statusLower === "in progress") {
         statusClass = "status-in-progress";
+      } else if (statusLower === "resolved") {
+        statusClass = "status-resolved";
       } else {
-        statusClass = "status-solved";
+        statusClass = "status-pending";
       }
 
       const imageSrc = complaint.image_url
@@ -63,6 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               </span>
             </p>
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
+
             <div class="action-section">
               <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">✏️ Edit</a>
               <button class="delete-btn" data-id="${complaint.id}">🗑️ Delete</button>
@@ -75,23 +78,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      // DELETE function
-      complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
-        if (!confirm("Do you want to delete this complaint?")) return;
+      // DELETE complaint
+      complaintBox
+        .querySelector(".delete-btn")
+        .addEventListener("click", async () => {
+          if (!confirm("Do you want to delete this complaint?")) return;
 
-        const res = await fetch(`${API_BASE_URL}/complaints/${complaint.id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`
+          const res = await fetch(`${API_BASE_URL}/complaints/${complaint.id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          if (res.ok) {
+            complaintBox.remove();
+          } else {
+            alert("Failed to delete complaint");
           }
         });
-
-        if (res.ok) {
-          complaintBox.remove();
-        } else {
-          alert("Failed to delete complaint");
-        }
-      });
 
       complaintSection.appendChild(complaintBox);
     });

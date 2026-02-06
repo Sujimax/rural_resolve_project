@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-   const response = await fetch(`${API_BASE_URL}/complaints/`, {
+    const response = await fetch(`${API_BASE_URL}/complaints/`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -34,15 +34,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      const statusLower = (complaint.status || "Pending").toLowerCase();
+      const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass;
 
       if (statusLower === "pending") {
         statusClass = "status-pending";
       } else if (statusLower === "in progress") {
         statusClass = "status-in-progress";
+      } else if (statusLower === "resolved") {
+        statusClass = "status-resolved";
       } else {
-        statusClass = "status-solved";
+        statusClass = "status-pending";
       }
 
       const imageSrc = complaint.image_url
@@ -57,10 +59,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
 
-            <p><strong>Date:</strong> ${complaint.created_at
-          ? new Date(complaint.created_at).toLocaleDateString()
-          : "N/A"
-        }</p>
+            <p><strong>Date:</strong> ${
+              complaint.created_at
+                ? new Date(complaint.created_at).toLocaleDateString()
+                : "N/A"
+            }</p>
 
             <p><strong>Description:</strong>
               ${complaint.description || "No description provided"}
@@ -97,11 +100,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const voteCount = complaintBox.querySelector(".vote-count");
 
       voteBtn.addEventListener("click", async () => {
-        if (!token) {
-          alert("You must be logged in to vote!");
-          return;
-        }
-
         try {
           const voteResponse = await fetch(
             `${API_BASE_URL}/complaints/${complaint.id}/vote`,
