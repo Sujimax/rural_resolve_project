@@ -1,8 +1,5 @@
 import API_BASE_URL from "./config.js";
 
-// Initialize EmailJS (make sure to include the SDK in HTML)
-emailjs.init("YOUR_PUBLIC_KEY"); // <-- Replace with your EmailJS public key
-
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("access_token");
   if (!token) {
@@ -54,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const complaintImageEl = document.getElementById("complaintImage");
   const deleteBtn = document.getElementById("deleteComplaint");
 
-  // Function to update status badge
+  // ✅ FIXED: Update status badge to include "resolved"
   function updateStatusBadge(status) {
     currentStatusEl.className = "status-badge"; // reset
 
@@ -63,11 +60,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (statusText === "in progress") {
       currentStatusEl.classList.add("status-in-progress");
     } else if (statusText === "resolved") {
-      currentStatusEl.classList.add("status-resolved"); // green badge
+      currentStatusEl.classList.add("status-resolved"); // <-- green now
     } else {
       currentStatusEl.classList.add("status-pending");
     }
 
+    // Capitalize first letter for display
     currentStatusEl.textContent = statusText.charAt(0).toUpperCase() + statusText.slice(1);
   }
 
@@ -105,41 +103,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Update complaint status and send email via EmailJS
+  // Update complaint status and send email
   updateStatusBtn.addEventListener("click", async () => {
-    const newStatus = statusSelect.value;
-
     try {
-      // Update status in backend
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ status: statusSelect.value })
       });
 
       if (!res.ok) throw new Error("Update failed");
 
-      // Update badge
-      updateStatusBadge(newStatus);
+      updateStatusBadge(statusSelect.value);
 
-      // Send email using EmailJS
       const templateParams = {
         user_name: nameEl.textContent,
         complaint_id: complaintIdEl.textContent,
-        status: newStatus,
+        status: statusSelect.value,
         email_to: emailEl.textContent
       };
 
-      await emailjs.send("service_hga5sid", "template_yy03x4k", templateParams);
-
-      alert("Status updated and email sent successfully!");
+      try {
+        await emailjs.send(
+          "service_hga5sid",
+          "template_yy03x4k",
+          templateParams
+        );
+        alert("Status updated and email sent successfully!");
+      } catch (emailErr) {
+        console.error("Email sending error:", emailErr);
+        alert("Status updated but email failed to send");
+      }
 
     } catch (err) {
+      alert("Error updating status");
       console.error(err);
-      alert("Error updating status or sending email");
     }
   });
 
