@@ -1,88 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complaint Status</title>
-  <link rel="icon" href="../images/bgi.png">
-  <link rel="stylesheet" href="../css/both_list.css">
-  <link rel="stylesheet" href="../css/navbar.css">
-  <link rel="stylesheet" href="../css/complaint_status.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complaint Status</title>
+    <link rel="icon" href="../images/bgi.png" />
+    <link rel="stylesheet" href="../css/both_list.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/complaint_status.css" />
+  </head>
 
-<body>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="nav-left">
+          <div class="logo">
+            <img src="../images/bgi.png" />
+            <h1 class="page-title">Rural Resolve</h1>
+          </div>
+          <button id="menuBtn" class="hamburger">☰</button>
+        </div>
 
-<header>
-  <nav class="navbar">
-    <div class="nav-left">
-      <div class="logo">
-        <img src="../images/bgi.png">
-        <h1 class="page-title">Rural Resolve</h1>
+        <ul class="nav-links">
+          <li><a href="admin.html">Back To Admin</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <h3>Complaint Status (Admin)</h3>
+
+    <div class="complaint-box">
+      <div class="complaint-content">
+        <div class="details">
+          <h2 class="problem-title">Complaint Details</h2>
+
+          <p><strong>User ID:</strong> <span id="userId"></span></p>
+          <p><strong>Name:</strong> <span id="name"></span></p>
+          <p><strong>Mobile:</strong> <span id="mobile"></span></p>
+          <p><strong>Email:</strong> <span id="email"></span></p>
+
+          <hr />
+
+          <p><strong>Complaint ID:</strong> <span id="complaintId"></span></p>
+          <p><strong>Problem:</strong> <span id="problem"></span></p>
+          <p><strong>Description:</strong> <span id="description"></span></p>
+          <p><strong>District:</strong> <span id="district"></span></p>
+          <p><strong>Village:</strong> <span id="village"></span></p>
+          <p><strong>Address:</strong> <span id="address"></span></p>
+          <p><strong>Votes:</strong> <span id="votes"></span></p>
+          <p><strong>Date:</strong> <span id="date"></span></p>
+
+          <p>
+            <strong>Status:</strong>
+            <span id="currentStatus" class="status-badge status-pending">
+              Pending
+            </span>
+          </p>
+
+          <!-- 🔥 ONLY IMPORTANT CHANGE IS HERE -->
+          <div class="admin-action">
+            <select id="statusSelect">
+              <option value="">Select Status</option>
+              <option value="pending">Pending</option>
+              <option value="in progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+
+            <button id="updateStatus">Update Status</button>
+            <button id="deleteComplaint">🗑️ Delete Complaint</button>
+          </div>
+        </div>
+
+        <div class="image">
+          <img id="complaintImage" alt="Complaint Image" />
+        </div>
       </div>
-      <button id="menuBtn" class="hamburger">☰</button>
     </div>
 
-    <ul class="nav-links">
-      <li><a href="admin.html">Back To Admin</a></li>
-    </ul>
-  </nav>
-</header>
-
-<h3>Complaint Status (Admin)</h3>
-
-<div class="complaint-box">
-  <div class="complaint-content">
-
-    <div class="details">
-
-      <h2 class="problem-title">Complaint Details</h2>
-
-      <p><strong>User ID:</strong> <span id="userId"></span></p>
-      <p><strong>Name:</strong> <span id="name"></span></p>
-      <p><strong>Mobile:</strong> <span id="mobile"></span></p>
-      <p><strong>Email:</strong> <span id="email"></span></p>
-
-      <hr>
-
-      <p><strong>Complaint ID:</strong> <span id="complaintId"></span></p>
-      <p><strong>Problem:</strong> <span id="problem"></span></p>
-      <p><strong>Description:</strong> <span id="description"></span></p>
-      <p><strong>District:</strong> <span id="district"></span></p>
-      <p><strong>Village:</strong> <span id="village"></span></p>
-      <p><strong>Address:</strong> <span id="address"></span></p>
-      <p><strong>Votes:</strong> <span id="votes"></span></p>
-      <p><strong>Date:</strong> <span id="date"></span></p>
-
-      <p>
-        <strong>Status:</strong>
-        <span id="currentStatus" class="status-badge status-pending">
-          Pending
-        </span>
-      </p>
-
-      <!-- 🔥 ONLY IMPORTANT CHANGE IS HERE -->
-      <div class="admin-action">
-        <select id="statusSelect">
-          <option value="">Select Status</option>
-          <option value="pending">Pending</option>
-          <option value="in progress">In Progress</option>
-          <option value="resolved">Resolved</option>
-        </select>
-
-        <button id="updateStatus">Update Status</button>
-        <button id="deleteComplaint">🗑️ Delete Complaint</button>
-      </div>
-
-    </div>
-
-    <div class="image">
-      <img id="complaintImage" alt="Complaint Image">
-    </div>
-
-  </div>
-</div>
-
-<script type="module" src="../javascript/complaint_status.js"></script>
-<script src="../javascript/navbar.js"></script>
-</body>
+    <script type="module" src="../javascript/complaint_status.js"></script>
+    <script src="../javascript/navbar.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.emailjs.com/sdk/3.2/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("XHeAM4w6Ryg1e-lB9"); // Replace with your EmailJS public key
+      })();
+    </script>
+  </body>
 </html>
