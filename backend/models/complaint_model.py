@@ -13,7 +13,7 @@ class Complaint(Base):
     description = Column(String, nullable=False)
     district = Column(String, nullable=False)
     village = Column(String, nullable=False)
-    door_no = Column(String, nullable=False)
+    address = Column(String, nullable=False) 
     image_url = Column(String, nullable=True)
     votes = Column(Integer, default=0)
     status = Column(String, default="pending")

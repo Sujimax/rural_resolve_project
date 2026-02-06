@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  //  Submit complaint
+  // Submit complaint
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("description", document.getElementById("description").value);
     formData.append("district", districtSelect.value);
     formData.append("village", villageSelect.value);
-    formData.append("door_no", document.getElementById("doorno").value);
+    formData.append("address", document.getElementById("address").value); // CHANGED
 
     const imageInput = document.getElementById("image");
     if (imageInput.files.length > 0) {

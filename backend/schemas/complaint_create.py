@@ -9,7 +9,7 @@ class ComplaintCreate(BaseModel):
     description: str
     district: str
     village: str
-    door_no: str
+    address: str 
     image_url: Optional[str] = None
 
 
@@ -18,7 +18,7 @@ class ComplaintUpdate(BaseModel):
     description: str
     district: str
     village: str
-    door_no: str
+    address: str  
 
 
 class ComplaintOut(BaseModel):
@@ -28,7 +28,7 @@ class ComplaintOut(BaseModel):
     description: str
     district: str
     village: str
-    door_no: str
+    address: str 
     votes: int
     status: str
     created_at: datetime

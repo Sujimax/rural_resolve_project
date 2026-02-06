@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const descriptionEl = document.getElementById("description");
   const districtEl = document.getElementById("district");
   const villageEl = document.getElementById("village");
-  const doorNoEl = document.getElementById("doorNo");
+  const addressEl = document.getElementById("address");
   const votesEl = document.getElementById("votes");
   const dateEl = document.getElementById("date");
   const currentStatusEl = document.getElementById("currentStatus");
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       descriptionEl.textContent = c.description || "N/A";
       districtEl.textContent = c.district || "N/A";
       villageEl.textContent = c.village || "N/A";
-      doorNoEl.textContent = c.door_no || "N/A";
+      addressEl.textContent = c.address || "N/A";
       votesEl.textContent = c.votes || 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
 
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Update complaint status and send email
   updateStatusBtn.addEventListener("click", async () => {
     try {
-      // 1️⃣ Update backend
+      // Update backend
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
@@ -114,10 +114,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!res.ok) throw new Error("Update failed");
 
-      // 2️⃣ Update badge in UI
+      // Update UI badge
       updateStatusBadge(statusSelect.value);
 
-      // 3️⃣ Send email using EmailJS
+      // Send email
       const templateParams = {
         user_name: nameEl.textContent,
         complaint_id: complaintIdEl.textContent,
@@ -126,9 +126,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       };
 
       try {
-        await emailjs.send('service_6i8hmql', 'template_yy03x4k', templateParams);
+        await emailjs.send(
+          "service_6i8hmql",
+          "template_yy03x4k",
+          templateParams
+        );
         alert("Status updated and email sent successfully!");
-        console.log("Email sent to:", emailEl.textContent);
       } catch (emailErr) {
         console.error("Email sending error:", emailErr);
         alert("Status updated but email failed to send");
@@ -161,6 +164,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Fetch complaint on page load
+  // Load complaint
   fetchComplaint();
 });

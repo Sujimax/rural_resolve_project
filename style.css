@@ -49,6 +49,11 @@
   gap: 20px;
 }
 
+.hero-buttons button {
+  cursor: pointer;
+}
+
+
 .primary-btn {
   background: #2563eb;
   color: #fff;

@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     form.description.value = data.description;
     form.district.value = data.district;
     form.village.value = data.village;
-    form.door_no.value = data.door_no;
+    form.address.value = data.address;
 
   } catch (err) {
     console.error(err);
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       description: form.description.value,
       district: form.district.value,
       village: form.village.value,
-      door_no: form.door_no.value
+      address: form.address.value
     };
 
     try {

@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <h2 class="problem-title">Problem: ${complaint.problem_type}</h2>
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
-            <p><strong>Door No:</strong> ${complaint.door_no}</p>
+            <p><strong>Address:</strong> ${complaint.address}</p>
             <p><strong>Description:</strong> ${complaint.description}</p>
             <p><strong>Status:</strong> 
               <span class="${statusClass}">
@@ -75,8 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      // DELETE  function
-
+      // DELETE function
       complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
         if (!confirm("Do you want to delete this complaint?")) return;
 

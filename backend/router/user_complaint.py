@@ -19,7 +19,7 @@ def create_complaint(
     description: str = Form(...),
     district: str = Form(...),
     village: str = Form(...),
-    door_no: str = Form(...),
+    address: str = Form(...),
     image: UploadFile = File(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -45,7 +45,7 @@ def create_complaint(
         description=description,
         district=district,
         village=village,
-        door_no=door_no,
+        address=address,
         image_url=image_url  
     )
 
@@ -71,7 +71,7 @@ def get_all_complaints(db: Session = Depends(get_db)):
                 description=c.description,
                 district=c.district,
                 village=c.village,
-                door_no=c.door_no,
+                address=c.address, 
                 votes=c.votes,
                 status=c.status,
                 created_at=c.created_at,
@@ -114,7 +114,7 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
         description=complaint.description,
         district=complaint.district,
         village=complaint.village,
-        door_no=complaint.door_no,
+        address=complaint.address,
         votes=complaint.votes,
         status=complaint.status,
         created_at=complaint.created_at,
@@ -141,7 +141,7 @@ def update_complaint(
     complaint.description = updated.description
     complaint.district = updated.district
     complaint.village = updated.village
-    complaint.door_no = updated.door_no
+    complaint.address = updated.address
 
     db.commit()
     return {"message": "Complaint updated successfully"}

@@ -41,37 +41,35 @@
     </nav>
   </header>
 
-  <body>
+  <h2>Edit a Complaint</h2>
 
-    <h2>Edit a Complaint</h2>
+  <div class="class-name">
 
-    <div class="class-name">
+    <form id="editComplaintForm">
 
-      <form id="editComplaintForm">
+      <label for="problem_type">Problem Type</label>
+      <input type="text" id="problem_type" name="problem_type" required>
 
-        <label for="problem_type">Problem Type</label>
-        <input type="text" id="problem_type" name="problem_type" required>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4" required></textarea>
 
-        <label for="description">Description</label>
-        <textarea id="description" are name="description" rows="4" required></textarea>
+      <label for="district">District</label>
+      <input type="text" id="district" name="district" required>
 
-        <label for="district">District</label>
-        <input type="text" id="district" name="district" required>
+      <label for="village">Village</label>
+      <input type="text" id="village" name="village" required>
 
-        <label for="village">Village</label>
-        <input type="text" id="village" name="village" required>
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" required>
 
-        <label for="door_no">Door No</label>
-        <input type="text" id="door_no" name="door_no" required>
+      <button type="submit">Update Complaint</button>
+    </form>
 
-        <button type="submit">Update Complaint</button>
-      </form>
-      <p id="statusMessage" style="color:green; margin-top:10px;"></p>
-    </div>
-
-  </body>
+    <p id="statusMessage" style="color:green; margin-top:10px;"></p>
+  </div>
 
   <script type="module" src="../javascript/edit_complaint.js"></script>
   <script src="../javascript/navbar.js"></script>
 
+</body>
 </html>
