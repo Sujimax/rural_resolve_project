@@ -103,69 +103,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Update complaint status + send email
+  // Initialize EmailJS (do this ONCE)
+  emailjs.init("XHeAM4w6Ryg1e-lB9"); // ← replace with your EmailJS public key
+
   updateStatusBtn.addEventListener("click", async () => {
     try {
+      // 1️⃣ Update complaint status in backend
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ status: statusSelect.value })
+        body: JSON.stringify({
+          status: statusSelect.value
+        })
       });
 
-      if (!res.ok) throw new Error("Update failed");
+      if (!res.ok) {
+        throw new Error("Status update failed");
+      }
 
-      // Update UI
+      // 2️⃣ Update UI badge
       updateStatusBadge(statusSelect.value);
 
-      // Send email
+      // 3️⃣ Prepare EmailJS params (MATCH TEMPLATE)
       const templateParams = {
         user_name: nameEl.textContent,
         complaint_id: complaintIdEl.textContent,
         status: statusSelect.value,
-        email_to: emailEl.textContent
+        email_to: emailEl.textContent   // MUST match {{email_to}}
       };
 
-      try {
-        await emailjs.send(
-          "service_6i8hmql",
-          "template_yy03x4k",
-          templateParams
-        );
-        alert("Status updated and email sent successfully!");
-      } catch (emailErr) {
-        console.error("Email error:", emailErr);
-        alert("Status updated but email failed");
-      }
+      // 4️⃣ Send email
+      await emailjs.send(
+        "service_6i8hmql",
+        "template_yy03x4k",
+        templateParams
+      );
+
+      alert("Status updated and email sent successfully ✅");
 
     } catch (err) {
-      alert("Error updating status");
-      console.error(err);
+      console.error("Update/Email Error:", err);
+      alert("Status updated, but email failed ❌ (check console)");
     }
   });
 
-  // Delete complaint
-  deleteBtn.addEventListener("click", async () => {
-    if (!confirm("Delete this complaint?")) return;
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!res.ok) throw new Error("Delete failed");
-
-      alert("Deleted successfully");
-      window.location.href = "admin.html";
-
-    } catch (err) {
-      alert("Delete error");
-      console.error(err);
-    }
-  });
 
   // Load complaint
   fetchComplaint();
