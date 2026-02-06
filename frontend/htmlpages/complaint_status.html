@@ -79,14 +79,14 @@
 
     <script type="module" src="../javascript/complaint_status.js"></script>
     <script src="../javascript/navbar.js"></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.emailjs.com/sdk/3.2/email.min.js"
-    ></script>
-    <script type="text/javascript">
-      (function () {
-        emailjs.init("XHeAM4w6Ryg1e-lB9"); // Replace with your EmailJS public key
-      })();
-    </script>
+    
+    <!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+  window.emailjs.init("XHeAM4w6Ryg1e-lB9"); 
+</script>
+
+
   </body>
 </html>
