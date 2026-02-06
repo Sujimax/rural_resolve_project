@@ -51,17 +51,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   const complaintImageEl = document.getElementById("complaintImage");
   const deleteBtn = document.getElementById("deleteComplaint");
 
-  // Update status badge
+  // ✅ FIXED: Update status badge to include "resolved"
   function updateStatusBadge(status) {
-    currentStatusEl.className = "status-badge";
+    currentStatusEl.className = "status-badge"; // reset
 
     const statusText = (status || "pending").toLowerCase();
 
-    if (statusText === "in progress") currentStatusEl.classList.add("status-in-progress");
-    else if (statusText === "solved") currentStatusEl.classList.add("status-solved");
-    else currentStatusEl.classList.add("status-pending");
+    if (statusText === "in progress") {
+      currentStatusEl.classList.add("status-in-progress");
+    } else if (statusText === "resolved") {
+      currentStatusEl.classList.add("status-resolved"); // <-- green now
+    } else {
+      currentStatusEl.classList.add("status-pending");
+    }
 
-    currentStatusEl.textContent = status || "Pending";
+    // Capitalize first letter for display
+    currentStatusEl.textContent = statusText.charAt(0).toUpperCase() + statusText.slice(1);
   }
 
   // Fetch complaint details
@@ -87,7 +92,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       addressEl.textContent = c.address || "N/A";
       votesEl.textContent = c.votes || 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
-
       complaintImageEl.src = c.image_url || "../images/icon1.png";
 
       statusSelect.value = (c.status || "pending").toLowerCase();
@@ -102,7 +106,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Update complaint status and send email
   updateStatusBtn.addEventListener("click", async () => {
     try {
-      // Update backend
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
@@ -114,10 +117,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!res.ok) throw new Error("Update failed");
 
-      // Update UI badge
       updateStatusBadge(statusSelect.value);
 
-      // Send email
       const templateParams = {
         user_name: nameEl.textContent,
         complaint_id: complaintIdEl.textContent,
@@ -164,6 +165,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Load complaint
   fetchComplaint();
 });
