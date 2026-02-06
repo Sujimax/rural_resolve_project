@@ -128,8 +128,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       try {
         await emailjs.send(
-          "service_hga5sid",
-          "template_yy03x4k",
+          "service_lrkjfeo",
+          "template_cq2r65r",
           templateParams
         );
         alert("Status updated and email sent successfully!");
