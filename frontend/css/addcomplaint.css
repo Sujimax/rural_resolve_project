@@ -98,6 +98,40 @@ button:hover {
   text-decoration: underline;
 }
 
+/* ================= Password Toggle & Error Messages ================= */
+
+/* Wrapper for password + toggle button */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  flex: 1;
+  padding-right: 40px; /* space for toggle button */
+}
+
+/* Toggle button style */
+.password-wrapper .toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #2563eb;
+  padding: 0;
+}
+
+/* Inline error messages */
+.error-msg {
+  display: block;
+  font-size: 13px;
+  margin-top: 4px;
+  color: red;
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .class-name,

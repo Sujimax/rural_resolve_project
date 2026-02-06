@@ -3,7 +3,7 @@ import API_BASE_URL from "./config.js";
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signup-form");
 
-  // Helper function to show error
+  // Helper functions for inline errors
   const showError = (input, message) => {
     let error = input.nextElementSibling;
     if (!error || !error.classList.contains("error-msg")) {
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Phone input validation on input
+  // Phone validation on input
   form.phone.addEventListener("input", () => {
     const phone = form.phone.value.trim();
     if (!/^\d{0,10}$/.test(phone)) {
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Email input validation on input
+  // Email validation on input
   form.email.addEventListener("input", () => {
     const email = form.email.value.trim();
     if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
@@ -65,6 +65,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Show/hide password toggle
+  const addToggle = (input) => {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("password-wrapper");
+    input.parentNode.insertBefore(wrapper, input);
+    wrapper.appendChild(input);
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.classList.add("toggle-password");
+    btn.textContent = "👁️";
+    wrapper.appendChild(btn);
+
+    btn.addEventListener("click", () => {
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈";
+      } else {
+        input.type = "password";
+        btn.textContent = "👁️";
+      }
+    });
+  };
+
+  addToggle(passwordInput);
+  addToggle(form.confirm_password);
+
+  // Form submission
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -121,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!valid) return; // stop submission if invalid
 
+    // Submit data
     const data = { name, phone, email, password };
 
     try {
@@ -142,44 +171,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-
-// import API_BASE_URL from "./config.js";
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   const form = document.getElementById("signup-form");
-
-//   form.addEventListener("submit", async (e) => {
-//     e.preventDefault();
-
-//     if (form.password.value !== form.confirm_password.value) {
-//       alert("Passwords do not match");
-//       return;
-//     }
-
-//     const data = {
-//       name: form.name.value,
-//       phone: form.phone.value,
-//       email: form.email.value,
-//       password: form.password.value
-//     };
-
-//     try {
-//       const res = await fetch(`${API_BASE_URL}/auth/signup`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(data)
-//       });
-
-//       if (!res.ok) {
-//         const err = await res.json();
-//         throw new Error(err.detail || "Signup failed");
-//       }
-
-//       alert("Signup successful");
-//       window.location.href = "login.html";
-//     } catch (err) {
-//       alert(err.message);
-//     }
-//   });
-// });
