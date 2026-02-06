@@ -51,15 +51,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const complaintImageEl = document.getElementById("complaintImage");
   const deleteBtn = document.getElementById("deleteComplaint");
 
-  // Update status badge
+  // ✅ Update status badge
   function updateStatusBadge(status) {
     currentStatusEl.className = "status-badge";
 
     const statusText = (status || "pending").toLowerCase();
 
-    if (statusText === "in progress") currentStatusEl.classList.add("status-in-progress");
-    else if (statusText === "solved") currentStatusEl.classList.add("status-solved");
-    else currentStatusEl.classList.add("status-pending");
+    if (statusText === "in progress") {
+      currentStatusEl.classList.add("status-in-progress");
+    } else if (statusText === "resolved") {
+      currentStatusEl.classList.add("status-resolved");
+    } else {
+      currentStatusEl.classList.add("status-pending");
+    }
 
     currentStatusEl.textContent = status || "Pending";
   }
@@ -99,10 +103,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Update complaint status and send email
+  // Update complaint status + send email
   updateStatusBtn.addEventListener("click", async () => {
     try {
-      // Update backend
       const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
         method: "PUT",
         headers: {
@@ -114,7 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!res.ok) throw new Error("Update failed");
 
-      // Update UI badge
+      // Update UI
       updateStatusBadge(statusSelect.value);
 
       // Send email
@@ -133,8 +136,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
         alert("Status updated and email sent successfully!");
       } catch (emailErr) {
-        console.error("Email sending error:", emailErr);
-        alert("Status updated but email failed to send");
+        console.error("Email error:", emailErr);
+        alert("Status updated but email failed");
       }
 
     } catch (err) {
