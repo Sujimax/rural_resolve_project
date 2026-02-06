@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // DOM Elements
+  // ================= DOM ELEMENTS =================
   const userIdEl = document.getElementById("userId");
   const nameEl = document.getElementById("name");
   const mobileEl = document.getElementById("mobile");
@@ -49,17 +49,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const statusSelect = document.getElementById("statusSelect");
   const updateStatusBtn = document.getElementById("updateStatus");
   const complaintImageEl = document.getElementById("complaintImage");
-  const deleteBtn = document.getElementById("deleteComplaint");
 
-  // ✅ Update status badge
+  // ================= STATUS BADGE =================
   function updateStatusBadge(status) {
     currentStatusEl.className = "status-badge";
 
-    const statusText = (status || "pending").toLowerCase();
+    const s = (status || "pending").toLowerCase();
 
-    if (statusText === "in progress") {
+    if (s === "in progress") {
       currentStatusEl.classList.add("status-in-progress");
-    } else if (statusText === "resolved") {
+    } else if (s === "resolved") {
       currentStatusEl.classList.add("status-resolved");
     } else {
       currentStatusEl.classList.add("status-pending");
@@ -68,71 +67,72 @@ document.addEventListener("DOMContentLoaded", async () => {
     currentStatusEl.textContent = status || "Pending";
   }
 
-  // Fetch complaint details
+  // ================= FETCH COMPLAINT =================
   async function fetchComplaint() {
     try {
-      const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      // 🔥 PUBLIC API → NO AUTH HEADER
+      const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`);
 
-      if (!res.ok) throw new Error("Failed to fetch complaint");
+      if (!res.ok) throw new Error("Fetch failed");
 
       const c = await res.json();
 
-      userIdEl.textContent = c.user_id || "N/A";
-      nameEl.textContent = c.user_name || "N/A";
-      mobileEl.textContent = c.phone || "N/A";
-      emailEl.textContent = c.email || "N/A";
+      userIdEl.textContent = c.user_id ?? "N/A";
+      nameEl.textContent = c.user_name ?? "N/A";
+      mobileEl.textContent = c.phone ?? "N/A";
+      emailEl.textContent = c.email ?? "N/A";
       complaintIdEl.textContent = c.id;
-      problemEl.textContent = c.problem_type || "N/A";
-      descriptionEl.textContent = c.description || "N/A";
-      districtEl.textContent = c.district || "N/A";
-      villageEl.textContent = c.village || "N/A";
-      addressEl.textContent = c.address || "N/A";
-      votesEl.textContent = c.votes || 0;
+      problemEl.textContent = c.problem_type ?? "N/A";
+      descriptionEl.textContent = c.description ?? "N/A";
+      districtEl.textContent = c.district ?? "N/A";
+      villageEl.textContent = c.village ?? "N/A";
+      addressEl.textContent = c.address ?? "N/A";
+      votesEl.textContent = c.votes ?? 0;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
 
       complaintImageEl.src = c.image_url || "../images/icon1.png";
 
       statusSelect.value = (c.status || "pending").toLowerCase();
-      updateStatusBadge(c.status || "Pending");
+      updateStatusBadge(c.status);
 
     } catch (err) {
-      alert("Error loading complaint");
       console.error(err);
+      alert("Error loading complaint");
     }
   }
 
-  // Initialize EmailJS (do this ONCE)
-  emailjs.init("XHeAM4w6Ryg1e-lB9"); // ← replace with your EmailJS public key
+  // ================= EMAILJS INIT =================
+  emailjs.init("XHeAM4w6Ryg1e-lB9");
 
+  // ================= UPDATE STATUS =================
   updateStatusBtn.addEventListener("click", async () => {
     try {
-      // 1️⃣ Update complaint status in backend
-      const res = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          status: statusSelect.value
-        })
-      });
+      // 1️⃣ Update backend
+      const res = await fetch(
+        `${API_BASE_URL}/admin/complaints/${complaintId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            status: statusSelect.value
+          })
+        }
+      );
 
-      if (!res.ok) {
-        throw new Error("Status update failed");
-      }
+      if (!res.ok) throw new Error("Update failed");
 
-      // 2️⃣ Update UI badge
+      // 2️⃣ Update UI
       updateStatusBadge(statusSelect.value);
 
-      // 3️⃣ Prepare EmailJS params (MATCH TEMPLATE)
+      // 3️⃣ Email params (MATCH TEMPLATE)
       const templateParams = {
         user_name: nameEl.textContent,
         complaint_id: complaintIdEl.textContent,
         status: statusSelect.value,
-        email_to: emailEl.textContent   // MUST match {{email_to}}
+        email_to: emailEl.textContent
       };
 
       // 4️⃣ Send email
@@ -142,15 +142,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         templateParams
       );
 
-      alert("Status updated and email sent successfully ✅");
+      alert("Status updated & email sent successfully ✅");
 
     } catch (err) {
-      console.error("Update/Email Error:", err);
-      alert("Status updated, but email failed ❌ (check console)");
+      console.error(err);
+      alert("Status updated but email failed ❌");
     }
   });
 
-
-  // Load complaint
+  // ================= LOAD DATA =================
   fetchComplaint();
 });
