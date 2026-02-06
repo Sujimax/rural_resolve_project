@@ -3,54 +3,123 @@ import API_BASE_URL from "./config.js";
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signup-form");
 
-  // Show password strength (basic)
+  // Helper function to show error
+  const showError = (input, message) => {
+    let error = input.nextElementSibling;
+    if (!error || !error.classList.contains("error-msg")) {
+      error = document.createElement("small");
+      error.classList.add("error-msg");
+      input.parentNode.insertBefore(error, input.nextSibling);
+    }
+    error.textContent = message;
+    error.style.color = "red";
+  };
+
+  const clearError = (input) => {
+    let error = input.nextElementSibling;
+    if (error && error.classList.contains("error-msg")) {
+      error.textContent = "";
+    }
+  };
+
+  // Password strength message
   const passwordInput = form.password;
-  const strengthMsg = document.createElement("small");
-  passwordInput.parentNode.appendChild(strengthMsg);
+  const passwordStrength = document.createElement("small");
+  passwordStrength.style.display = "block";
+  passwordInput.parentNode.insertBefore(passwordStrength, passwordInput.nextSibling);
 
   passwordInput.addEventListener("input", () => {
     const pwd = passwordInput.value;
+    clearError(passwordInput);
     if (pwd.length < 6) {
-      strengthMsg.textContent = "Weak password: min 6 characters";
-      strengthMsg.style.color = "red";
+      passwordStrength.textContent = "Weak password: min 6 characters";
+      passwordStrength.style.color = "red";
     } else if (!/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
-      strengthMsg.textContent = "Medium: add uppercase & number";
-      strengthMsg.style.color = "orange";
+      passwordStrength.textContent = "Medium: add uppercase & number";
+      passwordStrength.style.color = "orange";
     } else {
-      strengthMsg.textContent = "Strong password ✅";
-      strengthMsg.style.color = "green";
+      passwordStrength.textContent = "Strong password ✅";
+      passwordStrength.style.color = "green";
+    }
+  });
+
+  // Phone input validation on input
+  form.phone.addEventListener("input", () => {
+    const phone = form.phone.value.trim();
+    if (!/^\d{0,10}$/.test(phone)) {
+      showError(form.phone, "Only digits allowed, max 10 digits");
+    } else if (phone.length < 10) {
+      showError(form.phone, "Phone number must be 10 digits");
+    } else {
+      clearError(form.phone);
+    }
+  });
+
+  // Email input validation on input
+  form.email.addEventListener("input", () => {
+    const email = form.email.value.trim();
+    if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
+      showError(form.email, "Invalid email format");
+    } else {
+      clearError(form.email);
     }
   });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Basic validations
+    let valid = true;
+
     const name = form.name.value.trim();
     const phone = form.phone.value.trim();
     const email = form.email.value.trim();
     const password = form.password.value;
     const confirmPassword = form.confirm_password.value;
 
-    if (!name || !phone || !email || !password || !confirmPassword) {
-      alert("All fields are required");
-      return;
+    // Name validation
+    if (!name) {
+      showError(form.name, "Name is required");
+      valid = false;
+    } else {
+      clearError(form.name);
     }
 
+    // Phone validation
     if (!/^\d{10}$/.test(phone)) {
-      alert("Phone number must be 10 digits");
-      return;
+      showError(form.phone, "Phone number must be 10 digits");
+      valid = false;
+    } else {
+      clearError(form.phone);
     }
 
+    // Email validation
     if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
-      alert("Invalid email format");
-      return;
+      showError(form.email, "Invalid email format");
+      valid = false;
+    } else {
+      clearError(form.email);
     }
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
+    // Password validation
+    if (password.length < 6) {
+      showError(passwordInput, "Password too short, min 6 characters");
+      valid = false;
+    } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      showError(passwordInput, "Add uppercase & number for strong password");
+      valid = false;
+    } else {
+      clearError(passwordInput);
     }
+
+    // Confirm password validation
+    if (password !== confirmPassword) {
+      showError(form.confirm_password, "Passwords do not match");
+      valid = false;
+    } else {
+      clearError(form.confirm_password);
+    }
+
+    if (!valid) return; // stop submission if invalid
 
     const data = { name, phone, email, password };
 
@@ -73,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
 // import API_BASE_URL from "./config.js";
 
