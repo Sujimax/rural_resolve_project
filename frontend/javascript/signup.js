@@ -21,27 +21,38 @@ document.addEventListener("DOMContentLoaded", () => {
       error.textContent = "";
     }
   };
+// Replace your old password strength code with this:
+const passwordInput = form.password;
+const passwordStatus = passwordInput.parentNode.querySelector(".password-status");
 
-  // Password strength message (insert only once per password input)
-  const passwordInput = form.password;
-  const passwordStrength = document.createElement("small");
-  passwordStrength.style.display = "block";
-  passwordInput.parentNode.appendChild(passwordStrength);
+passwordInput.addEventListener("input", () => {
+  const pwd = passwordInput.value;
 
-  passwordInput.addEventListener("input", () => {
-    const pwd = passwordInput.value;
-    clearError(passwordInput);
-    if (pwd.length < 6) {
-      passwordStrength.textContent = "Weak password: min 6 characters";
-      passwordStrength.style.color = "red";
-    } else if (!/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
-      passwordStrength.textContent = "Medium: add uppercase & number";
-      passwordStrength.style.color = "orange";
-    } else {
-      passwordStrength.textContent = "Strong password ✅";
-      passwordStrength.style.color = "green";
-    }
-  });
+  if (pwd.length < 6) {
+    passwordStatus.textContent = "Weak";
+    passwordStatus.style.color = "red";
+  } else if (!/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
+    passwordStatus.textContent = "Medium";
+    passwordStatus.style.color = "orange";
+  } else {
+    passwordStatus.textContent = "Strong ✅";
+    passwordStatus.style.color = "green";
+  }
+});
+
+// Confirm password can also show ✅ when match
+const confirmInput = form.confirm_password;
+const confirmStatus = confirmInput.parentNode.querySelector(".password-status");
+
+confirmInput.addEventListener("input", () => {
+  if (confirmInput.value === passwordInput.value && confirmInput.value.length >= 6) {
+    confirmStatus.textContent = "✅";
+    confirmStatus.style.color = "green";
+  } else {
+    confirmStatus.textContent = "";
+  }
+});
+
 
   // Phone validation on input
   form.phone.addEventListener("input", () => {
