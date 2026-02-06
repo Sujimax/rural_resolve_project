@@ -21,40 +21,40 @@ document.addEventListener("DOMContentLoaded", () => {
       error.textContent = "";
     }
   };
-// Replace your old password strength code with this:
-const passwordInput = form.password;
-const passwordStatus = passwordInput.parentNode.querySelector(".password-status");
 
-passwordInput.addEventListener("input", () => {
-  const pwd = passwordInput.value;
+  // Password strength
+  const passwordInput = form.password;
+  const passwordStatus = passwordInput.parentNode.querySelector(".password-status");
 
-  if (pwd.length < 6) {
-    passwordStatus.textContent = "Weak";
-    passwordStatus.style.color = "red";
-  } else if (!/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
-    passwordStatus.textContent = "Medium";
-    passwordStatus.style.color = "orange";
-  } else {
-    passwordStatus.textContent = "Strong ✅";
-    passwordStatus.style.color = "green";
-  }
-});
+  passwordInput.addEventListener("input", () => {
+    const pwd = passwordInput.value;
 
-// Confirm password can also show ✅ when match
-const confirmInput = form.confirm_password;
-const confirmStatus = confirmInput.parentNode.querySelector(".password-status");
+    if (pwd.length < 6) {
+      passwordStatus.textContent = "Weak";
+      passwordStatus.style.color = "red";
+    } else if (!/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
+      passwordStatus.textContent = "Medium";
+      passwordStatus.style.color = "orange";
+    } else {
+      passwordStatus.textContent = "Strong ✅";
+      passwordStatus.style.color = "green";
+    }
+  });
 
-confirmInput.addEventListener("input", () => {
-  if (confirmInput.value === passwordInput.value && confirmInput.value.length >= 6) {
-    confirmStatus.textContent = "✅";
-    confirmStatus.style.color = "green";
-  } else {
-    confirmStatus.textContent = "";
-  }
-});
+  // Confirm password match
+  const confirmInput = form.confirm_password;
+  const confirmStatus = confirmInput.parentNode.querySelector(".password-status");
 
+  confirmInput.addEventListener("input", () => {
+    if (confirmInput.value === passwordInput.value && confirmInput.value.length >= 6) {
+      confirmStatus.textContent = "✅";
+      confirmStatus.style.color = "green";
+    } else {
+      confirmStatus.textContent = "";
+    }
+  });
 
-  // Phone validation on input
+  // Phone validation
   form.phone.addEventListener("input", () => {
     const phone = form.phone.value.trim();
     if (!/^\d{0,10}$/.test(phone)) {
@@ -66,7 +66,7 @@ confirmInput.addEventListener("input", () => {
     }
   });
 
-  // Email validation on input
+  // Email validation
   form.email.addEventListener("input", () => {
     const email = form.email.value.trim();
     if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
@@ -76,10 +76,12 @@ confirmInput.addEventListener("input", () => {
     }
   });
 
-  // Toggle password visibility (works with existing HTML buttons)
+  // Toggle password visibility using data-target
   document.querySelectorAll(".toggle-password").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const input = btn.previousElementSibling;
+      const targetSelector = btn.getAttribute("data-target");
+      const input = document.querySelector(targetSelector);
+
       if (input.type === "password") {
         input.type = "text";
         btn.textContent = "🙈";
@@ -139,13 +141,13 @@ confirmInput.addEventListener("input", () => {
 
     // Confirm password validation
     if (password !== confirmPassword) {
-      showError(form.confirm_password, "Passwords do not match");
+      showError(confirmInput, "Passwords do not match");
       valid = false;
     } else {
-      clearError(form.confirm_password);
+      clearError(confirmInput);
     }
 
-    if (!valid) return; // stop submission if invalid
+    if (!valid) return;
 
     // Submit data
     const data = { name, phone, email, password };
