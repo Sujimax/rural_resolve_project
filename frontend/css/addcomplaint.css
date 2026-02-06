@@ -99,17 +99,17 @@ button:hover {
 }
 
 /* ================= Password Toggle & Error Messages ================= */
-
-/* Wrapper for password + toggle button */
+/* Wrapper for input + toggle + error */
 .password-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
+/* Input inside wrapper */
 .password-wrapper input {
   flex: 1;
-  padding-right: 40px; /* space for toggle button */
+  padding-right: 90px; /* space for toggle button + error message */
 }
 
 /* Toggle button style */
@@ -124,13 +124,33 @@ button:hover {
   padding: 0;
 }
 
-/* Inline error messages */
-.error-msg {
-  display: block;
-  font-size: 13px;
-  margin-top: 4px;
+/* Inline error messages aligned right */
+.password-wrapper .error-msg {
+  position: absolute;
+  right: 40px; /* place before toggle button */
+  top: 50%;
+  transform: translateY(-50%);
   color: red;
+  font-size: 13px;
+  white-space: nowrap; /* prevent breaking */
 }
+
+/* For normal inputs (like name, phone, email) */
+input:not([type="password"]) + .error-msg {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: red;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Keep form container relative so error messages can be positioned */
+.form-container {
+  position: relative;
+}
+
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
