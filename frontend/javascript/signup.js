@@ -22,57 +22,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Function to setup password field with toggle + strength
-  const setupPasswordField = (input) => {
-    // Wrap input in password-wrapper
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("password-wrapper");
-    input.parentNode.insertBefore(wrapper, input);
-    wrapper.appendChild(input);
+  // Password strength message (insert only once per password input)
+  const passwordInput = form.password;
+  const passwordStrength = document.createElement("small");
+  passwordStrength.style.display = "block";
+  passwordInput.parentNode.appendChild(passwordStrength);
 
-    // Add toggle button
-    const toggleBtn = document.createElement("button");
-    toggleBtn.type = "button";
-    toggleBtn.classList.add("toggle-password");
-    toggleBtn.textContent = "👁️";
-    wrapper.appendChild(toggleBtn);
-
-    toggleBtn.addEventListener("click", () => {
-      if (input.type === "password") {
-        input.type = "text";
-        toggleBtn.textContent = "🙈";
-      } else {
-        input.type = "password";
-        toggleBtn.textContent = "👁️";
-      }
-    });
-
-    // Add password strength message below input
-    const strengthMsg = document.createElement("small");
-    strengthMsg.style.display = "block";
-    wrapper.insertBefore(strengthMsg, toggleBtn);
-
-    // Add strength logic (only for main password, skip for confirm)
-    if (input.name === "password") {
-      input.addEventListener("input", () => {
-        const pwd = input.value;
-        if (pwd.length < 6) {
-          strengthMsg.textContent = "Weak password: min 6 characters";
-          strengthMsg.style.color = "red";
-        } else if (!/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
-          strengthMsg.textContent = "Medium: add uppercase & number";
-          strengthMsg.style.color = "orange";
-        } else {
-          strengthMsg.textContent = "Strong password ✅";
-          strengthMsg.style.color = "green";
-        }
-      });
+  passwordInput.addEventListener("input", () => {
+    const pwd = passwordInput.value;
+    clearError(passwordInput);
+    if (pwd.length < 6) {
+      passwordStrength.textContent = "Weak password: min 6 characters";
+      passwordStrength.style.color = "red";
+    } else if (!/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
+      passwordStrength.textContent = "Medium: add uppercase & number";
+      passwordStrength.style.color = "orange";
+    } else {
+      passwordStrength.textContent = "Strong password ✅";
+      passwordStrength.style.color = "green";
     }
-  };
-
-  // Setup both password fields
-  setupPasswordField(form.password);
-  setupPasswordField(form.confirm_password);
+  });
 
   // Phone validation on input
   form.phone.addEventListener("input", () => {
@@ -96,7 +65,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Form submit
+  // Toggle password visibility (works with existing HTML buttons)
+  document.querySelectorAll(".toggle-password").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const input = btn.previousElementSibling;
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈";
+      } else {
+        input.type = "password";
+        btn.textContent = "👁️";
+      }
+    });
+  });
+
+  // Form submission
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -134,13 +117,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Password validation
     if (password.length < 6) {
-      showError(form.password, "Password too short, min 6 characters");
+      showError(passwordInput, "Password too short, min 6 characters");
       valid = false;
     } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-      showError(form.password, "Add uppercase & number for strong password");
+      showError(passwordInput, "Add uppercase & number for strong password");
       valid = false;
     } else {
-      clearError(form.password);
+      clearError(passwordInput);
     }
 
     // Confirm password validation
@@ -160,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) {
