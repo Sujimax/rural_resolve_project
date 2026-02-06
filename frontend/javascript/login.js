@@ -1,4 +1,4 @@
-import API_BASE_URL from "./config.js"; 
+import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("login-form");
@@ -22,6 +22,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // ✅ Add password toggle button (simple)
+  const passwordInput = form.password;
+  const passwordWrapper = document.createElement("div");
+  passwordWrapper.classList.add("password-wrapper");
+
+  // Move password input into wrapper
+  passwordInput.parentNode.insertBefore(passwordWrapper, passwordInput);
+  passwordWrapper.appendChild(passwordInput);
+
+  // Add toggle button
+  const toggleBtn = document.createElement("button");
+  toggleBtn.type = "button";
+  toggleBtn.classList.add("toggle-password");
+  toggleBtn.textContent = "👁️";
+  passwordWrapper.appendChild(toggleBtn);
+
+  // Toggle functionality
+  toggleBtn.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      toggleBtn.textContent = "🙈";
+    } else {
+      passwordInput.type = "password";
+      toggleBtn.textContent = "👁️";
+    }
+  });
+
+  // Form submission
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -32,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = passwordInput.value.trim();
     let valid = true;
 
-    // Email validation (like signup page)
+    // Email validation
     if (!email) {
       showError(emailInput, "Email is required");
       valid = false;
@@ -43,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(emailInput);
     }
 
-    // Password validation (like signup page)
+    // Password validation
     if (!password) {
       showError(passwordInput, "Password is required");
       valid = false;
@@ -54,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(passwordInput);
     }
 
-    if (!valid) return; // stop submission if invalid
+    if (!valid) return;
 
     // Send login request
     try {
@@ -67,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await res.json();
 
       if (!res.ok) {
-        // Show invalid credentials under password field
         showError(passwordInput, result.detail || "Invalid email or password");
         return;
       }

@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Confirm password match
+  // Confirm password check
   const confirmInput = form.confirm_password;
   const confirmStatus = confirmInput.parentNode.querySelector(".password-status");
 
@@ -76,18 +76,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Toggle password visibility using data-target
+  // ✅ Fixed password toggle
   document.querySelectorAll(".toggle-password").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const targetSelector = btn.getAttribute("data-target");
-      const input = document.querySelector(targetSelector);
+      // Find the input in the same wrapper
+      const wrapper = btn.closest(".password-wrapper");
+      const input = wrapper.querySelector("input");
 
       if (input.type === "password") {
         input.type = "text";
-        btn.textContent = "🙈";
+        btn.textContent = "🙈"; // show monkey when visible
       } else {
         input.type = "password";
-        btn.textContent = "👁️";
+        btn.textContent = "👁️"; // show eye when hidden
       }
     });
   });
