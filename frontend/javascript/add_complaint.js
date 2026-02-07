@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.querySelector("form");
 
+  // ✅ AI SUGGESTION ELEMENT (NEW)
+  const aiSuggestionBox = document.getElementById("aiSuggestion");
+
   const token = localStorage.getItem("access_token");
   if (!token) {
     alert("You must be logged in to submit a complaint!");
@@ -30,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const districtSelect = document.getElementById("district");
   const villageSelect = document.getElementById("village");
 
-  // Load districts
   districtSelect.innerHTML = `<option value="">-- Select District --</option>`;
   Object.keys(villagesByDistrict).forEach(district => {
     const option = document.createElement("option");
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Submit complaint
+  // ================= SUBMIT COMPLAINT =================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -58,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("description", document.getElementById("description").value);
     formData.append("district", districtSelect.value);
     formData.append("village", villageSelect.value);
-    formData.append("address", document.getElementById("address").value); // CHANGED
+    formData.append("address", document.getElementById("address").value);
 
     const imageInput = document.getElementById("image");
     if (imageInput.files.length > 0) {
@@ -74,10 +76,25 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
+      const data = await res.json(); // ✅ READ RESPONSE
+
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail || "Failed to submit complaint");
+        throw new Error(data.detail || "Failed to submit complaint");
       }
+
+      // ================= AI SUGGESTION DISPLAY (NEW) =================
+      if (data.ai_suggestion && aiSuggestionBox) {
+        aiSuggestionBox.textContent = data.ai_suggestion;
+
+        if (data.ai_suggestion.includes("❌")) {
+          aiSuggestionBox.style.color = "red";
+        } else if (data.ai_suggestion.includes("⚠️")) {
+          aiSuggestionBox.style.color = "orange";
+        } else {
+          aiSuggestionBox.style.color = "green";
+        }
+      }
+      // ===============================================================
 
       alert("Complaint submitted successfully");
       form.reset();

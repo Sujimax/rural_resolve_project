@@ -7,7 +7,6 @@ from utils.jwt_handler import decode_access_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-# DB session
 def get_db():
     db = SessionLocal()
     try:
