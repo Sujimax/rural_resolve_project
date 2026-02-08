@@ -13,7 +13,7 @@ from schemas.comment_create import CommentCreate, CommentOut
 # ✅ AI IMPORTS
 from sentence_transformers import SentenceTransformer, util
 
-# ✅ LOAD MODEL (ONCE)
+# ✅ LOAD MODEL (ONCE – SAFE)
 ai_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
@@ -22,7 +22,13 @@ user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
 # ================= AI CHECK FUNCTION =================
 def check_description_ai(problem_type: str, description: str) -> str:
     texts = [problem_type, description]
-    embeddings = ai_model.encode(texts, convert_to_tensor=True)
+
+    embeddings = ai_model.encode(
+        texts,
+        convert_to_tensor=True,
+        normalize_embeddings=True
+    )
+
     score = util.cos_sim(embeddings[0], embeddings[1]).item()
 
     if score < 0.4:
@@ -66,7 +72,9 @@ def create_complaint(
         district=district,
         village=village,
         address=address,
-        image_url=image_url
+        image_url=image_url,
+        votes=0,
+        status="pending"
     )
 
     db.add(complaint)
@@ -90,7 +98,6 @@ def create_complaint(
         "image_url": complaint.image_url,
         "ai_suggestion": ai_suggestion
     }
-
 
 # ================= GET ALL COMPLAINTS =================
 @user_complaint.get("/", response_model=List[ComplaintOut])
