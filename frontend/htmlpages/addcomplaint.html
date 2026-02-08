@@ -8,6 +8,7 @@
   <link rel="icon" href="../images/bgi.png" alt="Village website">
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/addcomplaint.css">
+
 </head>
 
 <body>
@@ -21,7 +22,7 @@
           <h1 class="page-title">Rural Resolve</h1>
         </div>
 
-        <!-- MENU BUTTON (NO SPANS, NO CHECKBOX) -->
+        <!-- MENU BUTTON -->
         <button id="menuBtn" class="hamburger">☰</button>
       </div>
 
@@ -41,11 +42,11 @@
     </nav>
   </header>
 
-
   <h2>Add a Complaint</h2>
 
   <div class="class-name" id="add-complaint">
     <form>
+      <!-- Problem Type -->
       <label for="problem-name">Problem Type:</label>
       <select id="problem-name" name="problem-name" required>
         <option value="">-- Select Problem Type --</option>
@@ -56,15 +57,20 @@
         <option value="other">Other</option>
       </select>
 
+      <!-- Other problem input -->
+      <div id="other-problem-container">
+        <input type="text" id="other-problem" name="other-problem" placeholder="Type your problem here">
+      </div>
+
+      <!-- Image Upload -->
       <label>Upload Image</label>
       <input type="file" id="image" accept="image/*">
 
-
+      <!-- Description -->
       <label for="description">Problem Description:</label>
       <textarea id="description" name="description" rows="4" placeholder="Describe your problem..." required></textarea>
-<p id="aiSuggestion" style="font-weight:600;margin-top:6px;"></p>
 
-      <!--  Added location details here -->
+      <!-- District and Village -->
       <label for="district">District:</label>
       <select id="district" name="district" required>
         <option value="">-- Select District --</option>
@@ -75,9 +81,10 @@
         <option value="">-- Select Village --</option>
       </select>
 
+      <!-- Address -->
       <label for="address">Address:</label>
       <input type="text" id="address" name="address" placeholder="Enter your current address and door number" required>
-      
+
       <button type="submit">Submit Complaint</button>
     </form>
   </div>
@@ -86,6 +93,4 @@
 
 <script src="../javascript/navbar.js"></script>
 <script type="module" src="../javascript/add_complaint.js"></script>
-
-
 </html>

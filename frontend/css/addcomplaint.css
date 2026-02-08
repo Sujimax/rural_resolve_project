@@ -108,7 +108,8 @@ button:hover {
 
 .password-wrapper input {
   flex: 1;
-  padding-right: 120px; /* Space for status + toggle */
+  padding-right: 120px;
+  /* Space for status + toggle */
 }
 
 .password-wrapper .toggle-password {
@@ -124,16 +125,19 @@ button:hover {
 
 .password-wrapper .password-status {
   position: absolute;
-  right: 40px; /* Space between toggle and status */
+  right: 40px;
+  /* Space between toggle and status */
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
-  color: green; /* will be red/orange/green dynamically */
+  color: green;
+  /* will be red/orange/green dynamically */
   white-space: nowrap;
 }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
+
   .class-name,
   .form-container {
     width: 90%;
@@ -143,4 +147,17 @@ button:hover {
   h2 {
     font-size: 26px;
   }
+}
+
+
+
+#other-problem-container {
+  display: none;
+  margin-top: 10px;
+}
+
+#other-problem {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
 }
