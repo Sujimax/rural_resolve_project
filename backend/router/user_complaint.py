@@ -8,39 +8,12 @@ from models.complaint_model import Complaint
 from models.comment_model import Comment
 from models.user_model import User
 from schemas.complaint_create import ComplaintUpdate, ComplaintOut
-from schemas.comment_create import CommentCreate, CommentOut
-
-# ✅ AI IMPORTS
-from sentence_transformers import SentenceTransformer, util
-
-# ✅ LOAD MODEL (ONCE – SAFE)
-ai_model = SentenceTransformer("all-MiniLM-L6-v2")
+from schemas.comment_create import CommentCreate, CommentOut 
 
 user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
 
-
-# ================= AI CHECK FUNCTION =================
-def check_description_ai(problem_type: str, description: str) -> str:
-    texts = [problem_type, description]
-
-    embeddings = ai_model.encode(
-        texts,
-        convert_to_tensor=True,
-        normalize_embeddings=True
-    )
-
-    score = util.cos_sim(embeddings[0], embeddings[1]).item()
-
-    if score < 0.4:
-        return "❌ Description does not match the selected problem type"
-    elif score < 0.6:
-        return "⚠️ Description is okay, but please add more details"
-    else:
-        return "✅ Description looks good and relevant"
-
-
 # ================= CREATE COMPLAINT =================
-@user_complaint.post("/")
+@user_complaint.post("/", response_model=ComplaintOut)
 def create_complaint(
     problem_type: str = Form(...),
     description: str = Form(...),
@@ -57,13 +30,14 @@ def create_complaint(
         try:
             upload_result = cloudinary.uploader.upload(
                 image.file,
-                folder="complaints",
+                folder="complaints",       
                 public_id=f"user_{current_user.id}_{image.filename}",
                 resource_type="image"
             )
             image_url = upload_result["secure_url"]
-        except Exception:
+        except Exception as e:
             raise HTTPException(status_code=500, detail="Image upload failed")
+
 
     complaint = Complaint(
         user_id=current_user.id,
@@ -72,32 +46,13 @@ def create_complaint(
         district=district,
         village=village,
         address=address,
-        image_url=image_url,
-        votes=0,
-        status="pending"
+        image_url=image_url  
     )
 
     db.add(complaint)
     db.commit()
     db.refresh(complaint)
-
-    # ✅ AI SUGGESTION
-    ai_suggestion = check_description_ai(problem_type, description)
-
-    return {
-        "id": complaint.id,
-        "user_id": complaint.user_id,
-        "problem_type": complaint.problem_type,
-        "description": complaint.description,
-        "district": complaint.district,
-        "village": complaint.village,
-        "address": complaint.address,
-        "votes": complaint.votes,
-        "status": complaint.status,
-        "created_at": complaint.created_at,
-        "image_url": complaint.image_url,
-        "ai_suggestion": ai_suggestion
-    }
+    return complaint
 
 # ================= GET ALL COMPLAINTS =================
 @user_complaint.get("/", response_model=List[ComplaintOut])
@@ -116,7 +71,7 @@ def get_all_complaints(db: Session = Depends(get_db)):
                 description=c.description,
                 district=c.district,
                 village=c.village,
-                address=c.address,
+                address=c.address, 
                 votes=c.votes,
                 status=c.status,
                 created_at=c.created_at,
@@ -129,7 +84,7 @@ def get_all_complaints(db: Session = Depends(get_db)):
     return result
 
 
-# ================= GET MY COMPLAINTS =================
+# ================= GET MY COMPLAINTS (JWT REQUIRED) =================
 @user_complaint.get("/me", response_model=List[ComplaintOut])
 def get_my_complaints(
     db: Session = Depends(get_db),
