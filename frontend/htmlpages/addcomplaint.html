@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rural Resolve</title>
 
   <link rel="icon" href="../images/bgi.png">
@@ -13,7 +13,7 @@
 
 <body>
 
-  <!-- ================= NAVBAR ================= -->
+  <!-- NAVBAR -->
   <header>
     <nav class="navbar">
 
@@ -39,15 +39,16 @@
     </nav>
   </header>
 
-  <!-- ================= FORM ================= -->
+
+
   <h2>Add a Complaint</h2>
 
-  <div class="class-name" id="add-complaint">
+  <div class="class-name">
     <form>
 
       <!-- PROBLEM TYPE -->
       <label for="problem-name">Problem Type:</label>
-      <select id="problem-name" required>
+      <select id="problem-name" name="problem-name" required>
         <option value="">-- Select Problem Type --</option>
         <option value="water">Water Issue</option>
         <option value="road">Road Damage</option>
@@ -56,16 +57,13 @@
         <option value="other">Other</option>
       </select>
 
-      <!-- OTHER PROBLEM -->
-      <input type="text" id="other-problem" placeholder="Enter problem type" style="display:none" />
-
       <!-- IMAGE -->
-      <label for="image">Upload Image:</label>
+      <label>Upload Image</label>
       <input type="file" id="image" accept="image/*">
 
       <!-- DESCRIPTION -->
       <label for="description">Problem Description:</label>
-      <textarea id="description" rows="4" placeholder="Describe your problem..." required></textarea>
+      <textarea id="description" rows="4" required></textarea>
 
       <!-- DISTRICT -->
       <label for="district">District:</label>
@@ -73,32 +71,21 @@
         <option value="">-- Select District --</option>
       </select>
 
-      <!-- OTHER DISTRICT -->
-      <input type="text" id="other-district" placeholder="Enter district name" style="display:none" />
-
       <!-- VILLAGE -->
       <label for="village">Village:</label>
       <select id="village" required>
         <option value="">-- Select Village --</option>
       </select>
 
-      <!-- OTHER VILLAGE -->
-      <input type="text" id="other-village" placeholder="Enter village name" style="display:none" />
-
       <!-- ADDRESS -->
       <label for="address">Address:</label>
-      <input type="text" id="address" placeholder="Enter your current address and door number" required />
+      <input type="text" id="address" required>
 
-      <!-- SUBMIT -->
       <button type="submit">Submit Complaint</button>
-
     </form>
   </div>
 
-  <!-- ================= SCRIPTS ================= -->
-  <script src="../javascript/navbar.js"></script>
   <script type="module" src="../javascript/add_complaint.js"></script>
-
 </body>
 
 </html>
