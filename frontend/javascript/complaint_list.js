@@ -81,13 +81,13 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!-- ✅ SUPPORT ROW -->
+            <!--  SUPPORT ROW -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
               <button class="btn vote-btn">👍 Support</button>
               <span class="vote-count">${complaint.votes || 0}</span>
             </div>
 
-            <!-- ✅ COMMENT ROW -->
+            <!--  COMMENT ROW -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 Comment
