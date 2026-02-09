@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     for (const complaint of complaints) {
 
-      // ✅ COMMENT COUNT (SIMPLE & WORKING)
+      // ✅ COMMENT COUNT
       let commentCount = 0;
       try {
         const cRes = await fetch(
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      // ===== STATUS LOGIC =====
+      // ===== STATUS =====
       const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass = "status-pending";
       let statusText = "Pending";
@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
+
             <h2 class="problem-title">Problem: ${complaint.problem_type}</h2>
 
             <p><strong>District:</strong> ${complaint.district}</p>
@@ -91,18 +92,20 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <p><strong>Votes:</strong>
-              <span class="vote-count">${complaint.votes || 0}</span> 
-            </p>
-
-            <p><strong>Comments:</strong> ${commentCount}</p>
-
-            <div class="vote-section">
+            <!-- SUPPORT ROW -->
+            <div class="vote-row">
               <button class="btn vote-btn">👍 Support</button>
+              <span class="vote-count">${complaint.votes || 0}</span>
+            </div>
+
+            <!-- COMMENT ROW -->
+            <div class="vote-row">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 Comment
               </a>
+              <span class="comment-count">${commentCount}</span>
             </div>
+
           </div>
 
           <div class="image">
@@ -111,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      /* ===== VOTE FUNCTION ===== */
+      /* ===== VOTE FUNCTION (UNCHANGED) ===== */
       const voteBtn = complaintBox.querySelector(".vote-btn");
       const voteCount = complaintBox.querySelector(".vote-count");
 
