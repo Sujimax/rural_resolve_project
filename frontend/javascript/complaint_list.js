@@ -44,14 +44,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       /* ===== STATUS ===== */
       const statusLower = (complaint.status || "pending").toLowerCase();
-      let statusClass = "status-pending";
       let statusText = "Pending";
 
       if (statusLower === "in progress") {
-        statusClass = "status-in-progress";
         statusText = "In Progress";
       } else if (statusLower === "resolved") {
-        statusClass = "status-resolved";
         statusText = "Resolved";
       }
 
@@ -60,6 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
+
             <h2 class="problem-title">Problem: ${complaint.problem_type}</h2>
 
             <p><strong>District:</strong> ${complaint.district}</p>
@@ -75,24 +73,20 @@ document.addEventListener("DOMContentLoaded", async () => {
               ${complaint.description || "No description provided"}
             </p>
 
-            <p>
-              <strong>Status:</strong>
-              <span class="${statusClass}">${statusText}</span>
-            </p>
+            <p><strong>Status:</strong> ${statusText}</p>
 
-            <!-- ✅ SUPPORT ROW -->
+            <!-- SUPPORT -->
             <div class="action-row">
-              <button class="btn vote-btn">👍 Support</button>
-              <span class="count-text">${complaint.votes || 0} 👍</span>
+              <span class="action-label">Support</span>
+              <span class="action-count">${complaint.votes || 0}</span>
             </div>
 
-            <!-- ✅ COMMENT ROW -->
+            <!-- COMMENT -->
             <div class="action-row">
-              <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
-                💬 Comment
-              </a>
-              <span class="count-text">${commentCount} 💬</span>
+              <span class="action-label">Comment</span>
+              <span class="action-count">${commentCount}</span>
             </div>
+
           </div>
 
           <div class="image">
@@ -100,31 +94,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
         </div>
       `;
-
-      /* ===== VOTE FUNCTION ===== */
-      const voteBtn = complaintBox.querySelector(".vote-btn");
-      const voteCountText = complaintBox.querySelector(".action-row .count-text");
-
-      voteBtn.addEventListener("click", async () => {
-        try {
-          const voteResponse = await fetch(
-            `${API_BASE_URL}/complaints/${complaint.id}/vote`,
-            {
-              method: "POST",
-              headers: { Authorization: `Bearer ${token}` }
-            }
-          );
-
-          if (!voteResponse.ok) throw new Error("Vote failed");
-
-          voteCountText.textContent =
-            parseInt(voteCountText.textContent) + 1 + " 👍";
-
-        } catch (err) {
-          console.error(err);
-          alert("Error voting. Please try again.");
-        }
-      });
 
       complaintSection.appendChild(complaintBox);
     }

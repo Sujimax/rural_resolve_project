@@ -30,22 +30,25 @@
 .comment-btn:hover {
   background-color: #0095d1;
 }
-
-/* SUPPORT / COMMENT ROW (SECOND IMAGE STYLE) */
+/* ACTION ROW (SUPPORT / COMMENT) */
 .action-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
-  max-width: 280px;
+  margin-top: 10px;
+  max-width: 260px;
 }
 
-/* COUNT TEXT (RIGHT SIDE) */
-.count-text {
+/* LEFT TEXT */
+.action-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+}
+
+/* RIGHT COUNT */
+.action-count {
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
