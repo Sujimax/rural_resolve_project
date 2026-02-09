@@ -53,6 +53,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         statusText = "Pending";
       }
 
+      // ===== COMMENT COUNT (NEW) =====
+      const commentCount =
+        complaint.comments_count ??
+        (Array.isArray(complaint.comments) ? complaint.comments.length : 0);
+
       const imageSrc = complaint.image_url
         ? complaint.image_url
         : "../images/icon1.png";
@@ -65,12 +70,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Village:</strong> ${complaint.village}</p>
             <p><strong>Address:</strong> ${complaint.address}</p>
             <p><strong>Description:</strong> ${complaint.description}</p>
-            <p><strong>Status:</strong> 
+
+            <p><strong>Status:</strong>
               <span class="${statusClass}">
                 ${statusText}
               </span>
             </p>
+
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
+            <p><strong>Comments:</strong> ${commentCount} 💬</p>
 
             <div class="action-section">
               <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">Edit</a>
