@@ -92,10 +92,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             </p>
 
             <p><strong>Votes:</strong>
-              <span class="vote-count">${complaint.votes || 0} 👍</span> 
+              <span class="vote-count">${complaint.votes || 0}</span> 
             </p>
 
-            <p><strong>Comments:</strong> ${commentCount} 💬</p>
+            <p><strong>Comments:</strong> ${commentCount}</p>
 
             <div class="vote-section">
               <button class="btn vote-btn">👍 Support</button>
