@@ -30,33 +30,37 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     complaintSection.innerHTML = "";
 
-    complaints.forEach((complaint) => {
+    for (const complaint of complaints) {
+
+      // ✅ COMMENT COUNT (SIMPLE & CORRECT)
+      let commentCount = 0;
+      try {
+        const cRes = await fetch(
+          `${API_BASE_URL}/complaints/${complaint.id}/comments`
+        );
+        if (cRes.ok) {
+          const comments = await cRes.json();
+          commentCount = comments.length;
+        }
+      } catch {
+        commentCount = 0;
+      }
+
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
       // ===== STATUS LOGIC =====
       const statusLower = (complaint.status || "pending").toLowerCase();
-      let statusClass;
-      let statusText;
+      let statusClass = "status-pending";
+      let statusText = "Pending";
 
-      if (statusLower === "pending") {
-        statusClass = "status-pending";
-        statusText = "Pending";
-      } else if (statusLower === "in progress") {
+      if (statusLower === "in progress") {
         statusClass = "status-in-progress";
         statusText = "In Progress";
       } else if (statusLower === "resolved") {
         statusClass = "status-resolved";
         statusText = "Resolved";
-      } else {
-        statusClass = "status-pending";
-        statusText = "Pending";
       }
-
-      // ===== COMMENT COUNT (NEW) =====
-      const commentCount =
-        complaint.comments_count ??
-        (Array.isArray(complaint.comments) ? complaint.comments.length : 0);
 
       const imageSrc = complaint.image_url
         ? complaint.image_url
@@ -72,9 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Description:</strong> ${complaint.description}</p>
 
             <p><strong>Status:</strong>
-              <span class="${statusClass}">
-                ${statusText}
-              </span>
+              <span class="${statusClass}">${statusText}</span>
             </p>
 
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
@@ -113,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
       complaintSection.appendChild(complaintBox);
-    });
+    }
 
   } catch (err) {
     console.error(err);
