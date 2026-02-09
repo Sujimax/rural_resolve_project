@@ -36,6 +36,6 @@ class ComplaintOut(BaseModel):
     phone: Optional[str] = None 
     image_url: Optional[str] = None
     email:Optional[str] = None
-    comments_count: int = 0  
+    comments_count: int
 
     model_config = {"from_attributes": True}

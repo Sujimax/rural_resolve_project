@@ -89,42 +89,27 @@ def get_all_complaints(db: Session = Depends(get_db)):
 
 
 # ================= GET MY COMPLAINTS =================
-@user_complaint.get("/me", response_model=List[ComplaintOut])
+@router.get("/complaints/me", response_model=list[ComplaintOut])
 def get_my_complaints(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user=Depends(get_current_user)
 ):
     complaints = (
-        db.query(Complaint)
+        db.query(
+            Complaint,
+            func.count(Comment.id).label("comments_count")
+        )
+        .outerjoin(Comment, Comment.complaint_id == Complaint.id)
         .filter(Complaint.user_id == current_user.id)
-        .order_by(Complaint.created_at.desc())
+        .group_by(Complaint.id)
         .all()
     )
 
+    # convert result properly
     result = []
-    for c in complaints:
-        comments_count = (
-            db.query(Comment)
-            .filter(Comment.complaint_id == c.id)
-            .count()
-        )
-
-        result.append(
-            ComplaintOut(
-                id=c.id,
-                user_id=c.user_id,
-                problem_type=c.problem_type,
-                description=c.description,
-                district=c.district,
-                village=c.village,
-                address=c.address,
-                votes=c.votes,
-                status=c.status,
-                created_at=c.created_at,
-                image_url=c.image_url,
-                comments_count=comments_count
-            )
-        )
+    for complaint, comments_count in complaints:
+        complaint.comments_count = comments_count
+        result.append(complaint)
 
     return result
 
