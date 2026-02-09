@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const voteEl = document.getElementById("vote");
   const problemImageEl = document.getElementById("problemImage");
 
+  const commentsHeading = document.getElementById("commentsHeading");
   const commentsContainer = document.getElementById("commentsContainer");
   const commentText = document.getElementById("commentText");
   const postBtn = document.getElementById("postComment");
@@ -26,26 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       userId = payload.user_id;
-    } catch (err) {
+    } catch {
       console.error("Invalid token");
     }
   }
 
-  /* ENABLE INPUT */
-  if (token && userId) {
-    commentText.disabled = false;
-    postBtn.disabled = false;
-  } else {
+  // ENABLE / DISABLE COMMENT INPUT
+  if (!token || !userId) {
     commentText.disabled = true;
     postBtn.disabled = true;
     commentsContainer.innerHTML = "<p>Please login to comment</p>";
   }
 
-  /* LOAD COMPLAINT */
+  // LOAD COMPLAINT
   async function loadComplaint() {
     try {
       const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}`);
-      if (!res.ok) throw new Error("Failed to load complaint");
+      if (!res.ok) throw new Error();
 
       const c = await res.json();
 
@@ -54,31 +52,30 @@ document.addEventListener("DOMContentLoaded", () => {
       villageEl.textContent = c.village;
       dateEl.textContent = new Date(c.created_at).toLocaleDateString();
       descriptionEl.textContent = c.description || "N/A";
-      voteEl.textContent = c.votes || "0 votes";
+      voteEl.textContent = c.votes || 0;
 
-      if (c.image_url) {
-        problemImageEl.src = c.image_url.startsWith("https")
-          ? c.image_url
-          : `${API_BASE_URL}/${c.image_url}`;
-      } else {
-        problemImageEl.src = "../images/icon1.png";
-      }
+      // ✅ COMMENT COUNT FROM BACKEND
+      commentsHeading.textContent = `Comments (${c.comments_count || 0})`;
 
-    } catch (err) {
-      console.error(err);
+      problemImageEl.src = c.image_url
+        ? c.image_url
+        : "../images/icon1.png";
+
+    } catch {
+      alert("Failed to load complaint");
     }
   }
 
-  /* LOAD COMMENTS */
+  // LOAD COMMENTS
   async function loadComments() {
     try {
-      const res = await fetch(
-        `${API_BASE_URL}/complaints/${complaintId}/comments`
-      );
-      if (!res.ok) throw new Error("Failed to load comments");
+      const res = await fetch(`${API_BASE_URL}/complaints/${complaintId}/comments`);
+      if (!res.ok) throw new Error();
 
       const comments = await res.json();
       commentsContainer.innerHTML = "";
+
+      commentsHeading.textContent = `Comments (${comments.length})`;
 
       if (comments.length === 0) {
         commentsContainer.innerHTML = "<p>No comments yet</p>";
@@ -90,82 +87,75 @@ document.addEventListener("DOMContentLoaded", () => {
         div.className = "comment-box";
 
         div.innerHTML = `
-          <h4><strong>User Name:</strong> ${c.user_name}</h4>
-          <p><strong>Comment:</strong> ${c.content}</p>
+          <h4>${c.user_name}</h4>
+          <p>${c.content}</p>
           <small>${new Date(c.created_at).toLocaleString()}</small>
-          ${userId === c.user_id
-            ? `<button class="delete-comment" data-id="${c.id}">Delete</button>`
-            : ""
+          ${
+            userId === c.user_id
+              ? `<button class="delete-comment" data-id="${c.id}">Delete</button>`
+              : ""
           }
         `;
 
         commentsContainer.appendChild(div);
       });
 
-    } catch (err) {
-      console.error(err);
+    } catch {
+      alert("Failed to load comments");
     }
   }
 
-  /* POST COMMENT */
+  // POST COMMENT
   postBtn.addEventListener("click", async () => {
     const content = commentText.value.trim();
     if (!content) return alert("Comment cannot be empty");
 
-    try {
-      const res = await fetch(
-        `${API_BASE_URL}/complaints/${complaintId}/comments`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            complaint_id: Number(complaintId),
-            content
-          })
-        }
-      );
+    const res = await fetch(
+      `${API_BASE_URL}/complaints/${complaintId}/comments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          complaint_id: Number(complaintId),
+          content
+        })
+      }
+    );
 
-      if (!res.ok) throw new Error("Failed to post comment");
-
+    if (res.ok) {
       commentText.value = "";
       loadComments();
-
-    } catch (err) {
-      alert(err.message);
+      loadComplaint(); // refresh count
+    } else {
+      alert("Failed to post comment");
     }
   });
 
-  /* DELETE COMMENT */
+  // DELETE COMMENT
   commentsContainer.addEventListener("click", async (e) => {
-    const clickedElement = e.target;
+    if (!e.target.classList.contains("delete-comment")) return;
 
-    const isDeleteButton = clickedElement.classList.contains("delete-comment");
-
-    if (isDeleteButton === false) {
-      return;
-    }
     const id = e.target.dataset.id;
     if (!confirm("Delete this comment?")) return;
 
-    try {
-      const res = await fetch(
-        `${API_BASE_URL}/complaints/comments/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+    const res = await fetch(
+      `${API_BASE_URL}/complaints/comments/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      }
+    );
 
-      if (!res.ok) throw new Error("Delete failed");
+    if (res.ok) {
       loadComments();
-
-    } catch (err) {
-      alert(err.message);
+      loadComplaint(); // refresh count
+    } else {
+      alert("Delete failed");
     }
   });
 

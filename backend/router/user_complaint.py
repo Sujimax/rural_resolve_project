@@ -8,9 +8,9 @@ from models.complaint_model import Complaint
 from models.comment_model import Comment
 from models.user_model import User
 from schemas.complaint_create import ComplaintUpdate, ComplaintOut
+from schemas.comment_create import CommentCreate, CommentOut 
 
 user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
-
 
 # ================= CREATE COMPLAINT =================
 @user_complaint.post("/", response_model=ComplaintOut)
@@ -30,13 +30,14 @@ def create_complaint(
         try:
             upload_result = cloudinary.uploader.upload(
                 image.file,
-                folder="complaints",
+                folder="complaints",       
                 public_id=f"user_{current_user.id}_{image.filename}",
                 resource_type="image"
             )
             image_url = upload_result["secure_url"]
-        except:
+        except Exception as e:
             raise HTTPException(status_code=500, detail="Image upload failed")
+
 
     complaint = Complaint(
         user_id=current_user.id,
@@ -45,15 +46,13 @@ def create_complaint(
         district=district,
         village=village,
         address=address,
-        image_url=image_url
+        image_url=image_url  
     )
 
     db.add(complaint)
     db.commit()
     db.refresh(complaint)
-
     return complaint
-
 
 # ================= GET ALL COMPLAINTS =================
 @user_complaint.get("/", response_model=List[ComplaintOut])
@@ -62,11 +61,7 @@ def get_all_complaints(db: Session = Depends(get_db)):
 
     result = []
     for c in complaints:
-        comments_count = (
-            db.query(Comment)
-            .filter(Comment.complaint_id == c.id)
-            .count()
-        )
+        user = db.query(User).filter(User.id == c.user_id).first()
 
         result.append(
             ComplaintOut(
@@ -76,42 +71,31 @@ def get_all_complaints(db: Session = Depends(get_db)):
                 description=c.description,
                 district=c.district,
                 village=c.village,
-                address=c.address,
+                address=c.address, 
                 votes=c.votes,
                 status=c.status,
                 created_at=c.created_at,
-                image_url=c.image_url,
-                comments_count=comments_count
+                user_name=user.name if user else None,
+                phone=user.phone if user else None,
+                email=user.email if user else None,
+                image_url=c.image_url
             )
         )
-
     return result
 
 
-# ================= GET MY COMPLAINTS =================
-@router.get("/complaints/me", response_model=list[ComplaintOut])
+# ================= GET MY COMPLAINTS (JWT REQUIRED) =================
+@user_complaint.get("/me", response_model=List[ComplaintOut])
 def get_my_complaints(
     db: Session = Depends(get_db),
-    current_user=Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
-    complaints = (
-        db.query(
-            Complaint,
-            func.count(Comment.id).label("comments_count")
-        )
-        .outerjoin(Comment, Comment.complaint_id == Complaint.id)
+    return (
+        db.query(Complaint)
         .filter(Complaint.user_id == current_user.id)
-        .group_by(Complaint.id)
+        .order_by(Complaint.created_at.desc())
         .all()
     )
-
-    # convert result properly
-    result = []
-    for complaint, comments_count in complaints:
-        complaint.comments_count = comments_count
-        result.append(complaint)
-
-    return result
 
 
 # ================= GET ONE COMPLAINT =================
@@ -121,6 +105,9 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
     if not complaint:
         raise HTTPException(status_code=404, detail="Complaint not found")
 
+    user = db.query(User).filter(User.id == complaint.user_id).first()
+
+    # ✅ COUNT COMMENTS (simple & clean)
     comments_count = (
         db.query(Comment)
         .filter(Comment.complaint_id == complaint.id)
@@ -138,8 +125,11 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
         votes=complaint.votes,
         status=complaint.status,
         created_at=complaint.created_at,
-        image_url=complaint.image_url,
-        comments_count=comments_count
+        comments_count=comments_count,   # ✅ HERE
+        user_name=user.name if user else None,
+        phone=user.phone if user else None,
+        email=user.email if user else None,
+        image_url=complaint.image_url
     )
 
 
