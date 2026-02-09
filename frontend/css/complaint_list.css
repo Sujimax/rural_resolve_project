@@ -1,49 +1,60 @@
-.btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-block;
-    text-decoration: none;
-    color: #fff;
-    margin-right: 10px;
+/* ================= VOTE / COMMENT SECTION ================= */
+
+.vote-section {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;   /* Support on top, Comment below */
+  gap: 12px;
+  align-items: flex-start;
 }
 
-/* VOTE BUTTON */
-.vote-btn {
-    background-color: #ff2a8d;
-}
-
-.vote-btn:hover {
-    background-color: #ff0062;
-    transform: scale(1.05);
-}
-
-/* COMMENT BUTTON */
-.comment-btn {
-    background-color: #00adf7;
-}
-
-.comment-btn:hover {
-    background-color: #0095d1;
-    transform: scale(1.05);
-}
-
-
-/* SUPPORT & COMMENT ROW ALIGNMENT */
-.action-row {
+/* Common button style */
+.vote-section .btn {
+  position: relative;
+  width: 220px;             /* same width as before */
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 12px;          /* space between button and number */
-  margin-top: 10px;
+  justify-content: center;
 }
 
-/* COUNT TEXT */
-.count-text {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
+/* Support button */
+.vote-btn {
+  background: #ff2d87;
+  color: #fff;
+}
+
+/* Comment button */
+.comment-btn {
+  background: #00a6ff;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ================= COUNT OUTSIDE THE BUTTON ================= */
+
+.vote-count,
+.comment-btn::after {
+  position: absolute;
+  right: -35px;          /* pushes count outside */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* Comment count from text "(2)" */
+.comment-btn::after {
+  content: attr(data-count);
+}
+
+/* Hide count text inside button visually */
+.vote-btn span {
+  display: none;
 }
