@@ -28,9 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (const complaint of complaints) {
       let commentCount = 0;
       try {
-        const cRes = await fetch(
-          `${API_BASE_URL}/complaints/${complaint.id}/comments`
-        );
+        const cRes = await fetch(`${API_BASE_URL}/complaints/${complaint.id}/comments`);
         if (cRes.ok) {
           const comments = await cRes.json();
           commentCount = comments.length;
@@ -61,21 +59,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
             <p><strong>Date:</strong> ${
-              complaint.created_at
-                ? new Date(complaint.created_at).toLocaleDateString()
-                : "N/A"
+              complaint.created_at ? new Date(complaint.created_at).toLocaleDateString() : "N/A"
             }</p>
             <p><strong>Description:</strong> ${complaint.description || "No description provided"}</p>
             <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
 
-            <!-- ✅ SUPPORT ROW -->
-            <div class="button-row">
+            <div class="vote-row">
               <button class="btn vote-btn">👍 Support</button>
               <span class="vote-count">${complaint.votes || 0}</span>
             </div>
 
-            <!-- ✅ COMMENT ROW -->
-            <div class="button-row">
+            <div class="comment-row">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">Comment</a>
               <span class="comment-count">${commentCount}</span>
             </div>
@@ -92,15 +86,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       voteBtn.addEventListener("click", async () => {
         try {
-          const voteResponse = await fetch(
-            `${API_BASE_URL}/complaints/${complaint.id}/vote`,
-            {
-              method: "POST",
-              headers: { Authorization: `Bearer ${token}` }
-            }
-          );
+          const voteResponse = await fetch(`${API_BASE_URL}/complaints/${complaint.id}/vote`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` }
+          });
 
           if (!voteResponse.ok) throw new Error("Vote failed");
+
           voteCount.textContent = parseInt(voteCount.textContent) + 1;
         } catch (err) {
           console.error(err);
