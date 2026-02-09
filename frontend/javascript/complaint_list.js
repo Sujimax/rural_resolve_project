@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
-
             <p><strong>Date:</strong>
               ${
                 complaint.created_at
@@ -89,19 +88,21 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!-- SUPPORT -->
-            <div class="action-row">
+            <!-- SUPPORT (same alignment style) -->
+            <p>
+              <strong>Support:</strong>
               <button class="btn vote-btn">👍 Support</button>
-              <span class="count-text">${complaint.votes || 0}</span>
-            </div>
+              <span class="vote-count">${complaint.votes || 0}</span>
+            </p>
 
-            <!-- COMMENT -->
-            <div class="action-row">
+            <!-- COMMENT (same alignment style) -->
+            <p>
+              <strong>Comment:</strong>
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 💬 Comment
               </a>
-              <span class="count-text">${commentCount}</span>
-            </div>
+              <span>${commentCount}</span>
+            </p>
           </div>
 
           <div class="image">
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       /* VOTE */
       const voteBtn = complaintBox.querySelector(".vote-btn");
-      const voteCount = complaintBox.querySelector(".action-row .count-text");
+      const voteCount = complaintBox.querySelector(".vote-count");
 
       voteBtn.addEventListener("click", async () => {
         try {
