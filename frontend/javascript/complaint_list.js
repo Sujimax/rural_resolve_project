@@ -81,14 +81,14 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!-- SUPPORT ROW -->
-            <div style="display:flex; justify-content:space-between; align-items:center;">
+            <!-- ✅ SUPPORT ROW -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
               <button class="btn vote-btn">👍 Support</button>
               <span class="vote-count">${complaint.votes || 0}</span>
             </div>
 
-            <!-- COMMENT ROW -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+            <!-- ✅ COMMENT ROW -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 Comment
               </a>
@@ -118,8 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           if (!voteResponse.ok) throw new Error("Vote failed");
 
-          voteCount.textContent =
-            parseInt(voteCount.textContent) + 1;
+          voteCount.textContent = parseInt(voteCount.textContent) + 1;
 
         } catch (err) {
           console.error(err);
