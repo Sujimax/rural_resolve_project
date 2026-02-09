@@ -2,7 +2,6 @@ import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const complaintSection = document.querySelector(".complaint-section");
-
   const token = localStorage.getItem("access_token");
 
   if (!token) {
@@ -13,14 +12,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const response = await fetch(`${API_BASE_URL}/complaints/`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch complaints");
-    }
+    if (!response.ok) throw new Error("Failed to fetch complaints");
 
     const complaints = await response.json();
     complaintSection.innerHTML = "";
@@ -32,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     for (const complaint of complaints) {
 
-      /* COMMENT COUNT */
+      /* ===== COMMENT COUNT ===== */
       let commentCount = 0;
       try {
         const cRes = await fetch(
@@ -47,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      /* STATUS */
+      /* ===== STATUS ===== */
       const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass = "status-pending";
       let statusText = "Pending";
@@ -60,9 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         statusText = "Resolved";
       }
 
-      const imageSrc = complaint.image_url
-        ? complaint.image_url
-        : "../images/icon1.png";
+      const imageSrc = complaint.image_url || "../images/icon1.png";
 
       complaintBox.innerHTML = `
         <div class="complaint-content">
@@ -71,12 +64,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
+
             <p><strong>Date:</strong>
-              ${
-                complaint.created_at
-                  ? new Date(complaint.created_at).toLocaleDateString()
-                  : "N/A"
-              }
+              ${complaint.created_at
+                ? new Date(complaint.created_at).toLocaleDateString()
+                : "N/A"}
             </p>
 
             <p><strong>Description:</strong>
@@ -88,21 +80,16 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!-- SUPPORT (same alignment style) -->
-            <p>
-              <strong>Support:</strong>
-              <button class="btn vote-btn">👍 Support</button>
-              <span class="vote-count">${complaint.votes || 0}</span>
-            </p>
+            <!-- ✅ COUNTS NEAR BUTTONS -->
+            <div class="vote-section">
+              <button class="btn vote-btn">
+                👍 Support (<span class="vote-count">${complaint.votes || 0}</span>)
+              </button>
 
-            <!-- COMMENT (same alignment style) -->
-            <p>
-              <strong>Comment:</strong>
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
-                💬 Comment
+                💬 Comment (${commentCount})
               </a>
-              <span>${commentCount}</span>
-            </p>
+            </div>
           </div>
 
           <div class="image">
@@ -111,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      /* VOTE */
+      /* ===== VOTE FUNCTION ===== */
       const voteBtn = complaintBox.querySelector(".vote-btn");
       const voteCount = complaintBox.querySelector(".vote-count");
 
@@ -121,17 +108,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             `${API_BASE_URL}/complaints/${complaint.id}/vote`,
             {
               method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
+              headers: { Authorization: `Bearer ${token}` }
             }
           );
 
           if (!voteResponse.ok) throw new Error("Vote failed");
 
-          voteCount.textContent = parseInt(voteCount.textContent) + 1;
-        } catch {
-          alert("Error voting");
+          voteCount.textContent =
+            parseInt(voteCount.textContent) + 1;
+
+        } catch (err) {
+          console.error(err);
+          alert("Error voting. Please try again.");
         }
       });
 
