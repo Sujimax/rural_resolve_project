@@ -67,8 +67,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
 
             <div class="action-section">
-              <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">✏️ Edit</a>
-              <button class="delete-btn" data-id="${complaint.id}">🗑️ Delete</button>
+              <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">Edit</a>
+              <button class="delete-btn" data-id="${complaint.id}">Delete</button>
             </div>
           </div>
 
