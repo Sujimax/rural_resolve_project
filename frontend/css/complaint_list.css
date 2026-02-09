@@ -33,16 +33,17 @@
 }
 
 
-/* alignment rows */
+/* SUPPORT & COMMENT ROW ALIGNMENT */
 .action-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 14px;
-  width: 260px;
+  gap: 12px;          /* space between button and number */
+  margin-top: 10px;
 }
 
-.count {
+/* COUNT TEXT */
+.count-text {
   font-size: 18px;
   font-weight: bold;
+  color: #333;
 }
