@@ -11,12 +11,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
+    // Fetch all complaints of the user
     const response = await fetch(`${API_BASE_URL}/complaints/me`, {
       headers: { Authorization: `Bearer ${token}` }
     });
+
     if (!response.ok) throw new Error("Failed to fetch complaints");
 
     const complaints = await response.json();
+
     if (complaints.length === 0) {
       complaintSection.innerHTML = "<p>No complaints submitted by you.</p>";
       return;
@@ -25,17 +28,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     complaintSection.innerHTML = "";
 
     for (const complaint of complaints) {
-      // Get comment count
+      // Count comments
       let commentCount = 0;
       try {
         const cRes = await fetch(`${API_BASE_URL}/complaints/${complaint.id}/comments`);
         if (cRes.ok) commentCount = (await cRes.json()).length;
-      } catch { commentCount = 0; }
+      } catch {
+        commentCount = 0;
+      }
 
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      // Status logic
+      // Status styling
       const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass = "status-pending";
       let statusText = "Pending";
@@ -44,13 +49,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const imageSrc = complaint.image_url || "../images/icon1.png";
 
-      // Show edited date only if updated_at !== created_at
+      // Determine if complaint was edited
       let editedText = "";
       if (complaint.updated_at && complaint.updated_at !== complaint.created_at) {
         const updatedDate = new Date(complaint.updated_at);
-        editedText = `<p><em>Edited on: ${updatedDate.toLocaleString()}</em></p>`;
+        editedText = `<p style="font-style: italic; color: #555; margin: 5px 0;">Edited • ${updatedDate.toLocaleString()}</p>`;
       }
 
+      // Populate complaint box
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
