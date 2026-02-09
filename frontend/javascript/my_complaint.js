@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     for (const complaint of complaints) {
 
-      // ✅ COMMENT COUNT (SIMPLE & CORRECT)
+      // ✅ COMMENT COUNT
       let commentCount = 0;
       try {
         const cRes = await fetch(
@@ -66,6 +66,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? complaint.image_url
         : "../images/icon1.png";
 
+      // ===== EDITED DATE =====
+      let editedText = "";
+      if (complaint.updated_at && complaint.updated_at !== complaint.created_at) {
+        const updatedDate = new Date(complaint.updated_at);
+        editedText = `<p><em>Edited on: ${updatedDate.toLocaleString()}</em></p>`;
+      }
+
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
@@ -78,6 +85,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Status:</strong>
               <span class="${statusClass}">${statusText}</span>
             </p>
+
+            ${editedText} <!-- display edited date -->
 
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
             <p><strong>Comments:</strong> ${commentCount} 💬</p>

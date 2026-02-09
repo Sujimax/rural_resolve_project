@@ -18,6 +18,7 @@ class Complaint(Base):
     votes = Column(Integer, default=0)
     status = Column(String, default="pending")
     created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     user = relationship("User", back_populates="complaints")
     
