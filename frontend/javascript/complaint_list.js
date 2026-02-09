@@ -80,20 +80,16 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!-- ✅ SUPPORT (LINE 1) -->
-            <div class="vote-row">
-              <button class="btn vote-btn">👍 Support</button>
-              <span class="count-text">${complaint.votes || 0}</span>
-            </div>
+            <!-- ✅ COUNTS NEAR BUTTONS -->
+            <div class="vote-section">
+              <button class="btn vote-btn">
+                👍 Support (<span class="vote-count">${complaint.votes || 0}</span>)
+              </button>
 
-            <!-- ✅ COMMENT (LINE 2) -->
-            <div class="vote-row">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
-                💬 Comment
+                💬 Comment (${commentCount})
               </a>
-              <span class="count-text">${commentCount}</span>
             </div>
-
           </div>
 
           <div class="image">
@@ -104,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       /* ===== VOTE FUNCTION ===== */
       const voteBtn = complaintBox.querySelector(".vote-btn");
-      const voteCountText = complaintBox.querySelector(".vote-row .count-text");
+      const voteCount = complaintBox.querySelector(".vote-count");
 
       voteBtn.addEventListener("click", async () => {
         try {
@@ -118,8 +114,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           if (!voteResponse.ok) throw new Error("Vote failed");
 
-          voteCountText.textContent =
-            parseInt(voteCountText.textContent) + 1;
+          voteCount.textContent =
+            parseInt(voteCount.textContent) + 1;
 
         } catch (err) {
           console.error(err);
