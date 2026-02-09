@@ -36,7 +36,7 @@
   text-decoration: none;
 }
 
-/* ================= COUNT OUTSIDE THE BUTTON ================= */
+/*  COUNT OUTSIDE THE BUTTON*/
 
 .vote-count,
 .comment-btn::after {
