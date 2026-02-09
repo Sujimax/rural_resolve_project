@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     for (const complaint of complaints) {
-
       let commentCount = 0;
       try {
         const cRes = await fetch(
@@ -58,43 +57,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
-
             <h2 class="problem-title">Problem: ${complaint.problem_type}</h2>
-
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
-
-            <p><strong>Date:</strong>
-              ${
-                complaint.created_at
-                  ? new Date(complaint.created_at).toLocaleDateString()
-                  : "N/A"
-              }
-            </p>
-
-            <p><strong>Description:</strong>
-              ${complaint.description || "No description provided"}
-            </p>
-
-            <p>
-              <strong>Status:</strong>
-              <span class="${statusClass}">${statusText}</span>
-            </p>
+            <p><strong>Date:</strong> ${
+              complaint.created_at
+                ? new Date(complaint.created_at).toLocaleDateString()
+                : "N/A"
+            }</p>
+            <p><strong>Description:</strong> ${complaint.description || "No description provided"}</p>
+            <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
 
             <!-- ✅ SUPPORT ROW -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+            <div class="button-row">
               <button class="btn vote-btn">👍 Support</button>
               <span class="vote-count">${complaint.votes || 0}</span>
             </div>
 
             <!-- ✅ COMMENT ROW -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-              <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
-                Comment
-              </a>
-              <span>${commentCount}</span>
+            <div class="button-row">
+              <a href="comment.html?id=${complaint.id}" class="btn comment-btn">Comment</a>
+              <span class="comment-count">${commentCount}</span>
             </div>
-
           </div>
 
           <div class="image">
@@ -117,9 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           );
 
           if (!voteResponse.ok) throw new Error("Vote failed");
-
           voteCount.textContent = parseInt(voteCount.textContent) + 1;
-
         } catch (err) {
           console.error(err);
           alert("Error voting. Please try again.");
