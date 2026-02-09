@@ -31,3 +31,18 @@
     background-color: #0095d1;
     transform: scale(1.05);
 }
+
+/* ROW FOR BUTTON + COUNT */
+.action-row {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* COUNT STYLE */
+.count-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 12px;
+  color: #333;
+}

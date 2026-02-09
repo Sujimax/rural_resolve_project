@@ -2,6 +2,7 @@ import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const complaintSection = document.querySelector(".complaint-section");
+
   const token = localStorage.getItem("access_token");
 
   if (!token) {
@@ -12,10 +13,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const response = await fetch(`${API_BASE_URL}/complaints/`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
-    if (!response.ok) throw new Error("Failed to fetch complaints");
+    if (!response.ok) {
+      throw new Error("Failed to fetch complaints");
+    }
 
     const complaints = await response.json();
     complaintSection.innerHTML = "";
@@ -27,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     for (const complaint of complaints) {
 
-      /* ===== COMMENT COUNT ===== */
+      /* ===== COMMENT COUNT (SIMPLE & SAFE) ===== */
       let commentCount = 0;
       try {
         const cRes = await fetch(
@@ -37,12 +42,14 @@ document.addEventListener("DOMContentLoaded", async () => {
           const comments = await cRes.json();
           commentCount = comments.length;
         }
-      } catch {}
+      } catch {
+        commentCount = 0;
+      }
 
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      /* ===== STATUS ===== */
+      /* ===== STATUS LOGIC ===== */
       const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass = "status-pending";
       let statusText = "Pending";
@@ -55,7 +62,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         statusText = "Resolved";
       }
 
-      const imageSrc = complaint.image_url || "../images/icon1.png";
+      const imageSrc = complaint.image_url
+        ? complaint.image_url
+        : "../images/icon1.png";
 
       complaintBox.innerHTML = `
         <div class="complaint-content">
@@ -66,9 +75,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Village:</strong> ${complaint.village}</p>
 
             <p><strong>Date:</strong>
-              ${complaint.created_at
-                ? new Date(complaint.created_at).toLocaleDateString()
-                : "N/A"}
+              ${
+                complaint.created_at
+                  ? new Date(complaint.created_at).toLocaleDateString()
+                  : "N/A"
+              }
             </p>
 
             <p><strong>Description:</strong>
@@ -80,18 +91,18 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!-- ✅ SUPPORT LINE -->
-            <div class="vote-section">
+            <!-- SUPPORT ROW -->
+            <div class="action-row">
               <button class="btn vote-btn">👍 Support</button>
-              <span class="vote-count">${complaint.votes || 0}</span>
+              <span class="count-text">${complaint.votes || 0}</span>
             </div>
 
-            <!-- ✅ COMMENT LINE -->
-            <div class="vote-section">
+            <!-- COMMENT ROW -->
+            <div class="action-row">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 💬 Comment
               </a>
-              <span class="comment-count">${commentCount}</span>
+              <span class="count-text">${commentCount}</span>
             </div>
           </div>
 
@@ -103,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       /* ===== VOTE FUNCTION ===== */
       const voteBtn = complaintBox.querySelector(".vote-btn");
-      const voteCount = complaintBox.querySelector(".vote-count");
+      const voteCount = complaintBox.querySelector(".count-text");
 
       voteBtn.addEventListener("click", async () => {
         try {
@@ -111,14 +122,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             `${API_BASE_URL}/complaints/${complaint.id}/vote`,
             {
               method: "POST",
-              headers: { Authorization: `Bearer ${token}` }
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
             }
           );
 
-          if (!voteResponse.ok) throw new Error("Vote failed");
+          if (!voteResponse.ok) {
+            throw new Error("Vote failed");
+          }
 
-          voteCount.textContent =
-            parseInt(voteCount.textContent) + 1;
+          voteCount.textContent = parseInt(voteCount.textContent) + 1;
 
         } catch (err) {
           console.error(err);
