@@ -142,9 +142,13 @@ def update_complaint(
     complaint.district = updated.district
     complaint.village = updated.village
     complaint.address = updated.address
+    complaint.updated_at = datetime.utcnow()  # <-- set updated time
 
     db.commit()
-    return {"message": "Complaint updated successfully"}
+    db.refresh(complaint)  # refresh to get updated fields
+
+    return complaint  # <-- return updated complaint object
+
 
 
 # ================= DELETE COMPLAINT (OWNER ONLY) =================

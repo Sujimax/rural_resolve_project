@@ -3,6 +3,7 @@ import API_BASE_URL from "./config.js";
 document.addEventListener("DOMContentLoaded", async () => {
   const complaintSection = document.querySelector(".complaint-section");
 
+  // ================= AUTH CHECK =================
   const token = localStorage.getItem("access_token");
   if (!token) {
     alert("Please login first");
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
+    // ================= FETCH COMPLAINTS =================
     const response = await fetch(`${API_BASE_URL}/complaints/me`, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -57,10 +59,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? complaint.image_url
         : "../images/icon1.png";
 
+      // ===== COMPLAINT HTML =====
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
             <h2 class="problem-title">Problem: ${complaint.problem_type}</h2>
+            <p><strong>Date:</strong>
+              ${
+                complaint.created_at
+                  ? new Date(complaint.created_at).toLocaleDateString()
+                  : "N/A"
+              }
+              ${
+                complaint.updated_at
+                  ? ` | <span class="edited">Edited: ${new Date(complaint.updated_at).toLocaleDateString()}</span>`
+                  : ""
+              }
+            </p>
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
             <p><strong>Address:</strong> ${complaint.address}</p>
@@ -84,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      // DELETE complaint
+      // ===== DELETE COMPLAINT =====
       complaintBox
         .querySelector(".delete-btn")
         .addEventListener("click", async () => {

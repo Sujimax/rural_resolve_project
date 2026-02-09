@@ -18,7 +18,7 @@ class Complaint(Base):
     votes = Column(Integer, default=0)
     status = Column(String, default="pending")
     created_at = Column(DateTime, default=datetime.utcnow)
-    
+    updated_at = Column(DateTime, default=None, nullable=True)
     user = relationship("User", back_populates="complaints")
     
     comments = relationship("Comment", back_populates="complaint", cascade="all, delete-orphan")
