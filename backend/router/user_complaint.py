@@ -134,7 +134,7 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
 
 
 # ================= UPDATE COMPLAINT (OWNER ONLY) =================
-@user_complaint.put("/{id}", response_model=ComplaintOut)
+@user_complaint.put("/{id}")
 def update_complaint(
     id: int,
     updated: ComplaintUpdate,
@@ -150,11 +150,10 @@ def update_complaint(
     complaint.district = updated.district
     complaint.village = updated.village
     complaint.address = updated.address
-    complaint.updated_at = datetime.utcnow()  # set updated date
 
     db.commit()
-    db.refresh(complaint)
-    return complaint
+    return {"message": "Complaint updated successfully"}
+
 
 # ================= DELETE COMPLAINT (OWNER ONLY) =================
 @user_complaint.delete("/{id}")

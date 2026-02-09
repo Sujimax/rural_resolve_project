@@ -2,8 +2,8 @@ import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const complaintSection = document.querySelector(".complaint-section");
-  const token = localStorage.getItem("access_token");
 
+  const token = localStorage.getItem("access_token");
   if (!token) {
     alert("Please login first");
     window.location.href = "login.html";
@@ -11,12 +11,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    // Fetch all complaints of the user
     const response = await fetch(`${API_BASE_URL}/complaints/me`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
-    if (!response.ok) throw new Error("Failed to fetch complaints");
+    if (!response.ok) {
+      throw new Error("Failed to fetch complaints");
+    }
 
     const complaints = await response.json();
 
@@ -28,11 +31,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     complaintSection.innerHTML = "";
 
     for (const complaint of complaints) {
-      // Count comments
+
+      // ✅ COMMENT COUNT
       let commentCount = 0;
       try {
-        const cRes = await fetch(`${API_BASE_URL}/complaints/${complaint.id}/comments`);
-        if (cRes.ok) commentCount = (await cRes.json()).length;
+        const cRes = await fetch(
+          `${API_BASE_URL}/complaints/${complaint.id}/comments`
+        );
+        if (cRes.ok) {
+          const comments = await cRes.json();
+          commentCount = comments.length;
+        }
       } catch {
         commentCount = 0;
       }
@@ -40,23 +49,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      // Status styling
+      // ===== STATUS LOGIC =====
       const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass = "status-pending";
       let statusText = "Pending";
-      if (statusLower === "in progress") { statusClass = "status-in-progress"; statusText = "In Progress"; }
-      else if (statusLower === "resolved") { statusClass = "status-resolved"; statusText = "Resolved"; }
 
-      const imageSrc = complaint.image_url || "../images/icon1.png";
+      if (statusLower === "in progress") {
+        statusClass = "status-in-progress";
+        statusText = "In Progress";
+      } else if (statusLower === "resolved") {
+        statusClass = "status-resolved";
+        statusText = "Resolved";
+      }
 
-      // Determine if complaint was edited
+      const imageSrc = complaint.image_url
+        ? complaint.image_url
+        : "../images/icon1.png";
+
+      // ===== EDITED DATE =====
       let editedText = "";
       if (complaint.updated_at && complaint.updated_at !== complaint.created_at) {
         const updatedDate = new Date(complaint.updated_at);
-        editedText = `<p style="font-style: italic; color: #555; margin: 5px 0;">Edited • ${updatedDate.toLocaleString()}</p>`;
+        editedText = `<p><em>Edited on: ${updatedDate.toLocaleString()}</em></p>`;
       }
 
-      // Populate complaint box
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
@@ -66,8 +82,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Address:</strong> ${complaint.address}</p>
             <p><strong>Description:</strong> ${complaint.description}</p>
 
-            <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
-            ${editedText}
+            <p><strong>Status:</strong>
+              <span class="${statusClass}">${statusText}</span>
+            </p>
+
+            ${editedText} <!-- display edited date -->
 
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
             <p><strong>Comments:</strong> ${commentCount} 💬</p>
@@ -84,16 +103,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      // Delete button
-      complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
-        if (!confirm("Do you want to delete this complaint?")) return;
-        const res = await fetch(`${API_BASE_URL}/complaints/${complaint.id}`, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` }
+      // DELETE complaint
+      complaintBox
+        .querySelector(".delete-btn")
+        .addEventListener("click", async () => {
+          if (!confirm("Do you want to delete this complaint?")) return;
+
+          const res = await fetch(`${API_BASE_URL}/complaints/${complaint.id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          if (res.ok) {
+            complaintBox.remove();
+          } else {
+            alert("Failed to delete complaint");
+          }
         });
-        if (res.ok) complaintBox.remove();
-        else alert("Failed to delete complaint");
-      });
 
       complaintSection.appendChild(complaintBox);
     }
