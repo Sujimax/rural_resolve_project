@@ -49,15 +49,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   const complaintImageEl = document.getElementById("complaintImage");
   const deleteBtn = document.getElementById("deleteComplaint");
 
+  // ✅ FIXED STATUS BADGE (TITLE CASE)
   function updateStatusBadge(status) {
     currentStatusEl.className = "status-badge";
+
     const s = (status || "pending").toLowerCase();
 
-    if (s === "in progress") currentStatusEl.classList.add("status-in-progress");
-    else if (s === "resolved") currentStatusEl.classList.add("status-resolved");
-    else currentStatusEl.classList.add("status-pending");
-
-    currentStatusEl.textContent = s.charAt(0).toUpperCase() + s.slice(1);
+    if (s === "in progress") {
+      currentStatusEl.classList.add("status-in-progress");
+      currentStatusEl.textContent = "In Progress";
+    } else if (s === "resolved") {
+      currentStatusEl.classList.add("status-resolved");
+      currentStatusEl.textContent = "Resolved";
+    } else {
+      currentStatusEl.classList.add("status-pending");
+      currentStatusEl.textContent = "Pending";
+    }
   }
 
   async function fetchComplaint() {
@@ -90,7 +97,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // ✅ EMAILJS FIXED HERE
   updateStatusBtn.addEventListener("click", async () => {
     const newStatus = statusSelect.value;
 
@@ -150,9 +156,3 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   fetchComplaint();
 });
-
-
-
-
-
-
