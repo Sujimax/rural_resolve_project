@@ -80,15 +80,18 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!-- ✅ COUNTS NEAR BUTTONS -->
+            <!-- ✅ SUPPORT LINE -->
             <div class="vote-section">
-              <button class="btn vote-btn">
-                👍 Support (<span class="vote-count">${complaint.votes || 0}</span>)
-              </button>
+              <button class="btn vote-btn">👍 Support</button>
+              <span class="vote-count">${complaint.votes || 0}</span>
+            </div>
 
+            <!-- ✅ COMMENT LINE -->
+            <div class="vote-section">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
-                💬 Comment (${commentCount})
+                💬 Comment
               </a>
+              <span class="comment-count">${commentCount}</span>
             </div>
           </div>
 
