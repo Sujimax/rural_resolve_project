@@ -34,17 +34,23 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
+      // ===== STATUS LOGIC =====
       const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass;
+      let statusText;
 
       if (statusLower === "pending") {
         statusClass = "status-pending";
+        statusText = "Pending";
       } else if (statusLower === "in progress") {
         statusClass = "status-in-progress";
+        statusText = "In Progress";
       } else if (statusLower === "resolved") {
         statusClass = "status-resolved";
+        statusText = "Resolved";
       } else {
         statusClass = "status-pending";
+        statusText = "Pending";
       }
 
       const imageSrc = complaint.image_url
@@ -61,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Description:</strong> ${complaint.description}</p>
             <p><strong>Status:</strong> 
               <span class="${statusClass}">
-                ${complaint.status || "Pending"}
+                ${statusText}
               </span>
             </p>
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
