@@ -2,7 +2,6 @@ import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const complaintSection = document.querySelector(".complaint-section");
-
   const token = localStorage.getItem("access_token");
 
   if (!token) {
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     for (const complaint of complaints) {
 
-      /* ===== COMMENT COUNT (SIMPLE & SAFE) ===== */
+      /* ===== COMMENT COUNT ===== */
       let commentCount = 0;
       try {
         const cRes = await fetch(
@@ -49,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      /* ===== STATUS LOGIC ===== */
+      /* ===== STATUS ===== */
       const statusLower = (complaint.status || "pending").toLowerCase();
       let statusClass = "status-pending";
       let statusText = "Pending";
@@ -62,9 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         statusText = "Resolved";
       }
 
-      const imageSrc = complaint.image_url
-        ? complaint.image_url
-        : "../images/icon1.png";
+      const imageSrc = complaint.image_url || "../images/icon1.png";
 
       complaintBox.innerHTML = `
         <div class="complaint-content">
@@ -94,7 +91,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             <!-- SUPPORT ROW -->
             <div class="action-row">
               <button class="btn vote-btn">👍 Support</button>
-              <span class="count-text">${complaint.votes || 0}</span>
+              <span class="count-text support-count">
+                ${complaint.votes || 0}
+              </span>
             </div>
 
             <!-- COMMENT ROW -->
@@ -102,7 +101,9 @@ document.addEventListener("DOMContentLoaded", async () => {
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 💬 Comment
               </a>
-              <span class="count-text">${commentCount}</span>
+              <span class="count-text comment-count">
+                ${commentCount}
+              </span>
             </div>
           </div>
 
@@ -112,9 +113,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      /* ===== VOTE FUNCTION ===== */
+      /* ===== SUPPORT (VOTE) ===== */
       const voteBtn = complaintBox.querySelector(".vote-btn");
-      const voteCount = complaintBox.querySelector(".count-text");
+      const supportCount = complaintBox.querySelector(".support-count");
 
       voteBtn.addEventListener("click", async () => {
         try {
@@ -132,7 +133,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             throw new Error("Vote failed");
           }
 
-          voteCount.textContent = parseInt(voteCount.textContent) + 1;
+          supportCount.textContent =
+            parseInt(supportCount.textContent) + 1;
 
         } catch (err) {
           console.error(err);

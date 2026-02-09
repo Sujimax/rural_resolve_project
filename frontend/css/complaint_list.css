@@ -32,17 +32,17 @@
     transform: scale(1.05);
 }
 
-/* ROW FOR BUTTON + COUNT */
+
+/* alignment rows */
 .action-row {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 14px;
+  width: 260px;
 }
 
-/* COUNT STYLE */
-.count-text {
-  font-size: 16px;
+.count {
+  font-size: 18px;
   font-weight: bold;
-  margin-left: 12px;
-  color: #333;
 }
