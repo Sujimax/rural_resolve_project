@@ -30,48 +30,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     complaintSection.innerHTML = "";
 
-    for (const complaint of complaints) {
-
-      // ✅ COMMENT COUNT
-      let commentCount = 0;
-      try {
-        const cRes = await fetch(
-          `${API_BASE_URL}/complaints/${complaint.id}/comments`
-        );
-        if (cRes.ok) {
-          const comments = await cRes.json();
-          commentCount = comments.length;
-        }
-      } catch {
-        commentCount = 0;
-      }
-
+    complaints.forEach((complaint) => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
       // ===== STATUS LOGIC =====
       const statusLower = (complaint.status || "pending").toLowerCase();
-      let statusClass = "status-pending";
-      let statusText = "Pending";
+      let statusClass;
+      let statusText;
 
-      if (statusLower === "in progress") {
+      if (statusLower === "pending") {
+        statusClass = "status-pending";
+        statusText = "Pending";
+      } else if (statusLower === "in progress") {
         statusClass = "status-in-progress";
         statusText = "In Progress";
       } else if (statusLower === "resolved") {
         statusClass = "status-resolved";
         statusText = "Resolved";
+      } else {
+        statusClass = "status-pending";
+        statusText = "Pending";
       }
 
       const imageSrc = complaint.image_url
         ? complaint.image_url
         : "../images/icon1.png";
-
-      // ===== EDITED DATE =====
-      let editedText = "";
-      if (complaint.updated_at && complaint.updated_at !== complaint.created_at) {
-        const updatedDate = new Date(complaint.updated_at);
-        editedText = `<p><em>Edited on: ${updatedDate.toLocaleString()}</em></p>`;
-      }
 
       complaintBox.innerHTML = `
         <div class="complaint-content">
@@ -81,15 +65,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Village:</strong> ${complaint.village}</p>
             <p><strong>Address:</strong> ${complaint.address}</p>
             <p><strong>Description:</strong> ${complaint.description}</p>
-
-            <p><strong>Status:</strong>
-              <span class="${statusClass}">${statusText}</span>
+            <p><strong>Status:</strong> 
+              <span class="${statusClass}">
+                ${statusText}
+              </span>
             </p>
-
-            ${editedText} <!-- display edited date -->
-
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
-            <p><strong>Comments:</strong> ${commentCount} 💬</p>
 
             <div class="action-section">
               <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">Edit</a>
@@ -124,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
       complaintSection.appendChild(complaintBox);
-    }
+    });
 
   } catch (err) {
     console.error(err);

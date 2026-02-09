@@ -107,13 +107,6 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.id == complaint.user_id).first()
 
-    # ✅ COUNT COMMENTS (simple & clean)
-    comments_count = (
-        db.query(Comment)
-        .filter(Comment.complaint_id == complaint.id)
-        .count()
-    )
-
     return ComplaintOut(
         id=complaint.id,
         user_id=complaint.user_id,
@@ -125,7 +118,6 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
         votes=complaint.votes,
         status=complaint.status,
         created_at=complaint.created_at,
-        comments_count=comments_count,   # ✅ HERE
         user_name=user.name if user else None,
         phone=user.phone if user else None,
         email=user.email if user else None,

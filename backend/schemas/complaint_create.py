@@ -32,7 +32,6 @@ class ComplaintOut(BaseModel):
     votes: int
     status: str
     created_at: datetime
-    updated_at: datetime = None
     comments_count: int 
     user_name: Optional[str] = None  
     phone: Optional[str] = None 
