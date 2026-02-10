@@ -2,14 +2,15 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rural Resolve</title>
-  <link rel="icon" href="../images/bgi.png" alt="Village website">
-  <link rel="stylesheet" href="../css/navbar.css">
-  <link rel="stylesheet" href="../css/dash_page.css">
+
+  <link rel="icon" href="../images/bgi.png" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/dash_page.css" />
+
   <style>
-    /* Navbar right additions */
     .nav-right {
       display: flex;
       align-items: center;
@@ -29,6 +30,8 @@
 </head>
 
 <body>
+
+  <!-- ================= NAVBAR ================= -->
   <header>
     <nav class="navbar">
 
@@ -38,20 +41,18 @@
           <img src="../images/bgi.png" alt="Logo">
           <h1 class="page-title">Rural Resolve</h1>
         </div>
-
-        <!-- MENU BUTTON (JS BASED) -->
         <button id="menuBtn" class="hamburger">☰</button>
       </div>
 
-      <!-- CENTER LINKS -->
+      <!-- CENTER -->
       <ul class="nav-links">
-        <li><a href="dashboard.html" class="active"> Home</a></li>
+        <li><a href="dashboard.html" class="active">Home</a></li>
         <li><a href="addcomplaint.html">Add Complaint</a></li>
-        <li><a href="my_complaint.html"> My Complaint</a></li>
+        <li><a href="my_complaint.html">My Complaint</a></li>
         <li><a href="complaint_list.html">Complaint List</a></li>
       </ul>
 
-      <!-- RIGHT LINKS -->
+      <!-- RIGHT -->
       <div class="nav-right">
         <span class="welcome-user" id="welcomeUser">Welcome, User</span>
         <div class="notification">🔔</div>
@@ -61,79 +62,87 @@
     </nav>
   </header>
 
-  <!-- Hero Section -->
+  <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="hero-container">
+
       <div class="hero-left">
         <img src="../images/icon1.png" alt="Village illustration">
       </div>
+
       <div class="hero-right">
         <h1>
           <span class="normal-text">Welcome to </span>
           <span class="gradient-text">Rural Resolve</span>
         </h1>
         <p>Empowering villages through digital complaint management and civic transparency.</p>
+
         <div class="hero-buttons">
           <a href="addcomplaint.html"><button>Add Complaint</button></a>
           <a href="my_complaint.html"><button>My Complaints</button></a>
         </div>
       </div>
+
     </div>
   </section>
 
-  <!-- Info Sections -->
+  <!-- ================= INFO ================= -->
   <h2>Guidelines for how to use this Website</h2>
-  <section id="add-complaint" class="info-section">
-    <h3> Add a Complaint</h3>
+
+  <section class="info-section">
+    <h3>Add a Complaint</h3>
     <ol>
-      <li><strong>Upload a Photo:</strong> Add a clear image related to your issue (optional but useful).</li>
-      <li><strong>Enter Problem Description:</strong> Explain your issue clearly and concisely.</li>
-      <li><strong>Provide Location:</strong> Mention the exact place where the issue occurs.</li>
-      <li><strong>Mention Year of Problem:</strong> State when the problem started, if it's old.</li>
-      <li><strong>Submit Complaint:</strong> Click <b>Submit</b> to send your complaint to authorities.</li>
+      <li><strong>Upload a Photo:</strong> Add a clear image (optional).</li>
+      <li><strong>Describe Issue:</strong> Explain clearly.</li>
+      <li><strong>Provide Location:</strong> Mention exact place.</li>
+      <li><strong>Mention Year:</strong> If problem is old.</li>
+      <li><strong>Submit:</strong> Click submit.</li>
     </ol>
   </section>
 
-  <section id="view-complaint" class="info-section">
-    <h3> View Complaint List</h3>
+  <section class="info-section">
+    <h3>View Complaint List</h3>
     <ol>
-      <li><strong>Access List:</strong> View all complaints submitted by users.</li>
-      <li><strong>Search Complaint:</strong> Find a complaint using name or ID.</li>
-      <li><strong>Check Details:</strong> Read updates and status from authorities.</li>
+      <li>View all complaints</li>
+      <li>Search using ID or name</li>
+      <li>Check status updates</li>
     </ol>
   </section>
 
-  <section id="check-complaint" class="info-section">
-    <h3> Check Complaint Status</h3>
+  <section class="info-section">
+    <h3>Check Complaint Status</h3>
     <ol>
-      <li><strong>Enter Complaint ID:</strong> Enter your complaint ID for updates.</li>
-      <li><strong>View Status:</strong> See if it’s <b>Pending</b>, <b>In Progress</b>, or <b>Resolved</b>.</li>
+      <li>Enter Complaint ID</li>
+      <li>View Pending / In Progress / Resolved</li>
     </ol>
   </section>
 
-  <!-- Footer -->
+  <!-- ================= FOOTER ================= -->
   <footer>
     <p>&copy; 2025 Rural Resolve | Empowering Villages Digitally</p>
   </footer>
 
+  <!-- ================= SCRIPTS ================= -->
   <script src="../javascript/navbar.js"></script>
+
   <script>
-    // =================== SHOW USER NAME ===================
+    // ===== SHOW USER NAME FROM JWT (SIMPLE WAY) =====
     document.addEventListener("DOMContentLoaded", () => {
       const welcomeUser = document.getElementById("welcomeUser");
       const token = localStorage.getItem("access_token");
 
-      if (token) {
-        try {
-          const payload = JSON.parse(atob(token.split(".")[1]));
-          const userName = payload.name || "User";
-          welcomeUser.textContent = `Welcome, ${userName}`;
-        } catch (err) {
-          console.error("Invalid token", err);
-        }
+      if (!token) return;
+
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const name = payload.name || "User";
+        welcomeUser.textContent = `Welcome, ${name}`;
+      } catch (err) {
+        console.error("Invalid token");
+        welcomeUser.textContent = "Welcome, User";
       }
     });
   </script>
-</body>
 
+</body>
 </html>

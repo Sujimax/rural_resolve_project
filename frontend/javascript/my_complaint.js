@@ -47,8 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="complaint-content">
           <div class="details">
             <h2 class="problem-title">
-              Complaint ID: #${complaint.id}<br>
-              Problem: ${complaint.problem_type}
+              Problem: ${complaint.problem_type}   Complaint ID: ${complaint.id}
             </h2>
 
             <p><strong>Date:</strong> ${new Date(complaint.created_at).toLocaleDateString()}</p>
