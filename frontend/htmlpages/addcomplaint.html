@@ -40,10 +40,8 @@
   </header>
 
 
-
 <h2>Add Complaint</h2>
 
-<div class="class-name">
 <form id="complaintForm" enctype="multipart/form-data">
 
   <label>Problem Type</label>
@@ -55,14 +53,6 @@
     <option value="Waste Management">Waste Management</option>
     <option value="other">Other</option>
   </select>
-
-  <!-- REQUIRED -->
-  <input
-    type="text"
-    id="problem-other"
-    placeholder="Enter your problem"
-    style="display:none;"
-  />
 
   <label>Image</label>
   <input type="file" id="image" accept="image/*">
@@ -86,7 +76,6 @@
   <button type="submit">Submit Complaint</button>
 
 </form>
-</div>
 
 <script type="module" src="../javascript/add_complaint.js"></script>
 </body>

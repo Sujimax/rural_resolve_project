@@ -2,7 +2,6 @@ import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ✅ FIX 1: select form correctly
   const form = document.querySelector("form");
 
   const token = localStorage.getItem("access_token");
@@ -13,9 +12,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================
+     HELPER: replace select with input
+  ========================= */
+  function replaceWithInput(selectEl, placeholder) {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = selectEl.id;
+    input.name = selectEl.name || selectEl.id;
+    input.placeholder = placeholder;
+    input.required = true;
+    selectEl.replaceWith(input);
+    return input;
+  }
+
+  /* =========================
      PROBLEM TYPE
   ========================= */
-  const problemSelect = document.getElementById("problem-name");
+  let problemField = document.getElementById("problem-name");
+
+  problemField.addEventListener("change", () => {
+    if (problemField.value === "other") {
+      problemField = replaceWithInput(
+        problemField,
+        "Enter your problem"
+      );
+    }
+  });
 
   /* =========================
      DISTRICT → VILLAGE
@@ -36,45 +58,73 @@ document.addEventListener("DOMContentLoaded", () => {
     Dharmapuri: ["Dharmapuri","Harur","Palacode","Pappireddipatti"]
   };
 
-  const districtSelect = document.getElementById("district");
-  const villageSelect = document.getElementById("village");
+  let districtField = document.getElementById("district");
+  let villageField = document.getElementById("village");
 
   Object.keys(villagesByDistrict).forEach(d => {
-    const option = document.createElement("option");
-    option.value = d;
-    option.textContent = d;
-    districtSelect.appendChild(option);
+    const opt = document.createElement("option");
+    opt.value = d;
+    opt.textContent = d;
+    districtField.appendChild(opt);
   });
 
-  districtSelect.addEventListener("change", () => {
-    villageSelect.innerHTML = `<option value="">-- Select Village --</option>`;
-    (villagesByDistrict[districtSelect.value] || []).forEach(v => {
-      const option = document.createElement("option");
-      option.value = v;
-      option.textContent = v;
-      villageSelect.appendChild(option);
+  const districtOther = document.createElement("option");
+  districtOther.value = "other";
+  districtOther.textContent = "Other";
+  districtField.appendChild(districtOther);
+
+  districtField.addEventListener("change", () => {
+
+    if (districtField.value === "other") {
+      districtField = replaceWithInput(
+        districtField,
+        "Enter your district"
+      );
+
+      villageField = replaceWithInput(
+        villageField,
+        "Enter your village"
+      );
+      return;
+    }
+
+    villageField.innerHTML = `<option value="">-- Select Village --</option>`;
+    villagesByDistrict[districtField.value].forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      villageField.appendChild(opt);
     });
+
+    const villageOther = document.createElement("option");
+    villageOther.value = "other";
+    villageOther.textContent = "Other";
+    villageField.appendChild(villageOther);
+  });
+
+  villageField.addEventListener("change", () => {
+    if (villageField.value === "other") {
+      villageField = replaceWithInput(
+        villageField,
+        "Enter your village"
+      );
+    }
   });
 
   /* =========================
-     SUBMIT FORM
+     FORM SUBMIT
   ========================= */
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    if (!problemSelect.value) {
-      alert("Please select problem type");
-      return;
-    }
-
     const formData = new FormData();
-    formData.append("problem_type", problemSelect.value);
-    formData.append("description", document.getElementById("description").value);
-    formData.append("district", districtSelect.value);
-    formData.append("village", villageSelect.value);
-    formData.append("address", document.getElementById("address").value);
+    formData.append("problem_type", problemField.value);
+    formData.append("description", description.value);
+    formData.append("district", districtField.value);
+    formData.append("village", villageField.value);
+    formData.append("address", address.value);
 
-    const image = document.getElementById("image").files[0];
+    const image = imageInput.files[0];
     if (image) formData.append("image", image);
 
     try {
@@ -87,8 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!res.ok) {
-        const err = await res.text();
-        console.error(err);
         alert("Failed to submit complaint");
         return;
       }
@@ -101,4 +149,5 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Server error. Please try again.");
     }
   });
+
 });
