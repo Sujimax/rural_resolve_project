@@ -12,27 +12,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================
-     PROBLEM TYPE (Other → Typable)
-     ========================= */
+     PROBLEM TYPE (Other)
+  ========================= */
 
   const problemSelect = document.getElementById("problem-name");
+  const problemOtherInput = document.getElementById("problem-other");
 
   problemSelect.addEventListener("change", () => {
     if (problemSelect.value === "other") {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.id = "problem-name";
-      input.name = "problem-name";
-      input.placeholder = "Type your problem here";
-      input.required = true;
-
-      problemSelect.replaceWith(input);
+      problemOtherInput.style.display = "block";
+      problemOtherInput.required = true;
+    } else {
+      problemOtherInput.style.display = "none";
+      problemOtherInput.required = false;
+      problemOtherInput.value = "";
     }
   });
 
   /* =========================
      DISTRICT → VILLAGE
-     ========================= */
+  ========================= */
 
   const villagesByDistrict = {
     Thiruvallur: ["Uthukottai","Katchur","Nandhi Mangalam","Periyapalayam","Seethanjery","Suloorpettai"],
@@ -53,31 +52,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const districtSelect = document.getElementById("district");
   const villageSelect = document.getElementById("village");
 
-  Object.keys(villagesByDistrict).forEach(district => {
-    const option = document.createElement("option");
-    option.value = district;
-    option.textContent = district;
-    districtSelect.appendChild(option);
+  districtSelect.innerHTML = `<option value="">-- Select District --</option>`;
+  Object.keys(villagesByDistrict).forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d;
+    opt.textContent = d;
+    districtSelect.appendChild(opt);
   });
 
   districtSelect.addEventListener("change", () => {
     villageSelect.innerHTML = `<option value="">-- Select Village --</option>`;
-    (villagesByDistrict[districtSelect.value] || []).forEach(village => {
-      const option = document.createElement("option");
-      option.value = village;
-      option.textContent = village;
-      villageSelect.appendChild(option);
+    (villagesByDistrict[districtSelect.value] || []).forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      villageSelect.appendChild(opt);
     });
   });
 
   /* =========================
      FORM SUBMIT
-     ========================= */
+  ========================= */
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const problemValue = document.getElementById("problem-name").value;
+    const problemValue =
+      problemSelect.value === "other"
+        ? problemOtherInput.value.trim()
+        : problemSelect.value;
+
+    if (!problemValue) {
+      alert("Please enter problem type");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("problem_type", problemValue);
@@ -101,16 +109,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail || "Failed to submit complaint");
+        const text = await res.text();
+        throw new Error(text);
       }
 
       alert("Complaint submitted successfully");
       form.reset();
-      location.reload();
+      problemOtherInput.style.display = "none";
+
     } catch (error) {
-      alert(error.message);
+      console.error(error);
+      alert("Server error. Please try again.");
     }
   });
-
 });
