@@ -1,7 +1,6 @@
 import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const form = document.querySelector("form");
   const token = localStorage.getItem("access_token");
 
@@ -16,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
   ========================= */
 
   const problemSelect = document.getElementById("problem-name");
-  const problemOtherInput = document.getElementById("problem-other");
+  const problemOtherInput = document.getElementById("problem-other"); 
+  // ⚠️ YOU MUST HAVE THIS INPUT IN HTML (hidden)
 
   problemSelect.addEventListener("change", () => {
     if (problemSelect.value === "other") {
@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       problemOtherInput.style.display = "none";
       problemOtherInput.required = false;
-      problemOtherInput.value = "";
     }
   });
 
@@ -54,19 +53,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   districtSelect.innerHTML = `<option value="">-- Select District --</option>`;
   Object.keys(villagesByDistrict).forEach(d => {
-    const opt = document.createElement("option");
-    opt.value = d;
-    opt.textContent = d;
-    districtSelect.appendChild(opt);
+    const o = document.createElement("option");
+    o.value = d;
+    o.textContent = d;
+    districtSelect.appendChild(o);
   });
 
   districtSelect.addEventListener("change", () => {
     villageSelect.innerHTML = `<option value="">-- Select Village --</option>`;
     (villagesByDistrict[districtSelect.value] || []).forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      villageSelect.appendChild(opt);
+      const o = document.createElement("option");
+      o.value = v;
+      o.textContent = v;
+      villageSelect.appendChild(o);
     });
   });
 
@@ -79,13 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const problemValue =
       problemSelect.value === "other"
-        ? problemOtherInput.value.trim()
+        ? problemOtherInput.value
         : problemSelect.value;
-
-    if (!problemValue) {
-      alert("Please enter problem type");
-      return;
-    }
 
     const formData = new FormData();
     formData.append("problem_type", problemValue);
@@ -117,8 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
       form.reset();
       problemOtherInput.style.display = "none";
 
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error("FETCH ERROR:", err);
       alert("Server error. Please try again.");
     }
   });
