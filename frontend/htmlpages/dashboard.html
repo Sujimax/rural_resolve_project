@@ -8,6 +8,24 @@
   <link rel="icon" href="../images/bgi.png" alt="Village website">
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/dash_page.css">
+  <style>
+    /* Navbar right additions */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .welcome-user {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .notification {
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -35,13 +53,13 @@
 
       <!-- RIGHT LINKS -->
       <div class="nav-right">
-        <a href="logout.html" class="login-btn" >Logout</a>
+        <span class="welcome-user" id="welcomeUser">Welcome, User</span>
+        <div class="notification">🔔</div>
+        <a href="logout.html" class="login-btn">Logout</a>
       </div>
-      
 
     </nav>
   </header>
-
 
   <!-- Hero Section -->
   <section class="hero">
@@ -63,7 +81,7 @@
     </div>
   </section>
 
-  <!-- info Section -->
+  <!-- Info Sections -->
   <h2>Guidelines for how to use this Website</h2>
   <section id="add-complaint" class="info-section">
     <h3> Add a Complaint</h3>
@@ -97,7 +115,25 @@
   <footer>
     <p>&copy; 2025 Rural Resolve | Empowering Villages Digitally</p>
   </footer>
+
+  <script src="../javascript/navbar.js"></script>
+  <script>
+    // =================== SHOW USER NAME ===================
+    document.addEventListener("DOMContentLoaded", () => {
+      const welcomeUser = document.getElementById("welcomeUser");
+      const token = localStorage.getItem("access_token");
+
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          const userName = payload.name || "User";
+          welcomeUser.textContent = `Welcome, ${userName}`;
+        } catch (err) {
+          console.error("Invalid token", err);
+        }
+      }
+    });
+  </script>
 </body>
 
-<script src="../javascript/navbar.js"></script>
 </html>
