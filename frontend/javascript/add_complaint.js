@@ -1,7 +1,7 @@
 import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("form");
+  const form = document.getElementById("complaintForm");
   const token = localStorage.getItem("access_token");
 
   if (!token) {
@@ -11,12 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================
-     PROBLEM TYPE (Other)
+     PROBLEM TYPE (OTHER)
   ========================= */
-
   const problemSelect = document.getElementById("problem-name");
-  const problemOtherInput = document.getElementById("problem-other"); 
-  // ⚠️ YOU MUST HAVE THIS INPUT IN HTML (hidden)
+  const problemOtherInput = document.getElementById("problem-other");
 
   problemSelect.addEventListener("change", () => {
     if (problemSelect.value === "other") {
@@ -25,13 +23,13 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       problemOtherInput.style.display = "none";
       problemOtherInput.required = false;
+      problemOtherInput.value = "";
     }
   });
 
   /* =========================
      DISTRICT → VILLAGE
   ========================= */
-
   const villagesByDistrict = {
     Thiruvallur: ["Uthukottai","Katchur","Nandhi Mangalam","Periyapalayam","Seethanjery","Suloorpettai"],
     Chennai: ["Ananthapuram","Keelapatti","Madhavaram","Velachery","Tondiarpet","Tambaram","Adyar","Mylapore"],
@@ -51,47 +49,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const districtSelect = document.getElementById("district");
   const villageSelect = document.getElementById("village");
 
-  districtSelect.innerHTML = `<option value="">-- Select District --</option>`;
   Object.keys(villagesByDistrict).forEach(d => {
-    const o = document.createElement("option");
-    o.value = d;
-    o.textContent = d;
-    districtSelect.appendChild(o);
+    const option = document.createElement("option");
+    option.value = d;
+    option.textContent = d;
+    districtSelect.appendChild(option);
   });
 
   districtSelect.addEventListener("change", () => {
     villageSelect.innerHTML = `<option value="">-- Select Village --</option>`;
     (villagesByDistrict[districtSelect.value] || []).forEach(v => {
-      const o = document.createElement("option");
-      o.value = v;
-      o.textContent = v;
-      villageSelect.appendChild(o);
+      const option = document.createElement("option");
+      option.value = v;
+      option.textContent = v;
+      villageSelect.appendChild(option);
     });
   });
 
   /* =========================
-     FORM SUBMIT
+     SUBMIT
   ========================= */
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const problemValue =
+    const problemType =
       problemSelect.value === "other"
-        ? problemOtherInput.value
+        ? problemOtherInput.value.trim()
         : problemSelect.value;
 
+    if (!problemType) {
+      alert("Please enter problem type");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("problem_type", problemValue);
+    formData.append("problem_type", problemType);
     formData.append("description", document.getElementById("description").value);
     formData.append("district", districtSelect.value);
     formData.append("village", villageSelect.value);
     formData.append("address", document.getElementById("address").value);
 
-    const imageInput = document.getElementById("image");
-    if (imageInput.files.length > 0) {
-      formData.append("image", imageInput.files[0]);
-    }
+    const image = document.getElementById("image").files[0];
+    if (image) formData.append("image", image);
 
     try {
       const res = await fetch(`${API_BASE_URL}/complaints/`, {
@@ -103,17 +102,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text);
+        const err = await res.text();
+        console.error(err);
+        throw new Error("Backend rejected request");
       }
 
-      alert("Complaint submitted successfully");
+      alert("Complaint submitted successfully ✅");
       form.reset();
       problemOtherInput.style.display = "none";
 
     } catch (err) {
-      console.error("FETCH ERROR:", err);
-      alert("Server error. Please try again.");
+      console.error(err);
+      alert("Server error. Check backend running.");
     }
   });
 });
