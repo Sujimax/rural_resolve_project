@@ -9,24 +9,6 @@
   <link rel="icon" href="../images/bgi.png" />
   <link rel="stylesheet" href="../css/navbar.css" />
   <link rel="stylesheet" href="../css/dash_page.css" />
-
-  <style>
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .welcome-user {
-      font-weight: 500;
-      color: #333;
-    }
-
-    .notification {
-      font-size: 20px;
-      cursor: pointer;
-    }
-  </style>
 </head>
 
 <body>
@@ -92,11 +74,11 @@
   <section class="info-section">
     <h3>Add a Complaint</h3>
     <ol>
-      <li><strong>Upload a Photo:</strong> Add a clear image (optional).</li>
-      <li><strong>Describe Issue:</strong> Explain clearly.</li>
-      <li><strong>Provide Location:</strong> Mention exact place.</li>
-      <li><strong>Mention Year:</strong> If problem is old.</li>
-      <li><strong>Submit:</strong> Click submit.</li>
+      <li>Upload a photo (optional)</li>
+      <li>Describe the issue clearly</li>
+      <li>Provide exact location</li>
+      <li>Mention year if old</li>
+      <li>Submit complaint</li>
     </ol>
   </section>
 
@@ -104,8 +86,8 @@
     <h3>View Complaint List</h3>
     <ol>
       <li>View all complaints</li>
-      <li>Search using ID or name</li>
-      <li>Check status updates</li>
+      <li>Search by ID or name</li>
+      <li>Check status</li>
     </ol>
   </section>
 
@@ -113,7 +95,7 @@
     <h3>Check Complaint Status</h3>
     <ol>
       <li>Enter Complaint ID</li>
-      <li>View Pending / In Progress / Resolved</li>
+      <li>View updates</li>
     </ol>
   </section>
 
@@ -125,20 +107,32 @@
   <!-- ================= SCRIPTS ================= -->
   <script src="../javascript/navbar.js"></script>
 
-  <script>
-    // ===== SHOW USER NAME FROM JWT (SIMPLE WAY) =====
-    document.addEventListener("DOMContentLoaded", () => {
+  <!-- USER NAME SCRIPT (FINAL FIX) -->
+  <script type="module">
+    import API_BASE_URL from "../javascript/config.js";
+
+    document.addEventListener("DOMContentLoaded", async () => {
       const welcomeUser = document.getElementById("welcomeUser");
       const token = localStorage.getItem("access_token");
 
-      if (!token) return;
+      if (!token) {
+        window.location.href = "login.html";
+        return;
+      }
 
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        const name = payload.name || "User";
-        welcomeUser.textContent = `Welcome, ${name}`;
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error("Failed");
+
+        const user = await response.json();
+        welcomeUser.textContent = `Welcome, ${user.name}`;
       } catch (err) {
-        console.error("Invalid token");
+        console.error(err);
         welcomeUser.textContent = "Welcome, User";
       }
     });
