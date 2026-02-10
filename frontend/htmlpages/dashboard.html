@@ -127,23 +127,28 @@
       const token = localStorage.getItem("access_token");
 
       if (!token) {
+        console.log("No token found in localStorage");
         welcomeUser.textContent = "Welcome, Guest";
         return;
       }
 
       try {
+        console.log("Fetching user info from API:", API_BASE_URL);
         const res = await fetch(`${API_BASE_URL}/auth/me`, {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
+          headers: { "Authorization": `Bearer ${token}` }
         });
 
-        if (!res.ok) throw new Error("Failed to fetch user info");
+        if (!res.ok) {
+          console.error("Failed to fetch /auth/me:", res.status);
+          throw new Error("Fetch failed");
+        }
 
         const data = await res.json();
+        console.log("User data received:", data);
         welcomeUser.textContent = `Welcome, ${data.name || "User"}`;
+
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching user info:", err);
         welcomeUser.textContent = "Welcome, User";
       }
     });
