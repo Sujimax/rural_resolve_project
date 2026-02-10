@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rural Resolve</title>
 
-  <link rel="icon" href="../images/bgi.png" />
-  <link rel="stylesheet" href="../css/navbar.css" />
-  <link rel="stylesheet" href="../css/dash_page.css" />
+  <link rel="icon" href="../images/bgi.png">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/dash_page.css">
+
+  <style>
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .welcome-user {
+      font-weight: 500;
+      color: #222;
+    }
+
+    .notification {
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -35,7 +54,7 @@
 
       <!-- RIGHT -->
       <div class="nav-right">
-        <span class="welcome-user" id="welcomeUser">Welcome</span>
+        <span class="welcome-user" id="welcomeUser">Welcome, User</span>
         <span class="notification">🔔</span>
         <a href="logout.html" class="login-btn">Logout</a>
       </div>
@@ -46,11 +65,9 @@
   <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="hero-container">
-
       <div class="hero-left">
-        <img src="../images/icon1.png" alt="Village illustration">
+        <img src="../images/icon1.png" alt="Hero Image">
       </div>
-
       <div class="hero-right">
         <h1>
           <span class="normal-text">Welcome to </span>
@@ -63,44 +80,74 @@
           <a href="my_complaint.html"><button>My Complaints</button></a>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- ================= FOOTER ================= -->
+  <!-- ================= INFO SECTIONS ================= -->
+  <h2>Guidelines for how to use this Website</h2>
+  <section id="add-complaint" class="info-section">
+    <h3>Add a Complaint</h3>
+    <ol>
+      <li><strong>Upload a Photo:</strong> Add a clear image related to your issue (optional but useful).</li>
+      <li><strong>Enter Problem Description:</strong> Explain your issue clearly and concisely.</li>
+      <li><strong>Provide Location:</strong> Mention the exact place where the issue occurs.</li>
+      <li><strong>Mention Year of Problem:</strong> State when the problem started, if it's old.</li>
+      <li><strong>Submit Complaint:</strong> Click <b>Submit</b> to send your complaint to authorities.</li>
+    </ol>
+  </section>
+
+  <section id="view-complaint" class="info-section">
+    <h3>View Complaint List</h3>
+    <ol>
+      <li><strong>Access List:</strong> View all complaints submitted by users.</li>
+      <li><strong>Search Complaint:</strong> Find a complaint using name or ID.</li>
+      <li><strong>Check Details:</strong> Read updates and status from authorities.</li>
+    </ol>
+  </section>
+
+  <section id="check-complaint" class="info-section">
+    <h3>Check Complaint Status</h3>
+    <ol>
+      <li><strong>Enter Complaint ID:</strong> Enter your complaint ID for updates.</li>
+      <li><strong>View Status:</strong> See if it’s <b>Pending</b>, <b>In Progress</b>, or <b>Resolved</b>.</li>
+    </ol>
+  </section>
+
   <footer>
     <p>&copy; 2025 Rural Resolve</p>
   </footer>
 
-  <!-- ================= SCRIPTS ================= -->
-  <script type="module" src="../javascript/dashboard.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const welcomeUser = document.getElementById("welcomeUser");
-    const token = localStorage.getItem("access_token");
+  <!-- ================= SCRIPT ================= -->
+  <script src="../javascript/navbar.js"></script>
+  <script type="module">
+    import { API_BASE_URL } from "./config.js";
 
-    if (!token) {
-      window.location.href = "login.html";
-      return;
-    }
+    document.addEventListener("DOMContentLoaded", async () => {
+      const welcomeUser = document.getElementById("welcomeUser");
+      const token = localStorage.getItem("access_token");
 
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (!token) {
+        welcomeUser.textContent = "Welcome, Guest";
+        return;
+      }
 
-      // ✅ SAME AS YOUR ADMIN PAGE
-      const name =
-        payload.name ||
-        payload.user_name ||
-        payload.email ||
-        "User";
+      try {
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
 
-      welcomeUser.textContent = `Welcome, ${name}`;
-    } catch (err) {
-      console.error("Token error", err);
-      welcomeUser.textContent = "Welcome, User";
-    }
-  });
-</script>
+        if (!res.ok) throw new Error("Failed to fetch user info");
+
+        const data = await res.json();
+        welcomeUser.textContent = `Welcome, ${data.name || "User"}`;
+      } catch (err) {
+        console.error(err);
+        welcomeUser.textContent = "Welcome, User";
+      }
+    });
+  </script>
 
 </body>
 </html>
