@@ -98,7 +98,7 @@ def get_my_complaints(
     )
 
 
-# ================= GET ONE COMPLAINT =================
+# ================= GET ONE COMPLAINT (PUBLIC) =================
 @user_complaint.get("/{id}", response_model=ComplaintOut)
 def get_one_complaint(id: int, db: Session = Depends(get_db)):
     complaint = db.query(Complaint).filter(Complaint.id == id).first()
@@ -125,7 +125,7 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
     )
 
 
-# UPDATE COMPLAINT (OWNER ONLY) 
+# ================= UPDATE COMPLAINT (OWNER ONLY) =================
 @user_complaint.put("/{id}")
 def update_complaint(
     id: int,
