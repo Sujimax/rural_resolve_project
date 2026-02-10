@@ -28,13 +28,12 @@ def create_complaint(
 
     if image:
         try:
-            upload_result = cloudinary.uploader.upload(
+            upload = cloudinary.uploader.upload(
                 image.file,
-                folder="complaints",       
-                public_id=f"user_{current_user.id}_{image.filename}",
+                folder="complaints",
                 resource_type="image"
             )
-            image_url = upload_result["secure_url"]
+            image_url = upload["secure_url"]
         except Exception:
             raise HTTPException(status_code=500, detail="Image upload failed")
 
@@ -45,13 +44,28 @@ def create_complaint(
         district=district,
         village=village,
         address=address,
-        image_url=image_url  
+        image_url=image_url
     )
 
     db.add(complaint)
     db.commit()
     db.refresh(complaint)
-    return complaint
+
+    # 🔥 RETURN MATCHING RESPONSE MODEL
+    return ComplaintOut(
+        id=complaint.id,
+        user_id=complaint.user_id,
+        problem_type=complaint.problem_type,
+        description=complaint.description,
+        district=complaint.district,
+        village=complaint.village,
+        address=complaint.address,
+        votes=complaint.votes,
+        status=complaint.status,
+        created_at=complaint.created_at,
+        comments_count=0,          # IMPORTANT
+        image_url=complaint.image_url
+    )
 
 # ================= GET ALL COMPLAINTS =================
 @user_complaint.get("/", response_model=List[ComplaintOut])

@@ -1,9 +1,11 @@
 import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("complaintForm");
-  const token = localStorage.getItem("access_token");
 
+  // ✅ FIX 1: select form correctly
+  const form = document.querySelector("form");
+
+  const token = localStorage.getItem("access_token");
   if (!token) {
     alert("You must be logged in to submit a complaint!");
     window.location.href = "login.html";
@@ -11,21 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================
-     PROBLEM TYPE (OTHER)
+     PROBLEM TYPE
   ========================= */
   const problemSelect = document.getElementById("problem-name");
-  const problemOtherInput = document.getElementById("problem-other");
-
-  problemSelect.addEventListener("change", () => {
-    if (problemSelect.value === "other") {
-      problemOtherInput.style.display = "block";
-      problemOtherInput.required = true;
-    } else {
-      problemOtherInput.style.display = "none";
-      problemOtherInput.required = false;
-      problemOtherInput.value = "";
-    }
-  });
 
   /* =========================
      DISTRICT → VILLAGE
@@ -67,23 +57,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================
-     SUBMIT
+     SUBMIT FORM
   ========================= */
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const problemType =
-      problemSelect.value === "other"
-        ? problemOtherInput.value.trim()
-        : problemSelect.value;
-
-    if (!problemType) {
-      alert("Please enter problem type");
+    if (!problemSelect.value) {
+      alert("Please select problem type");
       return;
     }
 
     const formData = new FormData();
-    formData.append("problem_type", problemType);
+    formData.append("problem_type", problemSelect.value);
     formData.append("description", document.getElementById("description").value);
     formData.append("district", districtSelect.value);
     formData.append("village", villageSelect.value);
@@ -104,16 +89,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) {
         const err = await res.text();
         console.error(err);
-        throw new Error("Backend rejected request");
+        alert("Failed to submit complaint");
+        return;
       }
 
       alert("Complaint submitted successfully ✅");
       form.reset();
-      problemOtherInput.style.display = "none";
 
     } catch (err) {
       console.error(err);
-      alert("Server error. Check backend running.");
+      alert("Server error. Please try again.");
     }
   });
 });
