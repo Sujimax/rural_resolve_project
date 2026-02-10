@@ -75,41 +75,32 @@
   <!-- ================= SCRIPTS ================= -->
   <script type="module" src="../javascript/dashboard.js"></script>
 <script>
-  import API_BASE_URL from "./config.js";
+  document.addEventListener("DOMContentLoaded", () => {
+    const welcomeUser = document.getElementById("welcomeUser");
+    const token = localStorage.getItem("access_token");
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const welcomeUser = document.getElementById("welcomeUser");
-  const token = localStorage.getItem("access_token");
-
-  if (!token) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/complaints/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) throw new Error("Unauthorized");
-
-    const complaints = await res.json();
-
-    // ✅ YOUR BACKEND GUARANTEES THIS
-    if (complaints.length > 0) {
-      welcomeUser.textContent = `Welcome, ${complaints[0].user_name}`;
-    } else {
-      welcomeUser.textContent = "Welcome";
+    if (!token) {
+      window.location.href = "login.html";
+      return;
     }
 
-  } catch (err) {
-    console.error("Dashboard username error:", err);
-    welcomeUser.textContent = "Welcome";
-  }
-});
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
 
+      // ✅ SAME AS YOUR ADMIN PAGE
+      const name =
+        payload.name ||
+        payload.user_name ||
+        payload.email ||
+        "User";
+
+      welcomeUser.textContent = `Welcome, ${name}`;
+    } catch (err) {
+      console.error("Token error", err);
+      welcomeUser.textContent = "Welcome, User";
+    }
+  });
 </script>
+
 </body>
 </html>
