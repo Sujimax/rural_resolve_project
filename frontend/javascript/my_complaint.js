@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       complaintBox.innerHTML = `
   <div class="complaint-content">
     <div class="details">
-      <h2 class="problem-title">
-        ${complaint.problem_type} Problem Title :
+      <h2 class="problem-title"> Problem Title :
+        ${complaint.problem_type} 
         <span class="complaint-id">Complaint ID: ${complaint.id}</span>
       </h2>
 

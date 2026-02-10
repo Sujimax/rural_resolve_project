@@ -9,6 +9,24 @@
   <link rel="icon" href="../images/bgi.png" />
   <link rel="stylesheet" href="../css/navbar.css" />
   <link rel="stylesheet" href="../css/dash_page.css" />
+
+  <style>
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .welcome-user {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .notification {
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -74,11 +92,11 @@
   <section class="info-section">
     <h3>Add a Complaint</h3>
     <ol>
-      <li>Upload a photo (optional)</li>
-      <li>Describe the issue clearly</li>
-      <li>Provide exact location</li>
-      <li>Mention year if old</li>
-      <li>Submit complaint</li>
+      <li><strong>Upload a Photo:</strong> Add a clear image (optional).</li>
+      <li><strong>Describe Issue:</strong> Explain clearly.</li>
+      <li><strong>Provide Location:</strong> Mention exact place.</li>
+      <li><strong>Mention Year:</strong> If problem is old.</li>
+      <li><strong>Submit:</strong> Click submit.</li>
     </ol>
   </section>
 
@@ -86,8 +104,8 @@
     <h3>View Complaint List</h3>
     <ol>
       <li>View all complaints</li>
-      <li>Search by ID or name</li>
-      <li>Check status</li>
+      <li>Search using ID or name</li>
+      <li>Check status updates</li>
     </ol>
   </section>
 
@@ -95,7 +113,7 @@
     <h3>Check Complaint Status</h3>
     <ol>
       <li>Enter Complaint ID</li>
-      <li>View updates</li>
+      <li>View Pending / In Progress / Resolved</li>
     </ol>
   </section>
 
@@ -105,36 +123,23 @@
   </footer>
 
   <!-- ================= SCRIPTS ================= -->
-  <script src="../javascript/navbar.js"></script>
-
-  <script>
-  // ====== FINAL USER DISPLAY LOGIC ======
+ <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const welcomeUser = document.getElementById("welcomeUser");
+    const welcomeUser = document.getElementById("dashboardUser");
     const token = localStorage.getItem("access_token");
 
-    if (!token) {
-      welcomeUser.textContent = "Welcome, Guest";
-      return;
-    }
+    if (!token || !welcomeUser) return;
 
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
-
-      // Try name → email → id
       const displayName =
-        payload.name ||
-        payload.username ||
-        payload.email ||
-        (payload.id ? `User ${payload.id}` : "User");
+        payload.name || payload.email || `User ${payload.id}`;
 
       welcomeUser.textContent = `Welcome, ${displayName}`;
     } catch (err) {
-      console.error("Token decode failed", err);
       welcomeUser.textContent = "Welcome, User";
     }
   });
 </script>
-
 </body>
 </html>
