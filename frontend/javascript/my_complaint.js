@@ -46,7 +46,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       complaintBox.innerHTML = `
         <div class="complaint-content">
           <div class="details">
-            <h2 class="problem-title">Problem: ${complaint.problem_type}</h2>
+            <h2 class="problem-title">
+              Complaint ID: #${complaint.id}<br>
+              Problem: ${complaint.problem_type}
+            </h2>
+
             <p><strong>Date:</strong> ${new Date(complaint.created_at).toLocaleDateString()}</p>
             <p><strong>District:</strong> ${complaint.district}</p>
             <p><strong>Village:</strong> ${complaint.village}</p>
@@ -61,6 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <button class="delete-btn" data-id="${complaint.id}">Delete</button>
             </div>
           </div>
+
           <div class="image">
             <img src="${imageSrc}" alt="Complaint Image">
           </div>

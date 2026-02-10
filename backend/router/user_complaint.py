@@ -104,11 +104,21 @@ def get_my_complaints(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    complaints = db.query(Complaint).filter(Complaint.user_id == current_user.id).order_by(Complaint.created_at.desc()).all()
-    result = []
+    complaints = (
+        db.query(Complaint)
+        .filter(Complaint.user_id == current_user.id)
+        .order_by(Complaint.created_at.desc())
+        .all()
+    )
 
+    result = []
     for c in complaints:
-        comment_count = db.query(Comment).filter(Comment.complaint_id == c.id).count()
+        comments_count = (
+            db.query(Comment)
+            .filter(Comment.complaint_id == c.id)
+            .count()
+        )
+
         result.append(
             ComplaintOut(
                 id=c.id,
@@ -121,14 +131,16 @@ def get_my_complaints(
                 votes=c.votes,
                 status=c.status,
                 created_at=c.created_at,
+                image_url=c.image_url,
                 user_name=current_user.name,
                 phone=current_user.phone,
                 email=current_user.email,
-                image_url=c.image_url,
-                comments_count=comment_count
+                comments_count=comments_count
             )
         )
+
     return result
+
 
 # ================= GET ONE COMPLAINT (PUBLIC) =================
 @user_complaint.get("/{id}", response_model=ComplaintOut)
