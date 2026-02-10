@@ -11,37 +11,30 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  /* =========================
-     HELPER: replace select with input
-  ========================= */
-  function replaceWithInput(selectEl, placeholder) {
+  function replaceSelectWithInput(selectEl, placeholder) {
     const input = document.createElement("input");
     input.type = "text";
-    input.id = selectEl.id;
-    input.name = selectEl.name || selectEl.id;
-    input.placeholder = placeholder;
+    input.id = selectEl.id;     
+    input.name = selectEl.name; 
     input.required = true;
-    selectEl.replaceWith(input);
+    input.placeholder = placeholder;
+
+    selectEl.parentNode.replaceChild(input, selectEl);
+    input.focus();
     return input;
   }
 
-  /* =========================
-     PROBLEM TYPE
-  ========================= */
   let problemField = document.getElementById("problem-name");
 
   problemField.addEventListener("change", () => {
     if (problemField.value === "other") {
-      problemField = replaceWithInput(
+      problemField = replaceSelectWithInput(
         problemField,
-        "Enter your problem"
+        "Enter your problem type"
       );
     }
   });
 
-  /* =========================
-     DISTRICT → VILLAGE
-  ========================= */
   const villagesByDistrict = {
     Thiruvallur: ["Uthukottai","Katchur","Nandhi Mangalam","Periyapalayam","Seethanjery","Suloorpettai"],
     Chennai: ["Ananthapuram","Keelapatti","Madhavaram","Velachery","Tondiarpet","Tambaram","Adyar","Mylapore"],
@@ -61,27 +54,23 @@ document.addEventListener("DOMContentLoaded", () => {
   let districtField = document.getElementById("district");
   let villageField = document.getElementById("village");
 
+  // fill districts
   Object.keys(villagesByDistrict).forEach(d => {
     const opt = document.createElement("option");
     opt.value = d;
     opt.textContent = d;
     districtField.appendChild(opt);
   });
-
-  const districtOther = document.createElement("option");
-  districtOther.value = "other";
-  districtOther.textContent = "Other";
-  districtField.appendChild(districtOther);
+  districtField.appendChild(new Option("Other", "other"));
 
   districtField.addEventListener("change", () => {
 
     if (districtField.value === "other") {
-      districtField = replaceWithInput(
+      districtField = replaceSelectWithInput(
         districtField,
         "Enter your district"
       );
-
-      villageField = replaceWithInput(
+      villageField = replaceSelectWithInput(
         villageField,
         "Enter your village"
       );
@@ -95,16 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
       opt.textContent = v;
       villageField.appendChild(opt);
     });
-
-    const villageOther = document.createElement("option");
-    villageOther.value = "other";
-    villageOther.textContent = "Other";
-    villageField.appendChild(villageOther);
+    villageField.appendChild(new Option("Other", "other"));
   });
 
   villageField.addEventListener("change", () => {
     if (villageField.value === "other") {
-      villageField = replaceWithInput(
+      villageField = replaceSelectWithInput(
         villageField,
         "Enter your village"
       );
@@ -124,30 +109,28 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("village", villageField.value);
     formData.append("address", address.value);
 
-    const image = imageInput.files[0];
-    if (image) formData.append("image", image);
+    if (image.files[0]) {
+      formData.append("image", image.files[0]);
+    }
 
     try {
       const res = await fetch(`${API_BASE_URL}/complaints/`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
 
-      if (!res.ok) {
-        alert("Failed to submit complaint");
-        return;
-      }
+      if (!res.ok) throw new Error("Failed");
 
       alert("Complaint submitted successfully ✅");
       form.reset();
 
     } catch (err) {
       console.error(err);
-      alert("Server error. Please try again.");
+      alert("Server error");
     }
   });
 
 });
+
+
