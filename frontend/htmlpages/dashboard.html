@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rural Resolve</title>
 
-  <link rel="icon" href="../images/bgi.png" />
-  <link rel="stylesheet" href="../css/navbar.css" />
-  <link rel="stylesheet" href="../css/dash_page.css" />
+  <link rel="icon" href="../images/bgi.png">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/dash_page.css">
 
   <style>
     .nav-right {
@@ -19,11 +19,11 @@
 
     .welcome-user {
       font-weight: 500;
-      color: #333;
+      color: #222;
     }
 
     .notification {
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
     }
   </style>
@@ -55,7 +55,7 @@
       <!-- RIGHT -->
       <div class="nav-right">
         <span class="welcome-user" id="welcomeUser">Welcome, User</span>
-        <div class="notification">🔔</div>
+        <span class="notification">🔔</span>
         <a href="logout.html" class="login-btn">Logout</a>
       </div>
 
@@ -65,90 +65,89 @@
   <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="hero-container">
-
       <div class="hero-left">
-        <img src="../images/icon1.png" alt="Village illustration">
+        <img src="../images/icon1.png">
       </div>
-
       <div class="hero-right">
         <h1>
           <span class="normal-text">Welcome to </span>
           <span class="gradient-text">Rural Resolve</span>
         </h1>
-        <p>Empowering villages through digital complaint management and civic transparency.</p>
+        <p>Empowering villages through digital complaint management.</p>
 
         <div class="hero-buttons">
           <a href="addcomplaint.html"><button>Add Complaint</button></a>
           <a href="my_complaint.html"><button>My Complaints</button></a>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- ================= INFO ================= -->
+    <!-- info Section -->
   <h2>Guidelines for how to use this Website</h2>
-
-  <section class="info-section">
-    <h3>Add a Complaint</h3>
+  <section id="add-complaint" class="info-section">
+    <h3> Add a Complaint</h3>
     <ol>
-      <li><strong>Upload a Photo:</strong> Add a clear image (optional).</li>
-      <li><strong>Describe Issue:</strong> Explain clearly.</li>
-      <li><strong>Provide Location:</strong> Mention exact place.</li>
-      <li><strong>Mention Year:</strong> If problem is old.</li>
-      <li><strong>Submit:</strong> Click submit.</li>
+      <li><strong>Upload a Photo:</strong> Add a clear image related to your issue (optional but useful).</li>
+      <li><strong>Enter Problem Description:</strong> Explain your issue clearly and concisely.</li>
+      <li><strong>Provide Location:</strong> Mention the exact place where the issue occurs.</li>
+      <li><strong>Mention Year of Problem:</strong> State when the problem started, if it's old.</li>
+      <li><strong>Submit Complaint:</strong> Click <b>Submit</b> to send your complaint to authorities.</li>
     </ol>
   </section>
 
-  <section class="info-section">
-    <h3>View Complaint List</h3>
+  <section id="view-complaint" class="info-section">
+    <h3> View Complaint List</h3>
     <ol>
-      <li>View all complaints</li>
-      <li>Search using ID or name</li>
-      <li>Check status updates</li>
+      <li><strong>Access List:</strong> View all complaints submitted by users.</li>
+      <li><strong>Search Complaint:</strong> Find a complaint using name or ID.</li>
+      <li><strong>Check Details:</strong> Read updates and status from authorities.</li>
     </ol>
   </section>
 
-  <section class="info-section">
-    <h3>Check Complaint Status</h3>
+  <section id="check-complaint" class="info-section">
+    <h3> Check Complaint Status</h3>
     <ol>
-      <li>Enter Complaint ID</li>
-      <li>View Pending / In Progress / Resolved</li>
+      <li><strong>Enter Complaint ID:</strong> Enter your complaint ID for updates.</li>
+      <li><strong>View Status:</strong> See if it’s <b>Pending</b>, <b>In Progress</b>, or <b>Resolved</b>.</li>
     </ol>
   </section>
-
-  <!-- ================= FOOTER ================= -->
   <footer>
-    <p>&copy; 2025 Rural Resolve | Empowering Villages Digitally</p>
+    <p>&copy; 2025 Rural Resolve</p>
   </footer>
 
-  <!-- ================= SCRIPTS ================= -->
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const welcomeUser = document.getElementById("welcomeUser");
-    const token = localStorage.getItem("access_token");
+  <!-- ================= SCRIPT ================= -->
+  <script src="../javascript/navbar.js"></script>
 
-    if (!token) {
-      welcomeUser.textContent = "Welcome, Guest";
-      return;
-    }
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const welcomeUser = document.getElementById("welcomeUser");
+      const token = localStorage.getItem("access_token");
 
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (!token) {
+        welcomeUser.textContent = "Welcome, Guest";
+        return;
+      }
 
-      const displayName =
-        payload.name ||
-        payload.username ||
-        payload.email ||
-        "User";
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
 
-      welcomeUser.textContent = `Welcome, ${displayName}`;
-    } catch (error) {
-      console.error("Token decode failed", error);
-      welcomeUser.textContent = "Welcome, User";
-    }
-  });
-</script>
+        // CHANGE THIS KEY IF YOUR BACKEND USES DIFFERENT NAME
+        const name =
+          payload.name ||
+          payload.username ||
+          payload.email ||
+          "User";
+
+        welcomeUser.textContent = `Welcome, ${name}`;
+      } catch (err) {
+        welcomeUser.textContent = "Welcome, User";
+      }
+    });
+  </script>
 
 </body>
 </html>
+
+
+
