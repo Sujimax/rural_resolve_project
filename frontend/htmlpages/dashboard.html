@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,130 +12,86 @@
 
 <body>
 
-  <!-- ================= NAVBAR ================= -->
-  <header>
-    <nav class="navbar">
+<header>
+  <nav class="navbar">
 
-      <!-- LEFT -->
-      <div class="nav-left">
-        <div class="logo">
-          <img src="../images/bgi.png" alt="Logo">
-          <h1 class="page-title">Rural Resolve</h1>
-        </div>
-        <button id="menuBtn" class="hamburger">☰</button>
+    <div class="nav-left">
+      <div class="logo">
+        <img src="../images/bgi.png" alt="Logo">
+        <h1 class="page-title">Rural Resolve</h1>
       </div>
-
-      <!-- CENTER -->
-      <ul class="nav-links">
-        <li><a href="dashboard.html" class="active">Home</a></li>
-        <li><a href="addcomplaint.html">Add Complaint</a></li>
-        <li><a href="my_complaint.html">My Complaint</a></li>
-        <li><a href="complaint_list.html">Complaint List</a></li>
-      </ul>
-
-      <!-- RIGHT -->
-      <div class="nav-right">
-        <span class="welcome-user" id="welcomeUser">Welcome, User</span>
-        <div class="notification">🔔</div>
-        <a href="logout.html" class="login-btn">Logout</a>
-      </div>
-
-    </nav>
-  </header>
-
-  <!-- ================= HERO ================= -->
-  <section class="hero">
-    <div class="hero-container">
-
-      <div class="hero-left">
-        <img src="../images/icon1.png" alt="Village illustration">
-      </div>
-
-      <div class="hero-right">
-        <h1>
-          <span class="normal-text">Welcome to </span>
-          <span class="gradient-text">Rural Resolve</span>
-        </h1>
-        <p>Empowering villages through digital complaint management and civic transparency.</p>
-
-        <div class="hero-buttons">
-          <a href="addcomplaint.html"><button>Add Complaint</button></a>
-          <a href="my_complaint.html"><button>My Complaints</button></a>
-        </div>
-      </div>
-
+      <button id="menuBtn" class="hamburger">☰</button>
     </div>
-  </section>
 
-  <!-- ================= INFO ================= -->
-  <h2>Guidelines for how to use this Website</h2>
+    <ul class="nav-links">
+      <li><a href="dashboard.html" class="active">Home</a></li>
+      <li><a href="addcomplaint.html">Add Complaint</a></li>
+      <li><a href="my_complaint.html">My Complaint</a></li>
+      <li><a href="complaint_list.html">Complaint List</a></li>
+    </ul>
 
-  <section class="info-section">
-    <h3>Add a Complaint</h3>
-    <ol>
-      <li>Upload a photo (optional)</li>
-      <li>Describe the issue clearly</li>
-      <li>Provide exact location</li>
-      <li>Mention year if old</li>
-      <li>Submit complaint</li>
-    </ol>
-  </section>
+    <div class="nav-right">
+      <span class="welcome-user" id="welcomeUser">Welcome</span>
+      <div class="notification">🔔</div>
+      <a href="logout.html" class="login-btn">Logout</a>
+    </div>
 
-  <section class="info-section">
-    <h3>View Complaint List</h3>
-    <ol>
-      <li>View all complaints</li>
-      <li>Search by ID or name</li>
-      <li>Check status</li>
-    </ol>
-  </section>
+  </nav>
+</header>
 
-  <section class="info-section">
-    <h3>Check Complaint Status</h3>
-    <ol>
-      <li>Enter Complaint ID</li>
-      <li>View updates</li>
-    </ol>
-  </section>
+<section class="hero">
+  <div class="hero-container">
+    <div class="hero-left">
+      <img src="../images/icon1.png" alt="Village illustration">
+    </div>
+    <div class="hero-right">
+      <h1>
+        <span class="normal-text">Welcome to </span>
+        <span class="gradient-text">Rural Resolve</span>
+      </h1>
+      <p>Empowering villages through digital complaint management.</p>
+      <div class="hero-buttons">
+        <a href="addcomplaint.html"><button>Add Complaint</button></a>
+        <a href="my_complaint.html"><button>My Complaints</button></a>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- ================= FOOTER ================= -->
-  <footer>
-    <p>&copy; 2025 Rural Resolve | Empowering Villages Digitally</p>
-  </footer>
+<footer>
+  <p>&copy; 2025 Rural Resolve</p>
+</footer>
 
-  <!-- ================= SCRIPTS ================= -->
-  <script src="../javascript/navbar.js"></script>
+<script src="../javascript/navbar.js"></script>
 
-  <!-- USER NAME SCRIPT (FINAL FIX) -->
-  <script type="module">
-    import API_BASE_URL from "../javascript/config.js";
+<script>
+  // ====== FINAL USER DISPLAY LOGIC ======
+  document.addEventListener("DOMContentLoaded", () => {
+    const welcomeUser = document.getElementById("welcomeUser");
+    const token = localStorage.getItem("access_token");
 
-    document.addEventListener("DOMContentLoaded", async () => {
-      const welcomeUser = document.getElementById("welcomeUser");
-      const token = localStorage.getItem("access_token");
+    if (!token) {
+      welcomeUser.textContent = "Welcome, Guest";
+      return;
+    }
 
-      if (!token) {
-        window.location.href = "login.html";
-        return;
-      }
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
 
-      try {
-        const response = await fetch(`${API_BASE_URL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+      // Try name → email → id
+      const displayName =
+        payload.name ||
+        payload.username ||
+        payload.email ||
+        (payload.id ? `User ${payload.id}` : "User");
 
-        if (!response.ok) throw new Error("Failed");
-
-        const user = await response.json();
-        welcomeUser.textContent = `Welcome, ${user.name}`;
-      } catch (err) {
-        console.error(err);
-        welcomeUser.textContent = "Welcome, User";
-      }
-    });
-  </script>
+      welcomeUser.textContent = `Welcome, ${displayName}`;
+    } catch (err) {
+      console.error("Token decode failed", err);
+      welcomeUser.textContent = "Welcome, User";
+    }
+  });
+</script>
 
 </body>
 </html>
