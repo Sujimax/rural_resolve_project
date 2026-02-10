@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
     Dharmapuri: ["Dharmapuri","Harur","Palacode","Pappireddipatti"]
   };
 
-  let districtSelect = document.getElementById("district");
-  let villageSelect = document.getElementById("village");
+  const districtSelect = document.getElementById("district");
+  const villageSelect = document.getElementById("village");
 
   Object.keys(villagesByDistrict).forEach(district => {
     const option = document.createElement("option");
@@ -60,64 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
     districtSelect.appendChild(option);
   });
 
-  const districtOther = document.createElement("option");
-  districtOther.value = "other";
-  districtOther.textContent = "Other";
-  districtSelect.appendChild(districtOther);
-
   districtSelect.addEventListener("change", () => {
-
-    /* ===== DISTRICT OTHER ===== */
-    if (districtSelect.value === "other") {
-
-      const districtInput = document.createElement("input");
-      districtInput.type = "text";
-      districtInput.id = "district";
-      districtInput.name = "district";
-      districtInput.placeholder = "Type district";
-      districtInput.required = true;
-
-      districtSelect.replaceWith(districtInput);
-
-      const villageInput = document.createElement("input");
-      villageInput.type = "text";
-      villageInput.id = "village";
-      villageInput.name = "village";
-      villageInput.placeholder = "Type village";
-      villageInput.required = true;
-
-      villageSelect.replaceWith(villageInput);
-
-      return;
-    }
-
     villageSelect.innerHTML = `<option value="">-- Select Village --</option>`;
-
     (villagesByDistrict[districtSelect.value] || []).forEach(village => {
       const option = document.createElement("option");
       option.value = village;
       option.textContent = village;
       villageSelect.appendChild(option);
     });
-
-    const villageOther = document.createElement("option");
-    villageOther.value = "other";
-    villageOther.textContent = "Other";
-    villageSelect.appendChild(villageOther);
-  });
-
-  villageSelect.addEventListener("change", () => {
-    if (villageSelect.value === "other") {
-
-      const villageInput = document.createElement("input");
-      villageInput.type = "text";
-      villageInput.id = "village";
-      villageInput.name = "village";
-      villageInput.placeholder = "Type village";
-      villageInput.required = true;
-
-      villageSelect.replaceWith(villageInput);
-    }
   });
 
   /* =========================
@@ -127,11 +77,13 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const problemValue = document.getElementById("problem-name").value;
+
     const formData = new FormData();
-    formData.append("problem_type", document.getElementById("problem-name").value);
+    formData.append("problem_type", problemValue);
     formData.append("description", document.getElementById("description").value);
-    formData.append("district", document.getElementById("district").value);
-    formData.append("village", document.getElementById("village").value);
+    formData.append("district", districtSelect.value);
+    formData.append("village", villageSelect.value);
     formData.append("address", document.getElementById("address").value);
 
     const imageInput = document.getElementById("image");
@@ -142,7 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`${API_BASE_URL}/complaints/`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: formData
       });
 
