@@ -123,23 +123,32 @@
   </footer>
 
   <!-- ================= SCRIPTS ================= -->
- <script>
+<script>
   document.addEventListener("DOMContentLoaded", () => {
-    const welcomeUser = document.getElementById("dashboardUser");
+    const welcomeUser = document.getElementById("welcomeUser");
     const token = localStorage.getItem("access_token");
 
-    if (!token || !welcomeUser) return;
+    if (!token) {
+      welcomeUser.textContent = "Welcome, Guest";
+      return;
+    }
 
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
+
       const displayName =
-        payload.name || payload.email || `User ${payload.id}`;
+        payload.name ||
+        payload.username ||
+        payload.email ||
+        "User";
 
       welcomeUser.textContent = `Welcome, ${displayName}`;
-    } catch (err) {
+    } catch (error) {
+      console.error("Token decode failed", error);
       welcomeUser.textContent = "Welcome, User";
     }
   });
 </script>
+
 </body>
 </html>
