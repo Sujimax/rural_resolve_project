@@ -8,7 +8,7 @@ from models.complaint_model import Complaint
 from models.comment_model import Comment
 from models.user_model import User
 from schemas.complaint_create import ComplaintUpdate, ComplaintOut
-from schemas.comment_create import CommentCreate, CommentOut 
+from schemas.comment_create import CommentCreate, CommentOut
 
 user_complaint = APIRouter(prefix="/complaints", tags=["complaints"])
 
@@ -25,19 +25,17 @@ def create_complaint(
     current_user: User = Depends(get_current_user)
 ):
     image_url = None
-
     if image:
         try:
             upload_result = cloudinary.uploader.upload(
                 image.file,
-                folder="complaints",       
+                folder="complaints",
                 public_id=f"user_{current_user.id}_{image.filename}",
                 resource_type="image"
             )
             image_url = upload_result["secure_url"]
-        except Exception as e:
+        except Exception:
             raise HTTPException(status_code=500, detail="Image upload failed")
-
 
     complaint = Complaint(
         user_id=current_user.id,
@@ -46,23 +44,39 @@ def create_complaint(
         district=district,
         village=village,
         address=address,
-        image_url=image_url  
+        image_url=image_url
     )
-
     db.add(complaint)
     db.commit()
     db.refresh(complaint)
-    return complaint
+
+    return ComplaintOut(
+        id=complaint.id,
+        user_id=current_user.id,
+        problem_type=complaint.problem_type,
+        description=complaint.description,
+        district=complaint.district,
+        village=complaint.village,
+        address=complaint.address,
+        votes=complaint.votes,
+        status=complaint.status,
+        created_at=complaint.created_at,
+        user_name=current_user.name,
+        phone=current_user.phone,
+        email=current_user.email,
+        image_url=complaint.image_url,
+        comments_count=0
+    )
+
 
 # ================= GET ALL COMPLAINTS =================
 @user_complaint.get("/", response_model=List[ComplaintOut])
 def get_all_complaints(db: Session = Depends(get_db)):
     complaints = db.query(Complaint).order_by(Complaint.created_at.desc()).all()
-
     result = []
+
     for c in complaints:
         user = db.query(User).filter(User.id == c.user_id).first()
-
         result.append(
             ComplaintOut(
                 id=c.id,
@@ -71,34 +85,53 @@ def get_all_complaints(db: Session = Depends(get_db)):
                 description=c.description,
                 district=c.district,
                 village=c.village,
-                address=c.address, 
+                address=c.address,
                 votes=c.votes,
                 status=c.status,
                 created_at=c.created_at,
                 user_name=user.name if user else None,
                 phone=user.phone if user else None,
                 email=user.email if user else None,
-                image_url=c.image_url
+                image_url=c.image_url,
+                comments_count=len(c.comments) if hasattr(c, "comments") else 0
             )
         )
     return result
 
 
-# ================= GET MY COMPLAINTS (JWT REQUIRED) =================
+# ================= GET MY COMPLAINTS =================
 @user_complaint.get("/me", response_model=List[ComplaintOut])
 def get_my_complaints(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    return (
-        db.query(Complaint)
-        .filter(Complaint.user_id == current_user.id)
-        .order_by(Complaint.created_at.desc())
-        .all()
-    )
+    complaints = db.query(Complaint).filter(Complaint.user_id == current_user.id).order_by(Complaint.created_at.desc()).all()
+    result = []
+
+    for c in complaints:
+        result.append(
+            ComplaintOut(
+                id=c.id,
+                user_id=c.user_id,
+                problem_type=c.problem_type,
+                description=c.description,
+                district=c.district,
+                village=c.village,
+                address=c.address,
+                votes=c.votes,
+                status=c.status,
+                created_at=c.created_at,
+                user_name=current_user.name,
+                phone=current_user.phone,
+                email=current_user.email,
+                image_url=c.image_url,
+                comments_count=len(c.comments) if hasattr(c, "comments") else 0
+            )
+        )
+    return result
 
 
-# ================= GET ONE COMPLAINT (PUBLIC) =================
+# ================= GET ONE COMPLAINT =================
 @user_complaint.get("/{id}", response_model=ComplaintOut)
 def get_one_complaint(id: int, db: Session = Depends(get_db)):
     complaint = db.query(Complaint).filter(Complaint.id == id).first()
@@ -121,7 +154,8 @@ def get_one_complaint(id: int, db: Session = Depends(get_db)):
         user_name=user.name if user else None,
         phone=user.phone if user else None,
         email=user.email if user else None,
-        image_url=complaint.image_url
+        image_url=complaint.image_url,
+        comments_count=len(complaint.comments) if hasattr(complaint, "comments") else 0
     )
 
 
