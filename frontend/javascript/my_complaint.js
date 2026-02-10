@@ -2,8 +2,8 @@ import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const complaintSection = document.querySelector(".complaint-section");
-
   const token = localStorage.getItem("access_token");
+
   if (!token) {
     alert("Please login first");
     window.location.href = "login.html";
@@ -18,12 +18,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!response.ok) throw new Error("Failed to fetch complaints");
 
     const complaints = await response.json();
+    complaintSection.innerHTML = "";
+
     if (complaints.length === 0) {
       complaintSection.innerHTML = "<p>No complaints submitted by you.</p>";
       return;
     }
-
-    complaintSection.innerHTML = "";
 
     complaints.forEach((complaint) => {
       const complaintBox = document.createElement("div");
@@ -54,6 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Description:</strong> ${complaint.description}</p>
             <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
             <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
+            <p><strong>Comments:</strong> ${complaint.comments_count}</p>
+
             <div class="action-section">
               <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">Edit</a>
               <button class="delete-btn" data-id="${complaint.id}">Delete</button>
