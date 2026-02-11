@@ -78,20 +78,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Fixed password toggle
   document.querySelectorAll(".toggle-password").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      // Find the input in the same wrapper
-      const wrapper = btn.closest(".password-wrapper");
-      const input = wrapper.querySelector("input");
+  btn.addEventListener("click", () => {
+    const wrapper = btn.closest(".password-wrapper");
+    const input = wrapper.querySelector("input");
 
-      if (input.type === "password") {
-        input.type = "text";
-        btn.textContent = "🙈"; // show monkey when visible
-      } else {
-        input.type = "password";
-        btn.textContent = "👁️"; // show eye when hidden
-      }
-    });
+    if (input.type === "password") {
+      input.type = "text";
+      btn.textContent = "Hide";
+      btn.style.textDecoration = "line-through"; // small dash style
+    } else {
+      input.type = "password";
+      btn.textContent = "Show";
+      btn.style.textDecoration = "none";
+    }
   });
+});
+
 
   // Form submission
   form.addEventListener("submit", async (e) => {

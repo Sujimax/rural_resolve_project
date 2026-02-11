@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Save token
       localStorage.setItem("access_token", result.access_token);
+      localStorage.setItem("user",JSON.stringify(result.user));
 
       // Decode JWT to check role
       const payload = JSON.parse(atob(result.access_token.split(".")[1]));

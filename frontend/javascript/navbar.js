@@ -15,3 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+
+const username = localStorage.getItem('user')
+
+ 
+document.getElementById('user').textContent=JSON.parse(username).name
