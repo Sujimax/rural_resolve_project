@@ -5,9 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!form) return;
 
-  // =============================
   // Helper functions for inline errors
-  // =============================
+
   const showError = (input, message) => {
     let error = input.nextElementSibling;
 
@@ -36,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   passwordInput.addEventListener("input", () => {
     const pwd = passwordInput.value;
-    
+
     if (pwd.length < 6) {
       passwordStatus.textContent = "Weak";
       passwordStatus.style.color = "red";

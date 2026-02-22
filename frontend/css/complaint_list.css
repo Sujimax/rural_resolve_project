@@ -33,19 +33,33 @@
 }
 
 /* BUTTON ROW STYLING */
-.vote-row, .comment-row {
+.vote-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     margin-top: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1f21;
 }
 
 .comment-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-top: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1f21;
+}
+
+.vote-label, .comment-label {
+    font-weight: 700;
+    color: #000;
 }
 
 .vote-count, .comment-count {
-    font-size: 16px;
+    font-size: 18px;
     color: #1c1f21;
     font-weight: 600;
 }
