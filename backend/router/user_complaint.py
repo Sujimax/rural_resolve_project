@@ -50,8 +50,7 @@ def create_complaint(
     db.add(complaint)
     db.commit()
     db.refresh(complaint)
-
-    # 🔥 RETURN MATCHING RESPONSE MODEL
+    
     return ComplaintOut(
         id=complaint.id,
         user_id=complaint.user_id,
@@ -63,7 +62,7 @@ def create_complaint(
         votes=complaint.votes,
         status=complaint.status,
         created_at=complaint.created_at,
-        comments_count=0,          # IMPORTANT
+        comments_count=0,         
         image_url=complaint.image_url
     )
 

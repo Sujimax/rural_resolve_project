@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,61 +14,72 @@
 
 <body>
 
-<header>
-  <nav class="navbar">
-    <div class="nav-left">
-      <div class="logo">
-        <img src="../images/bgi.png" alt="Logo">
-        <h1 class="page-title">Rural Resolve</h1>
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="logo">
+          <img src="../images/bgi.png" alt="Logo">
+          <h1 class="page-title">Rural Resolve</h1>
+        </div>
+        <button id="menuBtn" class="hamburger">☰</button>
       </div>
-      <button id="menuBtn" class="hamburger">☰</button>
-    </div>
 
-    <ul class="nav-links">
-      <span class="welcome-user" id="welcomeUser">Welcome, <span id="user"></span></span>
+      <div class="nav-right">
+
+        <span class="welcome-user" id="welcomeUser">Welcome, <span id="user"></span></span>
         <span class="notification">🔔</span>
-      <li><a href="complaint_list.html">Back To Complaints</a></li>
-    </ul>
-  </nav>
-</header>
+        <div class="language">
+          <img src="../images/translate.jpg" alt="Language" id="langIcon">
 
-<h3>Complaint Discussion</h3>
+          <div id="languageDropdown" class="language-dropdown">
+            <p onclick="translatePage('en')">English</p>
+            <p onclick="translatePage('ta')">Tamil</p>
+          </div>
+        </div>
 
-<div class="complaint-box">
+        <a href="logout.html" class="login-btn">Logout</a>
+      </div>
+    </nav>
+  </header>
 
-  <div class="complaint-content">
+  <h3>Complaint Discussion</h3>
 
-    <div class="details">
-      <h2 class="problem-title" id="problemType"></h2>
+  <div class="complaint-box">
 
-      <p><strong>District:</strong> <span id="district"></span></p>
-      <p><strong>Village:</strong> <span id="village"></span></p>
-      <p><strong>Date:</strong> <span id="date"></span></p>
-      <p><strong>Description:</strong> <span id="description"></span></p>
-      <p><strong>Votes:</strong> <span id="vote"></span></p>
+    <div class="complaint-content">
+
+      <div class="details">
+        <h2 class="problem-title" id="problemType"></h2>
+
+        <p><strong>District:</strong> <span id="district"></span></p>
+        <p><strong>Village:</strong> <span id="village"></span></p>
+        <p><strong>Date:</strong> <span id="date"></span></p>
+        <p><strong>Description:</strong> <span id="description"></span></p>
+        <p><strong>Votes:</strong> <span id="vote"></span></p>
+      </div>
+
+      <div class="image">
+        <img id="problemImage" alt="Problem Image">
+      </div>
+
     </div>
 
-    <div class="image">
-      <img id="problemImage" alt="Problem Image">
-    </div>
+    <hr>
+
+    <!-- ✅ COMMENT HEADING WITH COUNT -->
+    <h3 id="commentsHeading">Comments (0)</h3>
+    <div id="commentsContainer"></div>
+
+    <hr>
+
+    <textarea id="commentText" rows="3" placeholder="Write your comment..."></textarea>
+    <button id="postComment">Post Comment</button>
 
   </div>
 
-  <hr>
-
-  <!-- ✅ COMMENT HEADING WITH COUNT -->
-  <h3 id="commentsHeading">Comments (0)</h3>
-  <div id="commentsContainer"></div>
-
-  <hr>
-
-  <textarea id="commentText" rows="3" placeholder="Write your comment..."></textarea>
-  <button id="postComment">Post Comment</button>
-
-</div>
-
-<script type="module" src="../javascript/comment.js"></script>
-<script src="../javascript/navbar.js"></script>
-
+  <script type="module" src="../javascript/comment.js"></script>
+  <script src="../javascript/navbar.js"></script>
+  <script src="../javascript/language.js"></script>
 </body>
+
 </html>

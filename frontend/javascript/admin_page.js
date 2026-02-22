@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         pending++;
       }
-      // ========================
 
       const imageSrc = c.image_url
         ? c.image_url

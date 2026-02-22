@@ -54,10 +54,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="complaint-content">
         <div class="details">
         <h2 class="problem-title"> Problem :
-        ${complaint.problem_type} 
-        <span class="complaint-id">(${complaint.id})</span>
-      </h2>
-
+        ${complaint.problem_type} </h2>
+        
+      
+<p><strong>Complaint ID :</strong> ( ${complaint.id} )</p>
       <p><strong>Date:</strong> ${dateText}</p>
       <p><strong>District:</strong> ${complaint.district}</p>
       <p><strong>Village:</strong> ${complaint.village}</p>
@@ -93,6 +93,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       complaintSection.appendChild(complaintBox);
+      // Apply Tamil again if selected
+      const savedLang = localStorage.getItem("selectedLanguage");
+      if (savedLang === "ta") {
+        setTimeout(() => {
+          translatePage("ta");
+        }, 200);
+      }
+
     });
   } catch (err) {
     console.error(err);

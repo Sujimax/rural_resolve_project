@@ -33,13 +33,21 @@
         <li><a href="my_complaint.html">My Complaint</a></li>
       </ul>
 
-      <!-- RIGHT LINKS -->
-      <div class="nav-right">
+    <div class="nav-right">
+
         <span class="welcome-user" id="welcomeUser">Welcome, <span id="user"></span></span>
         <span class="notification">🔔</span>
+        <div class="language">
+          <img src="../images/translate.jpg" alt="Language" id="langIcon">
+
+          <div id="languageDropdown" class="language-dropdown">
+            <p onclick="translatePage('en')">English</p>
+            <p onclick="translatePage('ta')">Tamil</p>
+          </div>
+        </div>
+
         <a href="logout.html" class="login-btn">Logout</a>
       </div>
-
     </nav>
   </header>
 
@@ -53,6 +61,6 @@
 
 <script type="module" src="../javascript/complaint_list.js"></script>
 <script src="../javascript/navbar.js"></script>
-
+<script src="../javascript/language.js"></script>
 
 </html>

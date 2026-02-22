@@ -3,14 +3,20 @@ import API_BASE_URL from "./config.js";
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signup-form");
 
+  if (!form) return;
+
+  // =============================
   // Helper functions for inline errors
+  // =============================
   const showError = (input, message) => {
     let error = input.nextElementSibling;
+
     if (!error || !error.classList.contains("error-msg")) {
       error = document.createElement("small");
       error.classList.add("error-msg");
       input.parentNode.insertBefore(error, input.nextSibling);
     }
+
     error.textContent = message;
     error.style.color = "red";
   };
@@ -22,13 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // =============================
   // Password strength
+  // =============================
   const passwordInput = form.password;
   const passwordStatus = passwordInput.parentNode.querySelector(".password-status");
 
   passwordInput.addEventListener("input", () => {
     const pwd = passwordInput.value;
-
+    
     if (pwd.length < 6) {
       passwordStatus.textContent = "Weak";
       passwordStatus.style.color = "red";
@@ -41,7 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // =============================
   // Confirm password check
+  // =============================
   const confirmInput = form.confirm_password;
   const confirmStatus = confirmInput.parentNode.querySelector(".password-status");
 
@@ -54,21 +64,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Phone validation
+  // =============================
+  // ✅ Improved Phone Validation (LIVE)
+  // =============================
   form.phone.addEventListener("input", () => {
-    const phone = form.phone.value.trim();
-    if (!/^\d{0,10}$/.test(phone)) {
-      showError(form.phone, "Only digits allowed, max 10 digits");
+    // Remove non-digits automatically
+    form.phone.value = form.phone.value.replace(/\D/g, "");
+
+    // Limit to 10 digits
+    if (form.phone.value.length > 10) {
+      form.phone.value = form.phone.value.slice(0, 10);
+    }
+
+    const phone = form.phone.value;
+
+    if (phone.length === 0) {
+      showError(form.phone, "Phone number is required");
     } else if (phone.length < 10) {
-      showError(form.phone, "Phone number must be 10 digits");
+      showError(form.phone, "Phone number must be exactly 10 digits");
     } else {
       clearError(form.phone);
     }
   });
 
+  // =============================
   // Email validation
+  // =============================
   form.email.addEventListener("input", () => {
     const email = form.email.value.trim();
+
     if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
       showError(form.email, "Invalid email format");
     } else {
@@ -76,26 +100,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ✅ Fixed password toggle
+  // =============================
+  // Password Toggle
+  // =============================
   document.querySelectorAll(".toggle-password").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const wrapper = btn.closest(".password-wrapper");
-    const input = wrapper.querySelector("input");
+    btn.addEventListener("click", () => {
+      const wrapper = btn.closest(".password-wrapper");
+      const input = wrapper.querySelector("input");
 
-    if (input.type === "password") {
-      input.type = "text";
-      btn.textContent = "Hide";
-      btn.style.textDecoration = "line-through"; // small dash style
-    } else {
-      input.type = "password";
-      btn.textContent = "Show";
-      btn.style.textDecoration = "none";
-    }
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "Hide";
+        btn.style.textDecoration = "line-through";
+      } else {
+        input.type = "password";
+        btn.textContent = "Show";
+        btn.style.textDecoration = "none";
+      }
+    });
   });
-});
 
-
+  // =============================
   // Form submission
+  // =============================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -115,9 +142,9 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(form.name);
     }
 
-    // Phone validation
+    // Phone validation (FINAL CHECK)
     if (!/^\d{10}$/.test(phone)) {
-      showError(form.phone, "Phone number must be 10 digits");
+      showError(form.phone, "Phone number must be exactly 10 digits");
       valid = false;
     } else {
       clearError(form.phone);
@@ -133,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Password validation
     if (password.length < 6) {
-      showError(passwordInput, "Password too short, min 6 characters");
+      showError(passwordInput, "Password too short (min 6 characters)");
       valid = false;
     } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
       showError(passwordInput, "Add uppercase & number for strong password");
@@ -167,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(err.detail || "Signup failed");
       }
 
-      alert("Signup successful");
+      alert("Signup successful ✅");
       window.location.href = "login.html";
     } catch (err) {
       alert(err.message);

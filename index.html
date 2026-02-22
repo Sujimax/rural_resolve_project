@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,9 +34,15 @@
 
       <!-- RIGHT LINKS -->
       <div class="nav-right">
-        <a href="#" class="language">
-          <img src="./frontend/images/translate.jpg" alt="Language">
-        </a>
+        <div class="language">
+          <img src="./frontend/images/translate.jpg" alt="Language" id="langIcon">
+
+          <div id="languageDropdown" class="language-dropdown">
+            <p onclick="translatePage('en')">English</p>
+            <p onclick="translatePage('ta')">Tamil</p>
+          </div>
+        </div>
+
         <!-- Login Button -->
         <a href="./frontend/htmlpages/login.html" class="login-btn">Login</a>
       </div>
@@ -47,137 +51,115 @@
   </header>
 
 
-<section class="hero">
-  <div class="hero-box">
-    <div class="hero-row">
+  <section class="hero">
+    <div class="hero-box">
+      <div class="hero-row">
+        <div class="hero-left">
+          <img src="/frontend/images/landing_img.png" alt="Rural Support" class="hero-image" />
+        </div>
+        <div class="hero-right">
+          <h2 class="hero-topic"> Your Voice, Our Responsibility. </h2>
+          <p class="hero-content">
+            Rural Resolve helps rural citizens easily raise complaints, monitor progress,
+            and receive timely solutions with full transparency.
+          </p>
+          <div class="hero-buttons">
+            <a href="./frontend/htmlpages/signup.html">
+              <button class="primary-btn">Register Complaint</button>
+            </a>
+            <a href="./frontend/htmlpages/signup.html">
+              <button class="secondary-btn">Check Status</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <div class="hero-left">
-        <img
-          src="/frontend/images/icon1.png"
-          alt="Rural Support"
-          class="hero-image"
-        />
+  <!-- ===== FEATURES SECTION ===== -->
+  <section class="features">
+    <h2 class="features-title">Features of Rural Resolve</h2>
+
+    <div class="features-container">
+
+      <div class="feature-box">
+        <div class="feature-icon"><img src="./frontend/images/microphone.png" alt="microphone"></div>
+        <h3>Voice Support</h3>
+        <p>
+          Citizens who cannot read or write can submit complaints using voice commands.
+          This feature ensures equal access for everyone.
+        </p>
       </div>
 
-      <div class="hero-right">
-        <h2 class="hero-topic">
-          Simplifying Rural Complaint Resolution
-        </h2>
-
-        <p class="hero-content">
-          Rural Resolve helps rural citizens easily raise complaints,
-          monitor progress, and receive timely solutions with full transparency.
+      <div class="feature-box">
+        <div class="feature-icon"><img src="./frontend/images/language.png" alt="microphone"></div>
+        <h3>Language Accessibility</h3>
+        <p>
+          Supports both <strong>English and Tamil</strong> so rural citizens can
+          easily understand and submit complaints.
         </p>
+      </div>
 
-        <div class="hero-buttons">
-          <a href="./frontend/htmlpages/signup.html">
-            <button class="primary-btn">Register Complaint</button>
-          </a>
-          <a href="./frontend/htmlpages/signup.html">
-            <button class="secondary-btn">Check Status</button>
-          </a>
+      <div class="feature-box">
+        <div class="feature-icon"><img src="./frontend/images/status.png" alt="microphone"></div>
+        <h3>Status Tracking & Email Updates</h3>
+        <p>
+          Track complaint progress in real time and receive email updates.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+
+
+  <section class="why-choose">
+
+    <h2 class="why-title">Why Choose Rural Resolve?</h2>
+
+    <div class="why-list">
+
+      <div class="comment-box">
+        <span class="comment-icon"></span>
+        <div>
+          <h3>Direct Access to Higher Authorities</h3>
+          <p>
+            Complaints are forwarded beyond local offices to ensure accountability
+            and real solutions.
+          </p>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <span class="comment-icon"></span>
+        <div>
+          <h3>Voice & Multi-Language Support</h3>
+          <p>
+            Citizens can register complaints using voice input with support for
+            Tamil and English.
+          </p>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <span class="comment-icon"></span>
+        <div>
+          <h3>Transparent Tracking & Analytics</h3>
+          <p>
+            Area-wise analytics identify affected regions while email notifications
+            keep citizens updated.
+          </p>
         </div>
       </div>
 
     </div>
-  </div>
-</section>
 
-
-
-  <!-- ===== FEATURES SECTION ===== -->
-<section class="features">
-  <h2 class="features-title">Features of Rural Resolve</h2>
-
-  <div class="features-container">
-
-    <!-- Voice Support -->
-    <div class="feature-box">
-      <div class="feature-icon">🎤</div>
-      <h3>Voice Support</h3>
-      <p>
-        Citizens who cannot read or write can submit complaints using voice commands.
-        This feature ensures equal access for everyone.
-      </p>
-    </div>
-
-    <!-- Language -->
-    <div class="feature-box">
-      <div class="feature-icon">🌐</div>
-      <h3>Language Accessibility</h3>
-      <p>
-        Supports both <strong>English and Tamil</strong> so rural citizens can
-        easily understand and submit complaints.
-      </p>
-    </div>
-
-    <!-- Status -->
-    <div class="feature-box">
-      <div class="feature-icon">Status</div>
-      <h3>Status Tracking & Email Updates</h3>
-      <p>
-        Track complaint progress in real time and receive email updates.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-
-
-
-<section class="why-choose">
-
-  <h2 class="why-title">Why Choose Rural Resolve?</h2>
-
-  <div class="why-list">
-
-    <div class="comment-box">
-      <span class="comment-icon"></span>
-      <div>
-        <h3>Direct Access to Higher Authorities</h3>
-        <p>
-          Complaints are forwarded beyond local offices to ensure accountability
-          and real solutions.
-        </p>
-      </div>
-    </div>
-
-    <div class="comment-box">
-      <span class="comment-icon"></span>
-      <div>
-        <h3>Voice & Multi-Language Support</h3>
-        <p>
-          Citizens can register complaints using voice input with support for
-          Tamil and English.
-        </p>
-      </div>
-    </div>
-
-    <div class="comment-box">
-      <span class="comment-icon"></span>
-      <div>
-        <h3>Transparent Tracking & Analytics</h3>
-        <p>
-          Area-wise analytics identify affected regions while email notifications
-          keep citizens updated.
-        </p>
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-
-
-
-
+  </section>
   <!-- ===== FOOTER ===== -->
   <footer class="footer" id="contact">
     <div class="footer-container">
 
-      <!-- Our Village -->
       <div class="footer-section">
         <h4>Our Village</h4>
         <p>
@@ -190,7 +172,6 @@
         </a>
       </div>
 
-      <!-- Quick Links -->
       <div class="footer-section">
         <h4>Quick Links</h4>
         <ul>
@@ -202,7 +183,6 @@
         </ul>
       </div>
 
-      <!-- Support -->
       <div class="footer-section">
         <h4>Support</h4>
         <ul>
@@ -213,7 +193,6 @@
         </ul>
       </div>
 
-      <!-- Contact -->
       <div class="footer-section">
         <h4>Contact</h4>
         <p>Email: support@ruralresolve.com</p>
@@ -230,7 +209,7 @@
   </footer>
 
   <script src="./frontend/javascript/navbar.js"></script>
+  <script src="./frontend/javascript/language.js"></script>
 
 </body>
-
 </html>

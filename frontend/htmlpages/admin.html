@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,68 +12,78 @@
 
 <body>
 
-<header>
-  <nav class="navbar">
-    <div class="nav-left">
-      <div class="logo">
-        <img src="../images/bgi.png" alt="Logo">
-        <h1 class="page-title">Rural Resolve</h1>
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="logo">
+          <img src="../images/bgi.png" alt="Logo">
+          <h1 class="page-title">Rural Resolve</h1>
+        </div>
+        <button id="menuBtn" class="hamburger">☰</button>
       </div>
-      <button id="menuBtn" class="hamburger">☰</button>
+
+      <div class="nav-right">
+
+        <div class="language">
+          <img src="../images/translate.jpg" alt="Language" id="langIcon">
+
+          <div id="languageDropdown" class="language-dropdown">
+            <p onclick="translatePage('en')">English</p>
+            <p onclick="translatePage('ta')">Tamil</p>
+          </div>
+        </div>
+        <div id="google_translate_element" style="display:none;"></div>
+        <a href="../../index.html" class="login-btn">Back to Home</a>
+
+      </div>
+    </nav>
+  </header>
+
+  <h2>Admin Overview</h2>
+
+  <!-- SUMMARY BOXES -->
+  <div class="summary-box">
+    <div class="summary-card total">
+      <h3>Total Complaints</h3>
+      <p id="total-count">0</p>
     </div>
 
-    <ul class="nav-links">
-      <span class="welcome-user" id="welcomeUser">Welcome, <span id="user"></span></span>
-        <span class="notification">🔔</span>
-      <li><a href="../../index.html">Back To Home</a></li>
-      <li><a href="logout.html">Logout</a></li>
-    </ul>
-  </nav>
-</header>
+    <div class="summary-card resolved">
+      <h3>Resolved Complaints</h3>
+      <p id="solved-count">0</p>
+    </div>
 
-<h2>Admin Overview</h2>
-
-<!-- SUMMARY BOXES -->
-<div class="summary-box">
-  <div class="summary-card total">
-    <h3>Total Complaints</h3>
-    <p id="total-count">0</p>
+    <div class="summary-card pending">
+      <h3>Pending Complaints</h3>
+      <p id="pending-count">0</p>
+    </div>
   </div>
 
-  <div class="summary-card resolved">
-    <h3>Resolved Complaints</h3>
-    <p id="solved-count">0</p>
+  <h2>Recent Complaints</h2>
+
+  <div class="table-container">
+    <table id="complaints-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Problem Type</th>
+          <th>Name</th>
+          <th>District</th>
+          <th>Vote</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Image</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-  <div class="summary-card pending">
-    <h3>Pending Complaints</h3>
-    <p id="pending-count">0</p>
-  </div>
-</div>
-
-<h2>Recent Complaints</h2>
-
-<div class="table-container">
-  <table id="complaints-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Problem Type</th>
-        <th>Name</th>
-        <th>District</th>
-        <th>Vote</th>
-        <th>Description</th>
-        <th>Date</th>
-        <th>Image</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-<script type="module" src="../javascript/admin_page.js"></script>
-<script src="../javascript/navbar.js"></script>
+  <script type="module" src="../javascript/admin_page.js"></script>
+  <script src="../javascript/navbar.js"></script>
+  <script src="../javascript/language.js"></script>
 </body>
+
 </html>

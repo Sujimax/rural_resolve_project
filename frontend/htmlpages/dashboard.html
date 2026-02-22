@@ -28,7 +28,7 @@
 
       <!-- CENTER -->
       <ul class="nav-links">
-        <li><a href="dashboard.html" class="active">Home</a></li>
+        <!-- <li><a href="dashboard.html" class="active">Home</a></li> -->
         <li><a href="addcomplaint.html">Add Complaint</a></li>
         <li><a href="my_complaint.html">My Complaint</a></li>
         <li><a href="complaint_list.html">Complaint List</a></li>
@@ -36,8 +36,18 @@
 
       <!-- RIGHT -->
       <div class="nav-right">
+
         <span class="welcome-user" id="welcomeUser">Welcome, <span id="user"></span></span>
         <span class="notification">🔔</span>
+        <div class="language">
+          <img src="../images/translate.jpg" alt="Language" id="langIcon">
+
+          <div id="languageDropdown" class="language-dropdown">
+            <p onclick="translatePage('en')">English</p>
+            <p onclick="translatePage('ta')">Tamil</p>
+          </div>
+        </div>
+
         <a href="logout.html" class="login-btn">Logout</a>
       </div>
 
@@ -66,34 +76,64 @@
   </section>
 
   <!-- ================= INFO SECTIONS ================= -->
-  <h2>Guidelines for how to use this Website</h2>
-  <section id="add-complaint" class="info-section">
-    <h3>Add a Complaint</h3>
+  <h2>Guidelines for Using This Website</h2>
+
+  <section class="info-section">
+    <h3>How to Add a Complaint</h3>
     <ol>
-      <li><strong>Upload a Photo:</strong> Add a clear image related to your issue (optional but useful).</li>
-      <li><strong>Enter Problem Description:</strong> Explain your issue clearly and concisely.</li>
-      <li><strong>Provide Location:</strong> Mention the exact place where the issue occurs.</li>
-      <li><strong>Mention Year of Problem:</strong> State when the problem started, if it's old.</li>
-      <li><strong>Submit Complaint:</strong> Click <b>Submit</b> to send your complaint to authorities.</li>
+      <li>
+        Select the correct problem type. If your issue is not listed, choose <b>Other</b> and enter your problem.
+      </li>
+      <li>
+        Upload a clear image of the issue (optional but helpful).
+      </li>
+      <li>
+        Write a clear and detailed description of the problem.
+      </li>
+      <li>
+        Select the correct District and Village where the issue exists.
+      </li>
+      <li>
+        Enter your complete address and click <b>Submit Complaint</b>.
+      </li>
     </ol>
   </section>
 
-  <section id="view-complaint" class="info-section">
-    <h3>View Complaint List</h3>
+  <section class="info-section">
+    <h3>How to Use My Complaint</h3>
     <ol>
-      <li><strong>Access List:</strong> View all complaints submitted by users.</li>
-      <li><strong>Search Complaint:</strong> Find a complaint using name or ID.</li>
-      <li><strong>Check Details:</strong> Read updates and status from authorities.</li>
+      <li>
+        View all complaints you have submitted.
+      </li>
+      <li>Check the status: <b>Pending</b> (not started), <b>In Progress</b> (admin working), or <b>Resolved</b>
+        (problem solved).</li>
+      <li>
+        You can edit or delete your complaint if required.
+      </li>
+      <li>
+        See how many users supported your complaint and read their comments.
+      </li>
     </ol>
   </section>
 
-  <section id="check-complaint" class="info-section">
-    <h3>Check Complaint Status</h3>
+  <section class="info-section">
+    <h3>How to Use Complaint List</h3>
     <ol>
-      <li><strong>Enter Complaint ID:</strong> Enter your complaint ID for updates.</li>
-      <li><strong>View Status:</strong> See if it’s <b>Pending</b>, <b>In Progress</b>, or <b>Resolved</b>.</li>
+      <li>
+        View complaints submitted by other users in your area.
+      </li>
+      <li>
+        Check complaint details, location, and current status.
+      </li>
+      <li>
+        Click <b>Support</b> if you face the same issue.
+      </li>
+      <li>
+        Add comments and read opinions from other users.
+      </li>
     </ol>
   </section>
+
 
   <footer>
     <p>&copy; 2025 Rural Resolve</p>
@@ -101,5 +141,9 @@
 
   <script src="../javascript/navbar.js"></script>
 
+  <script src="../javascript/language.js"></script>
+
+
 </body>
+
 </html>

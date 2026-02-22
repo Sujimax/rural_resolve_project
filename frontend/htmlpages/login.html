@@ -24,7 +24,22 @@
       </div>
 
       <div class="nav-right">
+
+        <div class="language">
+          <img src="../images/translate.jpg" alt="Language" id="langIcon">
+
+          <div id="languageDropdown" class="language-dropdown">
+            <p onclick="translatePage('en')">English</p>
+            <p onclick="translatePage('ta')">Tamil</p>
+          </div>
+        </div>
+
+
+        <!-- Google Translate Hidden Container -->
+        <div id="google_translate_element" style="display:none;"></div>
+
         <a href="../../index.html" class="login-btn">Back to Home</a>
+
       </div>
     </nav>
   </header>
@@ -35,7 +50,13 @@
     <div class="form-container">
       <form id="login-form">
         <input type="email" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
+        <div class="password-wrapper">
+          <input type="password" name="password" placeholder="Password" required />
+
+          <img src="../images/view.png" class="toggle-password" data-show="../images/view.png"
+            data-hide="../images/hide.png" alt="Show Password">
+        </div>
+
 
         <button type="submit">Login</button>
       </form>
@@ -46,6 +67,7 @@
 
   <script type="module" src="/frontend/javascript/navbar.js"></script>
   <script type="module" src="../javascript/login.js"></script>
+  <script src="../javascript/language.js"></script>
 
 </body>
 

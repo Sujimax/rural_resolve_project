@@ -161,3 +161,22 @@ button:hover {
   padding: 8px;
   font-size: 16px;
 }
+
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.password-wrapper img {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    cursor: pointer;
+}

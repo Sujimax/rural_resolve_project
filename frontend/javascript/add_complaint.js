@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let districtField = document.getElementById("district");
   let villageField = document.getElementById("village");
 
-  // fill districts
   Object.keys(villagesByDistrict).forEach(d => {
     const opt = document.createElement("option");
     opt.value = d;

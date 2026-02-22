@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             <!--  SUPPORT ROW -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-              <button class="btn vote-btn">👍 Support</button>
+              <button class="btn vote-btn">👍 Votes</button>
               <span class="vote-count">${complaint.votes || 0}</span>
             </div>
 

@@ -1,90 +1,76 @@
 import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+
   const form = document.getElementById("login-form");
+  if (!form) return;
 
-  // Helper functions for inline errors
-  const showError = (input, message) => {
-    let error = input.nextElementSibling;
-    if (!error || !error.classList.contains("error-msg")) {
+  // ======================
+  // Error Function
+  // ======================
+  const setError = (input, message = "") => {
+    let error = input.parentElement.querySelector(".error-msg");
+
+    if (!error) {
       error = document.createElement("small");
-      error.classList.add("error-msg");
-      input.parentNode.insertBefore(error, input.nextSibling);
+      error.className = "error-msg";
+      error.style.color = "red";
+      input.parentElement.appendChild(error);
     }
+
     error.textContent = message;
-    error.style.color = "red";
   };
 
-  const clearError = (input) => {
-    let error = input.nextElementSibling;
-    if (error && error.classList.contains("error-msg")) {
-      error.textContent = "";
-    }
-  };
+  // ======================
+  // Password Toggle (COMMON)
+  // ======================
+  document.querySelectorAll(".toggle-password").forEach(icon => {
+    icon.addEventListener("click", () => {
+      const wrapper = icon.closest(".password-wrapper");
+      if (!wrapper) return;
 
-  // ✅ Add password toggle button (simple)
-  const passwordInput = form.password;
-  const passwordWrapper = document.createElement("div");
-  passwordWrapper.classList.add("password-wrapper");
+      const input = wrapper.querySelector("input");
+      if (!input) return;
 
-  // Move password input into wrapper
-  passwordInput.parentNode.insertBefore(passwordWrapper, passwordInput);
-  passwordWrapper.appendChild(passwordInput);
-
-  // Add toggle button
-  const toggleBtn = document.createElement("button");
-  toggleBtn.type = "button";
-  toggleBtn.classList.add("toggle-password");
-  toggleBtn.textContent = "👁️";
-  passwordWrapper.appendChild(toggleBtn);
-
-  // Toggle functionality
-  toggleBtn.addEventListener("click", () => {
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      toggleBtn.textContent = "🙈";
-    } else {
-      passwordInput.type = "password";
-      toggleBtn.textContent = "👁️";
-    }
+      const hidden = input.type === "password";
+      input.type = hidden ? "text" : "password";
+      icon.src = hidden ? icon.dataset.hide : icon.dataset.show;
+    });
   });
 
-  // Form submission
+  // ======================
+  // Form Submit
+  // ======================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const emailInput = form.email;
-    const passwordInput = form.password;
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
     let valid = true;
 
-    // Email validation
     if (!email) {
-      showError(emailInput, "Email is required");
+      setError(form.email, "Email is required");
       valid = false;
     } else if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
-      showError(emailInput, "Invalid email format");
+      setError(form.email, "Invalid email format");
       valid = false;
     } else {
-      clearError(emailInput);
+      setError(form.email);
     }
 
-    // Password validation
     if (!password) {
-      showError(passwordInput, "Password is required");
+      setError(form.password, "Password is required");
       valid = false;
     } else if (password.length < 6) {
-      showError(passwordInput, "Password must be at least 6 characters");
+      setError(form.password, "Minimum 6 characters required");
       valid = false;
     } else {
-      clearError(passwordInput);
+      setError(form.password);
     }
 
     if (!valid) return;
 
-    // Send login request
     try {
       const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
@@ -92,29 +78,27 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ email, password })
       });
 
-      const result = await res.json();
+      const data = await res.json();
 
       if (!res.ok) {
-        showError(passwordInput, result.detail || "Invalid email or password");
+        setError(form.password, data.detail || "Invalid email or password");
         return;
       }
 
-      // Save token
-      localStorage.setItem("access_token", result.access_token);
-      localStorage.setItem("user",JSON.stringify(result.user));
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Decode JWT to check role
-      const payload = JSON.parse(atob(result.access_token.split(".")[1]));
+      const payload = JSON.parse(atob(data.access_token.split(".")[1]));
       const role = payload.role || "user";
 
-      if (role === "admin") {
-        window.location.href = "admin.html";  
-      } else {
-        window.location.href = "dashboard.html";  
-      }
+      window.location.href = role === "admin"
+        ? "admin.html"
+        : "dashboard.html";
 
     } catch (err) {
-      alert(err.message);
+      alert("Something went wrong. Please try again.");
+      console.error(err);
     }
   });
+
 });

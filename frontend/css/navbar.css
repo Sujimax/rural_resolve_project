@@ -155,3 +155,33 @@ body {
     justify-content: space-between;
   }
 }
+
+
+.language-dropdown {
+  display: none;
+  position: absolute;
+  background: white;
+}
+
+.language-dropdown.show {
+  display: block;
+}
+
+/* ===== TAMIL MODE NAVBAR FIX ===== */
+
+.tamil-mode .logo h1 {
+  font-size: 24px;   /* Reduce logo text size */
+}
+
+.tamil-mode .nav-links a {
+  font-size: 17px;   /* Reduce menu link size */
+}
+
+.tamil-mode .login-btn {
+  font-size: 15px;   /* Reduce login button text */
+  padding: 8px 16px;
+}
+
+.tamil-mode .welcome-user {
+  font-size: 15px;
+}

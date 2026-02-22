@@ -22,7 +22,18 @@
             </div>
 
             <div class="nav-right">
+
+                <div class="language">
+                    <img src="../images/translate.jpg" alt="Language" id="langIcon">
+
+                    <div id="languageDropdown" class="language-dropdown">
+                        <p onclick="translatePage('en')">English</p>
+                        <p onclick="translatePage('ta')">Tamil</p>
+                    </div>
+                </div>
+                <div id="google_translate_element" style="display:none;"></div>
                 <a href="../../index.html" class="login-btn">Back to Home</a>
+
             </div>
         </nav>
     </header>
@@ -39,15 +50,18 @@
             <div class="password-wrapper">
                 <input type="password" name="password" placeholder="Password" required>
                 <span class="password-status"></span>
-                <button type="button" class="toggle-password">Show</button>
+                <img src="../images/view.png" class="toggle-password" data-show="../images/view.png"
+                    data-hide="../images/hide.png" alt="Show Password">
             </div>
 
             <!-- Confirm Password -->
             <div class="password-wrapper">
                 <input type="password" name="confirm_password" placeholder="Confirm Password" required>
                 <span class="password-status"></span>
-                <button type="button" class="toggle-password">Show</button>
+                <img src="../images/view.png" class="toggle-password" data-show="../images/view.png"
+                    data-hide="../images/hide.png" alt="Show Password">
             </div>
+
 
             <button type="submit">Sign Up</button>
         </form>
@@ -56,6 +70,7 @@
 
     <script type="module" src="../javascript/signup.js"></script>
     <script src="../javascript/navbar.js"></script>
+    <script src="../javascript/language.js"></script>
 </body>
 
 </html>
