@@ -31,3 +31,21 @@
     background-color: #0095d1;
     transform: scale(1.05);
 }
+
+/* BUTTON ROW STYLING */
+.vote-row, .comment-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.comment-row {
+    margin-top: 12px;
+}
+
+.vote-count, .comment-count {
+    font-size: 16px;
+    color: #1c1f21;
+    font-weight: 600;
+}
