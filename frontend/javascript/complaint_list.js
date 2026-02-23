@@ -82,17 +82,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             </p>
 
             <!--  SUPPORT ROW -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+            <div class="vote-row">
               <button class="btn vote-btn">👍 Votes</button>
               <span class="vote-count">${complaint.votes || 0}</span>
             </div>
 
             <!--  COMMENT ROW -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+            <div class="comment-row">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 Comment
               </a>
-              <span>${commentCount}</span>
+              <span class="comment-count">${commentCount}</span>
             </div>
 
           </div>
