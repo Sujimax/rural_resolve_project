@@ -27,9 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // =============================
   // Password strength
-  // =============================
+
   const passwordInput = form.password;
   const passwordStatus = passwordInput.parentNode.querySelector(".password-status");
 
@@ -48,29 +47,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // =============================
   // Confirm password check
-  // =============================
+
   const confirmInput = form.confirm_password;
   const confirmStatus = confirmInput.parentNode.querySelector(".password-status");
 
   confirmInput.addEventListener("input", () => {
     if (confirmInput.value === passwordInput.value && confirmInput.value.length >= 6) {
-      confirmStatus.textContent = "✅";
+      confirmStatus.textContent = "Correct";
       confirmStatus.style.color = "green";
     } else {
       confirmStatus.textContent = "";
     }
   });
 
-  // =============================
-  // ✅ Improved Phone Validation (LIVE)
-  // =============================
+  //  Improved Phone Validation 
+
   form.phone.addEventListener("input", () => {
     // Remove non-digits automatically
     form.phone.value = form.phone.value.replace(/\D/g, "");
 
-    // Limit to 10 digits
     if (form.phone.value.length > 10) {
       form.phone.value = form.phone.value.slice(0, 10);
     }
@@ -86,9 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // =============================
   // Email validation
-  // =============================
+  
   form.email.addEventListener("input", () => {
     const email = form.email.value.trim();
 
@@ -99,9 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // =============================
   // Password Toggle
-  // =============================
+
   document.querySelectorAll(".toggle-password").forEach((btn) => {
     btn.addEventListener("click", () => {
       const wrapper = btn.closest(".password-wrapper");
@@ -119,9 +113,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // =============================
   // Form submission
-  // =============================
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
