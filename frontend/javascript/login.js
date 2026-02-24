@@ -1,72 +1,92 @@
 import API_BASE_URL from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const form = document.getElementById("login-form");
   if (!form) return;
 
-  // ======================
-  // Error Function
-  // ======================
-  const setError = (input, message = "") => {
-    let error = input.parentElement.querySelector(".error-msg");
+  // ===== Inline Error Functions =====
 
-    if (!error) {
+  const showError = (input, message) => {
+    let error = input.nextElementSibling;
+
+    if (!error || !error.classList.contains("error-msg")) {
       error = document.createElement("small");
-      error.className = "error-msg";
-      error.style.color = "red";
-      input.parentElement.appendChild(error);
+      error.classList.add("error-msg");
+      input.parentNode.insertBefore(error, input.nextSibling);
     }
 
     error.textContent = message;
+    error.style.color = "red";
   };
 
-  // ======================
-  // Password Toggle (COMMON)
-  // ======================
-  document.querySelectorAll(".toggle-password").forEach(icon => {
-    icon.addEventListener("click", () => {
-      const wrapper = icon.closest(".password-wrapper");
-      if (!wrapper) return;
+  const clearError = (input) => {
+    let error = input.nextElementSibling;
+    if (error && error.classList.contains("error-msg")) {
+      error.textContent = "";
+    }
+  };
 
+  // ===== Email Validation =====
+
+  form.email.addEventListener("input", () => {
+    const email = form.email.value.trim();
+
+    if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
+      showError(form.email, "Invalid email format");
+    } else {
+      clearError(form.email);
+    }
+  });
+
+  // ===== Password Hide / Show =====
+
+  document.querySelectorAll(".toggle-password").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const wrapper = btn.closest(".password-wrapper");
       const input = wrapper.querySelector("input");
-      if (!input) return;
 
-      const hidden = input.type === "password";
-      input.type = hidden ? "text" : "password";
-      icon.src = hidden ? icon.dataset.hide : icon.dataset.show;
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "Hide";
+        btn.style.textDecoration = "line-through";
+      } else {
+        input.type = "password";
+        btn.textContent = "Show";
+        btn.style.textDecoration = "none";
+      }
     });
   });
 
-  // ======================
-  // Form Submit
-  // ======================
+  // ===== Form Submission =====
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = form.email.value.trim();
-    const password = form.password.value.trim();
-
     let valid = true;
 
+    const email = form.email.value.trim();
+    const password = form.password.value;
+
+    // Email validation
     if (!email) {
-      setError(form.email, "Email is required");
+      showError(form.email, "Email is required");
       valid = false;
     } else if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
-      setError(form.email, "Invalid email format");
+      showError(form.email, "Invalid email format");
       valid = false;
     } else {
-      setError(form.email);
+      clearError(form.email);
     }
 
+    // Password validation
     if (!password) {
-      setError(form.password, "Password is required");
+      showError(form.password, "Password is required");
       valid = false;
     } else if (password.length < 6) {
-      setError(form.password, "Minimum 6 characters required");
+      showError(form.password, "Minimum 6 characters required");
       valid = false;
     } else {
-      setError(form.password);
+      clearError(form.password);
     }
 
     if (!valid) return;
@@ -81,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(form.password, data.detail || "Invalid email or password");
+        showError(form.password, data.detail || "Invalid email or password");
         return;
       }
 
