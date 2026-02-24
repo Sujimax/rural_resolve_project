@@ -8,12 +8,7 @@ const customTamilWords = {
     "Register": "பதிவு",
     "Contact": "தொடர்பு"
 };
-
-
-// ===============================
-// TRANSLATE FUNCTION
-// ===============================
-
+\
 function translatePage(language) {
 
     if (language === "en") {
