@@ -1,18 +1,9 @@
-// ===============================
-// CUSTOM FIX WORDS (IMPORTANT)
-// ===============================
-
 const customTamilWords = {
     "Home": "முகப்பு",
     "Login": "உள்நுழைவு",
     "Register": "பதிவு",
     "Contact": "தொடர்பு"
 };
-
-
-// ===============================
-// TRANSLATE FUNCTION
-// ===============================
 
 function translatePage(language) {
 
@@ -28,10 +19,7 @@ function translatePage(language) {
     }
 }
 
-
-// ===============================
 // APPLY TAMIL
-// ===============================
 
 function applyTamil() {
 
@@ -49,16 +37,13 @@ function applyTamil() {
         const node = walker.currentNode;
 
       {
-
             const originalText = node.nodeValue.trim();
 
-            // 🔥 FIRST CHECK CUSTOM WORD
             if (customTamilWords[originalText]) {
                 node.nodeValue = customTamilWords[originalText];
-                continue; // skip google translate
+                continue; 
             }
 
-            // 🔥 OTHERWISE USE GOOGLE API
             fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ta&dt=t&q=${encodeURIComponent(originalText)}`)
                 .then(res => res.json())
                 .then(data => {
@@ -71,10 +56,7 @@ function applyTamil() {
     }
 }
 
-
-// ===============================
 // DOM READY
-// ===============================
 
 document.addEventListener("DOMContentLoaded", function () {
 
