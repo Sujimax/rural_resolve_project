@@ -38,22 +38,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ===== Password Hide / Show =====
+  // ===== Password Hide / Show (FIXED FOR IMAGE ICONS) =====
 
   document.querySelectorAll(".toggle-password").forEach((btn) => {
     btn.addEventListener("click", () => {
+
       const wrapper = btn.closest(".password-wrapper");
       const input = wrapper.querySelector("input");
 
+      const showIcon = btn.dataset.show;
+      const hideIcon = btn.dataset.hide;
+
       if (input.type === "password") {
         input.type = "text";
-        btn.textContent = "Hide";
-        btn.style.textDecoration = "line-through";
+        btn.src = hideIcon;
       } else {
         input.type = "password";
-        btn.textContent = "Show";
-        btn.style.textDecoration = "none";
+        btn.src = showIcon;
       }
+
     });
   });
 
