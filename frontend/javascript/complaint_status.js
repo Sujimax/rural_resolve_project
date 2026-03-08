@@ -90,12 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       addressEl.textContent = complaintData.address || "N/A";
       votesEl.textContent = complaintData.votes || 0;
 
-      // Show edited date if available
-      let displayDate = new Date(complaintData.created_at).toLocaleDateString();
-      if (complaintData.updated_at && complaintData.updated_at !== complaintData.created_at) {
-        displayDate = new Date(complaintData.updated_at).toLocaleDateString();
-      }
-      dateEl.textContent = displayDate;
+      dateEl.textContent = new Date(complaintData.created_at).toLocaleDateString();
 
       complaintImageEl.src = complaintData.image_url || "../images/icon1.png";
 

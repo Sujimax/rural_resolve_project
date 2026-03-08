@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ===== Password Strength (keep this) =====
+  // ===== Password Strength =====
 
   const passwordInput = form.password;
   const passwordStatus = passwordInput.parentNode.querySelector(".password-status");
@@ -46,24 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ===== Confirm Password =====
-
-  const confirmInput = form.confirm_password;
-  const confirmStatus = confirmInput.parentNode.querySelector(".password-status");
-
-  confirmInput.addEventListener("input", () => {
-    if (
-      confirmInput.value === passwordInput.value &&
-      confirmInput.value.length >= 6
-    ) {
-      confirmStatus.textContent = "Correct";
-      confirmStatus.style.color = "green";
-    } else {
-      confirmStatus.textContent = "";
-    }
-  });
-
-  // ===== Mobile Validation (Keep same) =====
+  // ===== Mobile Validation =====
 
   form.phone.addEventListener("input", () => {
     form.phone.value = form.phone.value.replace(/\D/g, "");
@@ -127,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = form.password.value;
     const confirmPassword = form.confirm_password.value;
 
-    // Name validation
     if (!name) {
       showError(form.name, "Name is required");
       valid = false;
@@ -135,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(form.name);
     }
 
-    // Phone validation
     if (!/^\d{10}$/.test(phone)) {
       showError(form.phone, "Phone number must be exactly 10 digits");
       valid = false;
@@ -143,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(form.phone);
     }
 
-    // Email validation
     if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
       showError(form.email, "Invalid email format");
       valid = false;
@@ -151,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
       clearError(form.email);
     }
 
-    // ❗ PASSWORD VALIDATION → ALERT ONLY (NO showError)
     if (password.length < 6) {
       alert("Password must be minimum 6 characters");
       return;
@@ -168,8 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!valid) return;
-
-    // ===== Submit Data =====
 
     const data = { name, phone, email, password };
 

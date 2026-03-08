@@ -44,40 +44,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Image
       const imageSrc = complaint.image_url || "../images/icon1.png";
 
-      // Check if edited
-      let dateText = new Date(complaint.created_at).toLocaleDateString();
-      if (complaint.updated_at && complaint.updated_at !== complaint.created_at) {
-        dateText += " (Edited)";
-      }
-
       complaintBox.innerHTML = `
         <div class="complaint-content">
-        <div class="details">
-        <h2 class="problem-title"> Problem :
-        ${complaint.problem_type} </h2>
-        
-      
-<p><strong>Complaint ID :</strong> ( ${complaint.id} )</p>
-      <p><strong>Date:</strong> ${dateText}</p>
-      <p><strong>District:</strong> ${complaint.district}</p>
-      <p><strong>Village:</strong> ${complaint.village}</p>
-      <p><strong>Address:</strong> ${complaint.address}</p>
-      <p><strong>Description:</strong> ${complaint.description}</p>
-      <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
-      <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
-      <p><strong>Comments:</strong> ${complaint.comments_count}</p>
+          <div class="details">
+            <h2 class="problem-title"> Problem : ${complaint.problem_type} </h2>
+            <p><strong>Complaint ID :</strong> ( ${complaint.id} )</p>
+            <p><strong>Date:</strong> ${dateText}</p>
+            <p><strong>District:</strong> ${complaint.district}</p>
+            <p><strong>Village:</strong> ${complaint.village}</p>
+            <p><strong>Address:</strong> ${complaint.address}</p>
+            <p><strong>Description:</strong> ${complaint.description}</p>
+            <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
+            <p><strong>Votes:</strong> ${complaint.votes || 0} 👍</p>
+            <p><strong>Comments:</strong> ${complaint.comments_count}</p>
+            <div class="action-section">
+              <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">Edit</a>
+              <button class="delete-btn" data-id="${complaint.id}">Delete</button>
+            </div>
+          </div>
 
-      <div class="action-section">
-        <a href="edit_complaint.html?id=${complaint.id}" class="edit-btn">Edit</a>
-        <button class="delete-btn" data-id="${complaint.id}">Delete</button>
-      </div>
-    </div>
-
-    <div class="image">
-      <img src="${imageSrc}" alt="Complaint Image">
-    </div>
-  </div>
-`;
+          <div class="image">
+            <img src="${imageSrc}" alt="Complaint Image">
+          </div>
+        </div>`;
 
       // Delete button
       complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
