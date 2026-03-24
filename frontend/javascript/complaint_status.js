@@ -115,8 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Update status button click
   updateStatusBtn.addEventListener("click", async () => {
-    // ✅ ALERT if already resolved
-    if (!complaintData) return; // safety check
+    if (!complaintData) return; 
     if (complaintData.status.toLowerCase() === "resolved") {
       alert("This complaint is already resolved! Status cannot be changed.");
       return;
@@ -154,6 +153,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       };
 
       window.emailjs
+
+      // service id , templateid, params
         .send("service_lrkjfeo", "template_cq2r65r", params)
         .then(() => alert("Status updated & email sent successfully!"))
         .catch(err => {

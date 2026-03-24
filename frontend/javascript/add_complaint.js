@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     opt.textContent = d;
     districtField.appendChild(opt);
   });
-  districtField.appendChild(new Option("Other", "other"));
+  districtField.appendChild(new Option("Other", "other"));     //Text  and value
 
   districtField.addEventListener("change", () => {
 
@@ -95,9 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* =========================
-     FORM SUBMIT
-  ========================= */
+ // FORM SUBMIT
+  
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 

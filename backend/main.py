@@ -4,7 +4,7 @@ from database import engine, Base
 import os
 import cloudinary
 from router.user_complaint import user_complaint
-from router.admin import admin_router
+from router.admin import admin_router   
 from router.auth import auth_router
 
 app = FastAPI(title="Complaint Management API")

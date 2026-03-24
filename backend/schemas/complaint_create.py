@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 
 class ComplaintCreate(BaseModel):
@@ -32,7 +32,7 @@ class ComplaintOut(BaseModel):
     votes: int
     status: str
     created_at: datetime
-    comments_count: int = 0  
+    comments_count:List[str]
     user_name: Optional[str] = None  
     phone: Optional[str] = None 
     image_url: Optional[str] = None
