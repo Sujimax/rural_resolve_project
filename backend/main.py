@@ -24,10 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://rural-resolve-project.netlify.app",
-        "http://127.0.0.1:5500",
-                   ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
