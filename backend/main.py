@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 import os
 import cloudinary
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from router.user_complaint import user_complaint
 from router.admin import admin_router   
@@ -27,10 +30,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ✅ Test route (avoid 404)
 @app.get("/")
 def home():
-    return {"message": "API is working 🚀"}
+    return {"message": "API is working"}
 
 app.include_router(auth_router)
 app.include_router(user_complaint)

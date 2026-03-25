@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import jwt
+from config import SECRET_KEY 
 
 # JWT Configuration 
-SECRET_KEY = "9F@xL2!mQ7Z#kE4pR8WcY1D$A0nH" 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60  
 
