@@ -69,15 +69,12 @@ def create_complaint(
 # ================= GET ALL COMPLAINTS =================
 @user_complaint.get("/", response_model=List[ComplaintOut])
 def get_all_complaints(db: Session = Depends(get_db)):
-    # complaints = db.query(Complaint).join(User, Complaint.user_id==User.id).order_by(User.name.asc()).all()
     complaints = db.query(Complaint).order_by(Complaint.created_at.desc()).all()
     result = []
 
     for c in complaints:
         user = db.query(User).filter(User.id == c.user_id).first()
-        comment_list = db.query(Comment).filter(Comment.complaint_id == c.id).all()
-        comments = [comment.content for comment in comment_list]
-        # comment_count = db.query(Comment).filter(Comment.complaint_id == c.id).count()
+        comment_count = db.query(Comment).filter(Comment.complaint_id == c.id).count()
 
         result.append(
             ComplaintOut(
@@ -95,7 +92,7 @@ def get_all_complaints(db: Session = Depends(get_db)):
                 phone=user.phone if user else None,
                 email=user.email if user else None,
                 image_url=c.image_url,
-                comments_count=comments
+                comments_count=comment_count
             )
         )
     return result
