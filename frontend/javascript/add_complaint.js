@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.required = true;
     input.placeholder = placeholder;
 
-    selectEl.parentNode.replaceChild(input, selectEl);
+    selectEl.parentNode.replaceChild(input, selectEl);  // new , old
     input.focus();
     return input;
   }

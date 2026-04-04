@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
 
-      // ✅ FIX DATE
       const dateText = new Date(complaint.created_at).toLocaleDateString();
 
       // Status
@@ -76,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
 
-      // ✅ Delete
+      // Delete
       complaintBox.querySelector(".delete-btn").addEventListener("click", async () => {
         if (!confirm("Do you want to delete this complaint?")) return;
 

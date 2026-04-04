@@ -4,11 +4,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signup-form");
   if (!form) return;
 
-  // ===== Inline Error Functions =====
+  // Inline Error Functions 
 
   const showError = (input, message) => {
     let error = input.nextElementSibling;
 
+    // error ilana work agum
     if (!error || !error.classList.contains("error-msg")) {
       error = document.createElement("small");
       error.classList.add("error-msg");
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       passwordStatus.textContent = "Medium";
       passwordStatus.style.color = "orange";
     } else {
-      passwordStatus.textContent = "Strong ✅";
+      passwordStatus.textContent = "Strong ";
       passwordStatus.style.color = "green";
     }
   });
@@ -120,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(err.detail || "Signup failed");
       }
 
-      alert("Signup successful ✅");
+      alert("Signup successful");
       window.location.href = "login.html";
 
     } catch (err) {

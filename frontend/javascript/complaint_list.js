@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (complaints.length === 0) {
       complaintSection.innerHTML = "<p>No complaints found.</p>";
       return;
-    }
+    }   
 
     for (const complaint of complaints) {
 
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const comments = await cRes.json();
           commentCount = comments.length;
         }
-      } catch {}
+      } catch { }
 
       const complaintBox = document.createElement("div");
       complaintBox.classList.add("complaint-box");
@@ -65,11 +65,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p><strong>Village:</strong> ${complaint.village}</p>
 
             <p><strong>Date:</strong>
-              ${
-                complaint.created_at
-                  ? new Date(complaint.created_at).toLocaleDateString()
-                  : "N/A"
-              }
+              ${complaint.created_at
+          ? new Date(complaint.created_at).toLocaleDateString()
+          : "N/A"
+        }
             </p>
 
             <p><strong>Description:</strong>
@@ -81,13 +80,13 @@ document.addEventListener("DOMContentLoaded", async () => {
               <span class="${statusClass}">${statusText}</span>
             </p>
 
-            <!--  SUPPORT ROW -->
+            <!-- SUPPORT ROW -->
             <div class="vote-row">
-              <button class="btn vote-btn">👍 Votes</button>
+              <button class="btn vote-btn">👍 Add Vote</button>
               <span class="vote-count">${complaint.votes || 0}</span>
             </div>
 
-            <!--  COMMENT ROW -->
+            <!-- COMMENT ROW -->
             <div class="comment-row">
               <a href="comment.html?id=${complaint.id}" class="btn comment-btn">
                 Comment
@@ -106,10 +105,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const voteBtn = complaintBox.querySelector(".vote-btn");
       const voteCount = complaintBox.querySelector(".vote-count");
 
+      // ✅ SIMPLE TOGGLE LOGIC
+      let isVoted = false;
+
       voteBtn.addEventListener("click", async () => {
         try {
-          const voteResponse = await fetch(
-            `${API_BASE_URL}/complaints/${complaint.id}/vote`,
+          const voteResponse = await fetch(`${API_BASE_URL}/complaints/${complaint.id}/vote`,
             {
               method: "POST",
               headers: { Authorization: `Bearer ${token}` }
@@ -118,13 +119,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           if (!voteResponse.ok) throw new Error("Vote failed");
 
-          voteCount.textContent = parseInt(voteCount.textContent) + 1;
+          if (!isVoted) {
+            voteCount.textContent = Number(voteCount.textContent) + 1
+            voteBtn.textContent = "👎 Remove"
+            isVoted = true;
+          }
 
-        } catch (err) {
-          console.error(err);
-          alert("Error voting. Please try again.");
+          else {
+            voteCount.textContent = Number(voteCount.textContent) - 1
+            voteBtn.textContent = "👍Add Vote"
+            isVoted = false;
+          }
+
         }
-      });
+
+        catch (err) {
+          console.log("error", err)
+          alert("Error voting please try agian")
+        }
+      })
 
       complaintSection.appendChild(complaintBox);
     }
