@@ -29,7 +29,7 @@ function applyTamil() {
         document.body,
         NodeFilter.SHOW_TEXT,
         null,
-        false
+        false     //entityReferenceExpansion
     );
 
     while (walker.nextNode()) {
