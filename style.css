@@ -13,7 +13,6 @@
   padding: 20px;
   background: #ffffff;
   border-radius: 14px;
-  /* height: 700px; */
 }
 
 /* LAYOUT */
@@ -35,7 +34,6 @@
   font-size: 37px;
   font-weight: 800;
   color: #416bc4;
-  /* COLORED HEADING */
   margin-bottom: 28px;
 }
 
@@ -43,7 +41,6 @@
   font-size: 18px;
   color: #212222;
   line-height: 2;
-  /* SPACE BETWEEN SENTENCES */
   margin-bottom: 40px;
 }
 
@@ -78,23 +75,6 @@
   background-color: #2563eb;
   color: white;
 }
-
-/* MOBILE */
-@media (max-width: 900px) {
-  .hero-row {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero-image {
-    max-width: 300px;
-  }
-
-  .hero-buttons {
-    justify-content: center;
-  }
-}
-
 
 /* ===== FEATURES SECTION ===== */
 .features {
@@ -136,30 +116,15 @@
   box-shadow: 0 20px 25px rgba(73, 73, 73, 0.2);
 }
 
-/* ===== ICON (BACKGROUND REMOVED + HEART BEAT) ===== */
+/* ICON (BACKGROUND REMOVED + HEART BEAT) */
 .feature-icon {
   font-size: 48px;
   margin-bottom: 20px;
-  animation: heartBeat 1.6s infinite;
 }
 
 .feature-icon img{
   width:50px;
   height:50px;
-}
-/* SIMPLE HEART BEAT ANIMATION */
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.15);
-  }
-
-  100% {
-    transform: scale(1);
-  }
 }
 
 .feature-box h3 {
@@ -222,16 +187,8 @@
   border-left-color: #1e40af;
 }
 
-.comment-icon {
-  font-size: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.25s ease;
-}
-
-.comment-box:hover .comment-icon {
-  transform: scale(1.1);
+.comment-box:hover {
+  transform: scale(1.0);
 }
 
 .comment-box h3 {
@@ -296,7 +253,7 @@
 }
 
 .footer-section ul li {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .footer-section ul li a {
@@ -323,6 +280,22 @@
   .footer-container {
     grid-template-columns: repeat(2, 1fr);
     text-align: center;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+    .hero-row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-image {
+    max-width: 300px;
+  }
+
+  .hero-buttons {
+    justify-content: center;
   }
 }
 

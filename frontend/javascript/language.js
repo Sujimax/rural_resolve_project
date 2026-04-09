@@ -36,12 +36,12 @@ function applyTamil() {
 
         const node = walker.currentNode;
 
-      {
+        {
             const originalText = node.nodeValue.trim();
 
             if (customTamilWords[originalText]) {
                 node.nodeValue = customTamilWords[originalText];
-                continue; 
+                continue;
             }
 
             fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ta&dt=t&q=${encodeURIComponent(originalText)}`)

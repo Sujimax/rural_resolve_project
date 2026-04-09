@@ -8,11 +8,11 @@ SMTP_PORT = 587
 
 def send_status_email(to_email: str, complaint_id: int, status: str):
     if not EMAIL_ADDRESS or not EMAIL_PASSWORD:
-        print("❌ Email credentials not loaded")
+        print("Email credentials not loaded")
         return
 
     if not to_email or "@" not in to_email:
-        print("❌ Invalid email:", to_email)
+        print("Invalid email:", to_email)
         return
 
     subject = f"Complaint #{complaint_id} Status Update"
@@ -39,10 +39,10 @@ Rural Resolve Team
         server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
         server.send_message(msg)
         server.quit()
-        print("✅ Email sent to", to_email)
+        print("Email sent to", to_email)
 
     except Exception as e:
-        print("❌ Email sending failed:", e)
+        print("Email sending failed:", e)
         
         
      
