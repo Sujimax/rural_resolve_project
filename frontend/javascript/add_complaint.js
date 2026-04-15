@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) throw new Error("Failed");
 
-      alert("Complaint submitted successfully ✅");
+      alert("Complaint submitted successfully ");
       form.reset();
 
     } catch (err) {

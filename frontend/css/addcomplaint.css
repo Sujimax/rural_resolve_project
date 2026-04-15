@@ -125,7 +125,6 @@ button:hover {
 .password-wrapper .password-status {
   position: absolute;
   right: 40px;
-  /* Space between toggle and status */
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
