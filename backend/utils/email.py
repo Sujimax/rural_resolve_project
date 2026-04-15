@@ -34,7 +34,7 @@ Rural Resolve Team
     msg.attach(MIMEText(body, "plain"))
 
     try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)    #create connection to email server
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)                    #create connection to email server
         server.starttls()
         server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
         server.send_message(msg)
