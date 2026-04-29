@@ -292,3 +292,5 @@ def delete_comment(
     db.delete(comment)
     db.commit()
     return {"message": "Deleted"}
+
+

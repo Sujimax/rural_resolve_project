@@ -114,8 +114,6 @@ button:hover {
   }
 }
 
-
-
 #other-problem-container {
   display: none;
   margin-top: 10px;
@@ -128,20 +126,3 @@ button:hover {
 }
 
 
-.password-wrapper {
-    position: relative;
-}
-
-.password-wrapper input {
-    width: 100%;
-    padding-right: 40px;
-}
-
-.password-wrapper img {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    cursor: pointer;
-}
